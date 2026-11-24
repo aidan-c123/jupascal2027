@@ -160,13 +160,17 @@
       </div>
 
       <!-- Clean Underline Tabs -->
-      <div class="flex items-center gap-6 border-b border-line">
-        <button id="tab-explorer" class="pb-2.5 text-sm font-medium border-b-2 border-zinc-100 text-zinc-100 transition">
+      <div class="flex items-center gap-6 border-b border-line overflow-x-auto">
+        <button id="tab-explorer" class="pb-2.5 text-sm font-medium border-b-2 border-zinc-100 text-zinc-100 transition whitespace-nowrap">
           Programmes
         </button>
-        <button id="tab-choices" class="pb-2.5 text-sm font-medium border-b-2 border-transparent text-zinc-500 hover:text-zinc-200 transition inline-flex items-center gap-1.5">
+        <button id="tab-choices" class="pb-2.5 text-sm font-medium border-b-2 border-transparent text-zinc-500 hover:text-zinc-200 transition inline-flex items-center gap-1.5 whitespace-nowrap">
           <span>My Choices (A1–E20)</span>
           <span id="tab-choices-badge" class="px-1.5 py-0.5 text-[11px] rounded bg-raised text-zinc-400">0</span>
+        </button>
+        <button id="tab-analysis" class="pb-2.5 text-sm font-medium border-b-2 border-transparent text-zinc-500 hover:text-zinc-200 transition inline-flex items-center gap-1.5 whitespace-nowrap">
+          <span>Analysis</span>
+          <span id="tab-notes-badge" class="px-1.5 py-0.5 text-[11px] rounded bg-raised text-zinc-400">0</span>
         </button>
       </div>
 
@@ -240,6 +244,37 @@
         <!-- Bands List -->
         <div id="choices-bands-container" class="space-y-4"></div>
       </div>
+
+      <!-- TAB 3: Analysis (Key Points & Safer Backups) -->
+      <div id="view-analysis" class="hidden space-y-5">
+        <div class="bg-panel p-4 rounded-lg border border-line flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div>
+            <h3 class="text-sm font-semibold text-zinc-100">Choice List Diagnostics &amp; Safer Backups</h3>
+            <p class="text-xs text-zinc-400 mt-0.5">Flags small-quota slots, Band A-only traps, interview requirements, and safer alternatives in the same field.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span id="key-points-count" class="text-xs text-zinc-400 bg-raised border border-line px-2.5 py-1 rounded">0 notes</span>
+          </div>
+        </div>
+
+        <!-- Key Points Cards -->
+        <div id="key-points-container" class="space-y-3"></div>
+
+        <!-- Safer Options in the Same Direction -->
+        <div class="bg-panel p-4 rounded-lg border border-line space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <h4 class="text-sm font-semibold text-zinc-100">Safer Options in the Same Direction</h4>
+              <p class="text-xs text-zinc-400 mt-0.5">Programmes in the same institution/field where your score is at or above Median/LQ—consider as backups.</p>
+            </div>
+            <span id="safer-count-badge" class="text-xs text-zinc-400">0 suggested</span>
+          </div>
+          <div id="safer-backups-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+          <div id="safer-show-more-wrap" class="hidden pt-1">
+            <button id="toggle-safer-more" type="button" class="px-3 py-1.5 rounded-md bg-raised hover:bg-hover border border-line text-xs font-medium text-zinc-300 transition">Show more</button>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -257,10 +292,16 @@
         </div>
         <button id="modal-close" class="text-zinc-500 hover:text-zinc-200 text-xl leading-none px-1">&times;</button>
       </div>
-      <div class="grid grid-cols-3 divide-x divide-line bg-raised border border-line rounded-md py-3 text-center">
-        <div><div class="text-[11px] text-zinc-500">Your Score</div><div id="modal-score" class="text-lg font-semibold text-zinc-100 mt-0.5"></div></div>
-        <div><div class="text-[11px] text-zinc-500">2026 Median</div><div id="modal-med" class="text-lg font-semibold text-zinc-100 mt-0.5"></div></div>
-        <div class="flex flex-col items-center justify-center"><div class="text-[11px] text-zinc-500">Status</div><div id="modal-fit" class="mt-1"></div></div>
+      <div class="flex flex-wrap items-center gap-1.5 text-xs">
+        <span id="modal-slot-pill" class="px-2 py-0.5 rounded bg-raised border border-line text-zinc-200 font-medium">Unassigned</span>
+        <span id="modal-fit"></span>
+        <span id="modal-quota-pill" class="px-2 py-0.5 rounded bg-raised border border-line text-zinc-400"></span>
+      </div>
+      <div class="grid grid-cols-4 divide-x divide-line bg-raised border border-line rounded-md py-2.5 text-center">
+        <div><div class="text-[11px] text-zinc-500">Your Score</div><div id="modal-score" class="text-base font-semibold text-zinc-100 mt-0.5"></div></div>
+        <div><div class="text-[11px] text-zinc-500">2026 LQ</div><div id="modal-lq" class="text-base font-semibold text-zinc-400 mt-0.5"></div></div>
+        <div><div class="text-[11px] text-zinc-500">2026 Med</div><div id="modal-med" class="text-base font-semibold text-zinc-200 mt-0.5"></div></div>
+        <div><div class="text-[11px] text-zinc-500">2026 UQ</div><div id="modal-uq" class="text-base font-semibold text-zinc-400 mt-0.5"></div></div>
       </div>
       <div class="text-xs space-y-2.5 text-zinc-300">
         <div><span class="text-zinc-500 block mb-0.5">Subjects Counted</span><code id="modal-breakdown" class="inline-block bg-raised border border-line px-2 py-1 rounded text-[11px] text-zinc-200"></code></div>
@@ -878,8 +919,12 @@
       document.getElementById("modal-code").textContent = `${r.jupas_code} · ${r.institution} · ${r.faculty}`;
       document.getElementById("modal-title").textContent = r.programme_name;
       document.getElementById("modal-score").textContent = r.userScore.toFixed(2);
+      document.getElementById("modal-lq").textContent = r.lq !== null ? r.lq.toFixed(1) : "—";
       document.getElementById("modal-med").textContent = r.med !== null ? r.med.toFixed(1) : "—";
+      document.getElementById("modal-uq").textContent = r.uq !== null ? r.uq.toFixed(1) : "—";
       document.getElementById("modal-fit").innerHTML = dangerBadge(adj.level);
+      document.getElementById("modal-slot-pill").textContent = curSlot ? `Slot ${curSlot}` : "Unassigned";
+      document.getElementById("modal-quota-pill").textContent = `Quota: ${r.intake_quota || "—"}`;
       document.getElementById("modal-breakdown").textContent = r.breakdown;
       document.getElementById("modal-formula").textContent = `${r.formula_type} (${r.scaleId})`;
       document.getElementById("modal-elig").textContent = r.eligNotes;
@@ -1213,6 +1258,7 @@
 
       renderTop3Bar();
       renderChoicesTab();
+      renderAnalysisTab();
     }
 
     function wireGlobalEvents() {
@@ -1260,21 +1306,26 @@
 
       const tabExp = document.getElementById("tab-explorer");
       const tabCho = document.getElementById("tab-choices");
+      const tabAna = document.getElementById("tab-analysis");
       const viewExp = document.getElementById("view-explorer");
       const viewCho = document.getElementById("view-choices");
+      const viewAna = document.getElementById("view-analysis");
 
-      tabExp.addEventListener("click", () => {
-        viewExp.classList.remove("hidden");
-        viewCho.classList.add("hidden");
-        tabExp.className = "pb-2.5 text-sm font-medium border-b-2 border-zinc-100 text-zinc-100 transition";
-        tabCho.className = "pb-2.5 text-sm font-medium border-b-2 border-transparent text-zinc-500 hover:text-zinc-200 transition inline-flex items-center gap-1.5";
-      });
-      tabCho.addEventListener("click", () => {
-        viewCho.classList.remove("hidden");
-        viewExp.classList.add("hidden");
-        tabCho.className = "pb-2.5 text-sm font-medium border-b-2 border-zinc-100 text-zinc-100 transition inline-flex items-center gap-1.5";
-        tabExp.className = "pb-2.5 text-sm font-medium border-b-2 border-transparent text-zinc-500 hover:text-zinc-200 transition";
-      });
+      const activeTabCls = "pb-2.5 text-sm font-medium border-b-2 border-zinc-100 text-zinc-100 transition inline-flex items-center gap-1.5 whitespace-nowrap";
+      const inactiveTabCls = "pb-2.5 text-sm font-medium border-b-2 border-transparent text-zinc-500 hover:text-zinc-200 transition inline-flex items-center gap-1.5 whitespace-nowrap";
+
+      function activateTab(which) {
+        viewExp.classList.toggle("hidden", which !== "exp");
+        viewCho.classList.toggle("hidden", which !== "cho");
+        viewAna.classList.toggle("hidden", which !== "ana");
+        tabExp.className = which === "exp" ? activeTabCls : inactiveTabCls;
+        tabCho.className = which === "cho" ? activeTabCls : inactiveTabCls;
+        tabAna.className = which === "ana" ? activeTabCls : inactiveTabCls;
+      }
+
+      tabExp.addEventListener("click", () => activateTab("exp"));
+      tabCho.addEventListener("click", () => activateTab("cho"));
+      tabAna.addEventListener("click", () => activateTab("ana"));
 
       const importBtn = document.getElementById("import-choices-btn");
       const importInput = document.getElementById("import-choices-input");
@@ -1350,6 +1401,164 @@
           document.getElementById("detail-modal").classList.remove("flex");
         }
       });
+    }
+
+    let SHOW_ALL_SAFER = false;
+
+    function parseQuotaNumber(qStr) {
+      if (!qStr) return null;
+      const m = String(qStr).match(/(\d+)/);
+      return m ? parseInt(m[1], 10) : null;
+    }
+
+    function renderAnalysisTab() {
+      const assignedEntries = ALL_SLOTS
+        .map(slot => ({ slot, code: STATE.choices[slot] }))
+        .filter(item => item.code && LAST_EVAL_MAP[item.code])
+        .map(item => ({ slot: item.slot, r: LAST_EVAL_MAP[item.code] }));
+
+      const notes = [];
+
+      // 1. Very few places (quota <= 35)
+      const smallQuota = assignedEntries.filter(({ r }) => {
+        const q = parseQuotaNumber(r.intake_quota);
+        return q !== null && q <= 35;
+      });
+      if (smallQuota.length > 0) {
+        notes.push({
+          title: "Small intake quotas",
+          body: "These programmes have small intake numbers, so cut-off scores can fluctuate more year to year.",
+          items: smallQuota.map(({ slot, r }) => `${slot} · ${r.jupas_code} (${parseQuotaNumber(r.intake_quota)})`)
+        });
+      }
+
+      // 2. Band A priority warning for choices placed below Band A
+      const belowBandA = assignedEntries.filter(({ slot, r }) => {
+        if (slot[0] === "A") return false;
+        const q = parseQuotaNumber(r.intake_quota);
+        const isCompIv = (r.interview_req || "").startsWith("Compulsory");
+        return (q !== null && q <= 45) || isCompIv || r.dangerLevel === "High Danger";
+      });
+      if (belowBandA.length > 0) {
+        notes.push({
+          title: "Choices placed outside Band A",
+          body: "Placing competitive or interview-heavy programmes below Band A reduces offer chances when programmes prioritize Band A applicants.",
+          items: belowBandA.map(({ slot, r }) => `${slot} · ${r.jupas_code}`)
+        });
+      }
+
+      // 3. Ineligible choices warning
+      const ineligibleSaved = assignedEntries.filter(({ r }) => !r.eligible);
+      if (ineligibleSaved.length > 0) {
+        notes.push({
+          title: "Eligibility requirement gaps",
+          body: "One or more saved choices currently fail a subject or minimum level requirement based on your entered grades.",
+          items: ineligibleSaved.map(({ slot, r }) => `${slot} · ${r.jupas_code} (${r.eligNotes})`)
+        });
+      }
+
+      // 4. Interview requirements summary
+      const ivSaved = assignedEntries.filter(({ r }) => r.interview_req && r.interview_req !== "Not Required");
+      if (ivSaved.length > 0) {
+        notes.push({
+          title: "Interviews",
+          body: "Interview requirements apply to these saved programmes—check programme schedules and prepare accordingly.",
+          items: ivSaved.map(({ slot, r }) => `${slot} · ${r.jupas_code} (${r.interview_req})`)
+        });
+      }
+
+      document.getElementById("tab-notes-badge").textContent = notes.length;
+      document.getElementById("key-points-count").textContent = `${notes.length} note${notes.length === 1 ? "" : "s"}`;
+
+      const kpEl = document.getElementById("key-points-container");
+      if (notes.length === 0) {
+        kpEl.innerHTML = `<div class="bg-panel p-4 rounded-lg border border-line text-xs text-zinc-400">Add programmes to My Choices (A1–E20) to generate diagnostics.</div>`;
+      } else {
+        kpEl.innerHTML = notes.map(n => `
+          <div class="bg-panel p-4 rounded-lg border border-line space-y-2">
+            <div class="text-sm font-semibold text-zinc-100">${n.title}</div>
+            <p class="text-xs text-zinc-400 leading-relaxed">${n.body}</p>
+            <div class="flex flex-wrap gap-1.5 pt-1">
+              ${n.items.map(tag => `<span class="px-2 py-0.5 rounded bg-raised border border-line text-[11px] text-zinc-300">${tag}</span>`).join("")}
+            </div>
+          </div>
+        `).join("");
+      }
+
+      // 5. Safer Options in the Same Direction
+      const targetFaculties = new Set(assignedEntries.map(({ r }) => r.faculty).filter(Boolean));
+      const targetInsts = new Set(assignedEntries.map(({ r }) => r.institution).filter(Boolean));
+      const savedCodes = new Set(assignedEntries.map(({ r }) => r.jupas_code));
+      const firstSavedCode = assignedEntries.length > 0 ? assignedEntries[0].r.jupas_code : null;
+
+      const saferCandidates = Object.values(LAST_EVAL_MAP).filter(r => {
+        if (savedCodes.has(r.jupas_code) || !r.eligible) return false;
+        const isSafeOrLow = r.dangerLevel === "Safe" || r.dangerLevel === "Low Risk";
+        if (!isSafeOrLow) return false;
+        if (targetFaculties.size > 0) {
+          return targetFaculties.has(r.faculty) || targetInsts.has(r.institution);
+        }
+        return true;
+      });
+
+      document.getElementById("safer-count-badge").textContent = `${saferCandidates.length} suggested`;
+      const gridEl = document.getElementById("safer-backups-grid");
+      const moreWrap = document.getElementById("safer-show-more-wrap");
+      const moreBtn = document.getElementById("toggle-safer-more");
+
+      if (saferCandidates.length === 0) {
+        gridEl.innerHTML = `<div class="col-span-full text-xs text-zinc-500 py-2">No Safe or Low Risk matches found for the current grades and filters.</div>`;
+        moreWrap.classList.add("hidden");
+      } else {
+        const visible = SHOW_ALL_SAFER ? saferCandidates : saferCandidates.slice(0, 4);
+        gridEl.innerHTML = visible.map(r => `
+          <div class="rounded-md bg-raised border border-line p-3.5 flex flex-col justify-between gap-3">
+            <div class="flex items-start justify-between gap-2">
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-xs font-semibold text-zinc-100">${r.jupas_code}</span>
+                  <span class="text-xs text-zinc-400">${r.institution}</span>
+                  <span class="text-[11px] text-zinc-500">· ${r.faculty}</span>
+                </div>
+                <div class="text-sm font-medium text-zinc-100 truncate mt-0.5" title="${r.programme_name}">${r.programme_name}</div>
+              </div>
+              ${dangerBadge(r.dangerLevel)}
+            </div>
+            <div class="flex items-center justify-between gap-2 pt-2 border-t border-line">
+              <div class="flex items-center gap-4 text-xs">
+                <div><span class="text-[10px] text-zinc-500 block">YOU</span><span class="font-semibold text-zinc-100">${r.userScore.toFixed(1)}</span></div>
+                <div><span class="text-[10px] text-zinc-500 block">MEDIAN</span><span class="text-zinc-300">${r.med !== null ? r.med.toFixed(1) : "—"}</span></div>
+              </div>
+              <div class="flex items-center gap-1.5">
+                ${firstSavedCode ? `<button type="button" data-swap-a1="${r.jupas_code}" class="px-2.5 py-1 rounded bg-canvas hover:bg-hover border border-line text-xs text-zinc-300 transition">Swap A1</button>` : ""}
+                <button type="button" data-append-safer="${r.jupas_code}" class="px-2.5 py-1 rounded bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-medium transition">Add to plan</button>
+              </div>
+            </div>
+          </div>
+        `).join("");
+
+        gridEl.querySelectorAll("[data-append-safer]").forEach(btn => {
+          btn.addEventListener("click", () => toggleAppendProgramme(btn.dataset.appendSafer));
+        });
+        gridEl.querySelectorAll("[data-swap-a1]").forEach(btn => {
+          btn.addEventListener("click", () => {
+            STATE.choices["A1"] = btn.dataset.swapA1;
+            persistState();
+            renderAll();
+          });
+        });
+
+        if (saferCandidates.length > 4) {
+          moreWrap.classList.remove("hidden");
+          moreBtn.textContent = SHOW_ALL_SAFER ? "Show fewer" : `Show ${saferCandidates.length - 4} more`;
+          moreBtn.onclick = () => {
+            SHOW_ALL_SAFER = !SHOW_ALL_SAFER;
+            renderAnalysisTab();
+          };
+        } else {
+          moreWrap.classList.add("hidden");
+        }
+      }
     }
 
     async function boot() {
