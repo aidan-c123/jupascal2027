@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JUPAS 2027 Score Calculator & Band Planner</title>
+  <title>JUPAS 2027 Calculator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script>
@@ -15,17 +15,16 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-            mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
           },
           colors: {
-            surface: {
-              950: '#121316',
-              900: '#181a1e',
-              850: '#1f2227',
-              800: '#272a30',
-              700: '#343840',
-            }
+            canvas: '#111113',
+            panel: '#18181b',
+            raised: '#202024',
+            hover: '#27272c',
+            line: '#2c2c32',
+            'line-strong': '#3a3a42',
           }
         }
       }
@@ -33,207 +32,186 @@
   </script>
   <style>
     body {
-      background-color: #121316;
-      background-image:
-        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.14), transparent),
-        radial-gradient(ellipse 60% 40% at 85% 10%, rgba(16, 185, 129, 0.06), transparent);
-      background-attachment: fixed;
+      background-color: #111113;
+      color: #e4e4e7;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     }
-    ::-webkit-scrollbar { width: 7px; height: 7px; }
-    ::-webkit-scrollbar-track { background: #181a1e; }
-    ::-webkit-scrollbar-thumb { background: #343840; border-radius: 9999px; }
-    ::-webkit-scrollbar-thumb:hover { background: #4b505c; }
-    .glass-card {
-      background: rgba(24, 26, 30, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
+    .tabular { font-variant-numeric: tabular-nums; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #111113; }
+    ::-webkit-scrollbar-thumb { background: #2c2c32; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
     .slot-row.drag-over {
-      background: rgba(99, 102, 241, 0.18) !important;
-      outline: 2px dashed rgba(129, 140, 248, 0.8);
-      outline-offset: -2px;
+      background: #27272c !important;
+      outline: 1px dashed #a1a1aa;
+      outline-offset: -1px;
     }
-    .slot-row.dragging {
-      opacity: 0.45;
-    }
-    .drag-handle {
-      touch-action: none;
-      cursor: grab;
-    }
-    .drag-handle:active {
-      cursor: grabbing;
-    }
+    .slot-row.dragging { opacity: 0.4; }
+    .drag-handle { touch-action: none; cursor: grab; }
+    .drag-handle:active { cursor: grabbing; }
   </style>
 </head>
-<body class="text-zinc-200 min-h-screen antialiased selection:bg-indigo-500/30">
-  <!-- Header -->
-  <header class="glass-card border-b border-surface-700/70 py-4 px-5 sticky top-0 z-30">
-    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 text-lg">
-          🎓
-        </div>
-        <div>
-          <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-zinc-100">
-            JUPAS 2027 <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-sky-400">Score Calculator</span>
-          </h1>
-        </div>
+<body class="min-h-screen antialiased selection:bg-zinc-700 selection:text-zinc-100">
+
+  <!-- Top Navigation Bar -->
+  <header class="bg-canvas/95 backdrop-blur border-b border-line sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-2.5">
+        <span class="w-6 h-6 rounded bg-zinc-100 text-zinc-950 font-mono font-bold text-xs flex items-center justify-center tracking-tighter">J</span>
+        <h1 class="text-sm sm:text-base font-semibold tracking-tight text-zinc-100">JUPAS 2027 Calculator</h1>
       </div>
-      <div class="flex items-center gap-2">
-        <div id="db-status" class="inline-flex items-center gap-1.5 text-xs bg-surface-850 border border-surface-700/80 px-3 py-1.5 rounded-full text-emerald-400 font-medium shadow-sm">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>Loading CSV tables...</span>
-        </div>
+      <div id="db-status" class="inline-flex items-center gap-2 text-xs text-zinc-400 font-mono">
+        <span class="w-1.5 h-1.5 rounded-full bg-zinc-500"></span>
+        <span>Loading...</span>
       </div>
     </div>
   </header>
 
   <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
-    <!-- Sidebar: HKDSE Grade Inputs -->
-    <aside class="lg:col-span-4 xl:col-span-3 glass-card rounded-2xl border border-surface-700/70 p-4 sm:p-5 h-fit space-y-5 shadow-xl shadow-black/20">
-      <div class="flex items-center justify-between">
-        <h2 class="text-sm font-bold uppercase tracking-wider text-zinc-200 flex items-center gap-2">
-          <span>📝</span> HKDSE Grades
-        </h2>
-        <button id="reset-grades-btn" class="text-xs text-zinc-400 hover:text-indigo-300 transition px-2 py-0.5 rounded-md hover:bg-surface-800">Reset</button>
+
+    <!-- Left Sidebar: HKDSE Grades -->
+    <aside class="lg:col-span-4 xl:col-span-3 bg-panel rounded-lg border border-line p-4 h-fit space-y-5">
+      <div class="flex items-center justify-between pb-3 border-b border-line">
+        <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-300">HKDSE Grades</h2>
+        <button id="reset-grades-btn" class="text-xs text-zinc-500 hover:text-zinc-200 transition">Reset</button>
       </div>
 
-      <!-- Core Subjects -->
+      <!-- Core -->
       <div class="space-y-2.5">
-        <div class="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">Core Subjects</div>
+        <div class="text-[11px] font-medium text-zinc-500">Core</div>
         <div id="core-inputs" class="space-y-2"></div>
+
         <!-- CSD -->
-        <div class="flex items-center justify-between bg-surface-850/90 border border-surface-700/70 rounded-xl px-3 py-2">
-          <span class="text-xs font-medium text-zinc-300">CSD</span>
-          <div class="flex gap-1 bg-surface-900 p-0.5 rounded-lg border border-surface-700/60">
-            <button type="button" data-csd="Attained" class="csd-btn px-2.5 py-1 rounded-md text-xs font-medium transition">Attained</button>
-            <button type="button" data-csd="Unattained" class="csd-btn px-2.5 py-1 rounded-md text-xs font-medium transition">Unattained</button>
+        <div class="flex items-center justify-between bg-raised border border-line rounded-md px-2.5 py-2">
+          <span class="text-xs text-zinc-300">CSD</span>
+          <div class="flex gap-1 bg-canvas p-0.5 rounded border border-line">
+            <button type="button" data-csd="Attained" class="csd-btn px-2 py-0.5 rounded text-[11px] font-medium transition">Attained</button>
+            <button type="button" data-csd="Unattained" class="csd-btn px-2 py-0.5 rounded text-[11px] font-medium transition">Unattained</button>
           </div>
         </div>
       </div>
 
       <!-- Math Extended -->
-      <div class="space-y-2.5 pt-3 border-t border-surface-700/60">
+      <div class="space-y-2.5 pt-4 border-t border-line">
         <div class="flex items-center justify-between">
-          <div class="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">Math Extended</div>
-          <div class="flex gap-1 bg-surface-900 p-0.5 rounded-lg border border-surface-700/70">
-            <button type="button" data-mext="None" class="mext-btn px-2 py-0.5 rounded-md text-xs font-medium transition">None</button>
-            <button type="button" data-mext="M1" class="mext-btn px-2 py-0.5 rounded-md text-xs font-medium transition">M1</button>
-            <button type="button" data-mext="M2" class="mext-btn px-2 py-0.5 rounded-md text-xs font-medium transition">M2</button>
+          <div class="text-[11px] font-medium text-zinc-500">Math Extended</div>
+          <div class="flex gap-0.5 bg-canvas p-0.5 rounded border border-line">
+            <button type="button" data-mext="None" class="mext-btn px-2 py-0.5 rounded text-[11px] font-medium transition">None</button>
+            <button type="button" data-mext="M1" class="mext-btn px-2 py-0.5 rounded text-[11px] font-medium transition">M1</button>
+            <button type="button" data-mext="M2" class="mext-btn px-2 py-0.5 rounded text-[11px] font-medium transition">M2</button>
           </div>
         </div>
-        <div id="mext-grade-wrap" class="bg-surface-850/90 border border-surface-700/70 rounded-xl p-2.5"></div>
+        <div id="mext-grade-wrap" class="bg-raised border border-line rounded-md p-2.5"></div>
       </div>
 
-      <!-- Searchable Electives -->
-      <div class="space-y-2.5 pt-3 border-t border-surface-700/60">
+      <!-- Electives -->
+      <div class="space-y-2.5 pt-4 border-t border-line">
         <div class="flex items-center justify-between">
-          <div class="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">Electives</div>
-          <span id="elec-count" class="text-[11px] font-mono text-zinc-400 bg-surface-850 px-2 py-0.5 rounded-md border border-surface-700/60">0 / 4</span>
+          <div class="text-[11px] font-medium text-zinc-500">Electives</div>
+          <span id="elec-count" class="text-[11px] font-mono text-zinc-500">0/4</span>
         </div>
 
         <div class="relative">
+          <svg class="w-3.5 h-3.5 text-zinc-500 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           <input
             id="elective-search"
             type="text"
             autocomplete="off"
-            placeholder="🔍 Search elective (Phy, Econ, BAFS...)"
-            class="w-full rounded-xl bg-surface-850 border border-surface-700 text-zinc-100 placeholder-zinc-500 px-3 py-2 text-xs focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40 transition"
+            placeholder="Add elective (Phy, Econ, BAFS...)"
+            class="w-full rounded-md bg-raised border border-line text-zinc-100 placeholder-zinc-500 pl-8 pr-3 py-1.5 text-xs focus:outline-none focus:border-zinc-400 transition"
           />
-          <div id="elective-dropdown" class="hidden absolute left-0 right-0 mt-1.5 max-h-52 overflow-y-auto bg-surface-800 border border-surface-700 rounded-xl shadow-2xl z-30 divide-y divide-surface-700/60"></div>
+          <div id="elective-dropdown" class="hidden absolute left-0 right-0 mt-1 max-h-52 overflow-y-auto bg-panel border border-line-strong rounded-md shadow-xl z-30 divide-y divide-line"></div>
         </div>
 
         <div id="selected-electives" class="space-y-2"></div>
       </div>
     </aside>
 
-    <!-- Main Panel -->
+    <!-- Main Workspace -->
     <section class="lg:col-span-8 xl:col-span-9 space-y-5">
-      <!-- KPI Cards -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div class="glass-card p-4 rounded-2xl border border-surface-700/70 relative overflow-hidden">
-          <div class="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-zinc-500 to-zinc-400 opacity-60"></div>
-          <div class="text-[11px] font-medium uppercase tracking-wider text-zinc-400">Best 5 (7.0)</div>
-          <div id="kpi-best5-70" class="text-2xl font-extrabold font-mono text-zinc-100 mt-1">—</div>
+
+      <!-- Unified Metrics Strip -->
+      <div class="bg-panel rounded-lg border border-line grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-line">
+        <div class="px-4 py-3">
+          <div class="text-[11px] text-zinc-500">Best 5 (7.0 scale)</div>
+          <div id="kpi-best5-70" class="text-xl font-semibold font-mono tabular text-zinc-100 mt-0.5">—</div>
         </div>
-        <div class="glass-card p-4 rounded-2xl border border-surface-700/70 relative overflow-hidden">
-          <div class="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-indigo-500 to-sky-400"></div>
-          <div class="text-[11px] font-medium uppercase tracking-wider text-zinc-400">Best 5 (8.5)</div>
-          <div id="kpi-best5-85" class="text-2xl font-extrabold font-mono text-indigo-400 mt-1">—</div>
+        <div class="px-4 py-3">
+          <div class="text-[11px] text-zinc-500">Best 5 (8.5 scale)</div>
+          <div id="kpi-best5-85" class="text-xl font-semibold font-mono tabular text-zinc-100 mt-0.5">—</div>
         </div>
-        <div class="glass-card p-4 rounded-2xl border border-surface-700/70 relative overflow-hidden">
-          <div class="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-sky-500 to-cyan-400"></div>
-          <div class="text-[11px] font-medium uppercase tracking-wider text-zinc-400">Eligible</div>
-          <div id="kpi-eligible" class="text-2xl font-extrabold font-mono text-zinc-100 mt-1">—</div>
+        <div class="px-4 py-3">
+          <div class="text-[11px] text-zinc-500">Eligible</div>
+          <div id="kpi-eligible" class="text-xl font-semibold font-mono tabular text-zinc-100 mt-0.5">—</div>
         </div>
-        <div class="glass-card p-4 rounded-2xl border border-surface-700/70 relative overflow-hidden">
-          <div class="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-emerald-500 to-teal-400"></div>
-          <div class="text-[11px] font-medium uppercase tracking-wider text-zinc-400">Saved Choices</div>
-          <div id="kpi-saved" class="text-2xl font-extrabold font-mono text-emerald-400 mt-1">0 / 20</div>
+        <div class="px-4 py-3">
+          <div class="text-[11px] text-zinc-500">Saved Choices</div>
+          <div id="kpi-saved" class="text-xl font-semibold font-mono tabular text-zinc-100 mt-0.5">0 / 20</div>
         </div>
       </div>
 
-      <!-- Always-Visible Top 3 Choices (Band A) -->
-      <div class="glass-card p-3.5 rounded-2xl border border-surface-700/70 shadow-lg shadow-black/20">
+      <!-- Always-Visible Band A Strip -->
+      <div class="bg-panel rounded-lg border border-line p-3.5">
         <div class="flex items-center justify-between mb-2.5">
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
-            <span class="text-xs font-bold uppercase tracking-wider text-zinc-200">Top 3 Choices (Band A)</span>
-          </div>
-          <span class="text-[11px] text-zinc-400">Always visible • Click a card to inspect</span>
+          <span class="text-xs font-semibold text-zinc-300">Band A — Top 3 Choices</span>
+          <span class="text-[11px] text-zinc-500">Click to inspect</span>
         </div>
         <div id="top3-bar" class="grid grid-cols-1 md:grid-cols-3 gap-2.5"></div>
       </div>
 
-      <!-- Segmented View Tabs -->
-      <div class="inline-flex p-1 rounded-2xl bg-surface-900 border border-surface-700/70 gap-1">
-        <button id="tab-explorer" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-indigo-600 text-white shadow-md shadow-indigo-600/20">
-          📊 Programme Explorer
+      <!-- Clean Underline Tabs -->
+      <div class="flex items-center gap-6 border-b border-line">
+        <button id="tab-explorer" class="pb-2.5 text-sm font-medium border-b-2 border-zinc-100 text-zinc-100 transition">
+          Programmes
         </button>
-        <button id="tab-choices" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition text-zinc-400 hover:text-zinc-200 hover:bg-surface-850">
-          🎯 My Choices (A1–E20) <span id="tab-choices-badge" class="ml-1.5 px-1.5 py-0.5 text-[11px] font-mono rounded-full bg-surface-800 text-zinc-300">0</span>
+        <button id="tab-choices" class="pb-2.5 text-sm font-medium border-b-2 border-transparent text-zinc-500 hover:text-zinc-200 transition inline-flex items-center gap-1.5">
+          <span>My Choices (A1–E20)</span>
+          <span id="tab-choices-badge" class="px-1.5 py-0.5 text-[11px] font-mono rounded bg-raised text-zinc-400">0</span>
         </button>
       </div>
 
-      <!-- TAB 1: Programme Explorer -->
+      <!-- TAB 1: Programmes -->
       <div id="view-explorer" class="space-y-4">
-        <!-- Filters (Multi-Select) -->
-        <div class="glass-card p-4 rounded-2xl border border-surface-700/70 space-y-3">
-          <div class="flex flex-col sm:flex-row sm:items-center gap-2.5">
-            <input id="filter-search" type="text" placeholder="🔍 Search JUPAS code, programme, faculty..." class="flex-1 rounded-xl bg-surface-850 border border-surface-700 text-zinc-100 placeholder-zinc-500 px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40" />
-            <button id="clear-filters-btn" type="button" class="px-3 py-2 rounded-xl bg-surface-850 hover:bg-surface-800 border border-surface-700 text-xs font-medium text-zinc-400 hover:text-zinc-200 transition shrink-0">Reset Filters</button>
+        <!-- Filters -->
+        <div class="bg-panel p-3.5 rounded-lg border border-line space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+            <div class="relative flex-1">
+              <svg class="w-4 h-4 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <input id="filter-search" type="text" placeholder="Filter by JUPAS code, programme, or faculty..." class="w-full rounded-md bg-raised border border-line text-zinc-100 placeholder-zinc-500 pl-9 pr-3 py-1.5 text-sm focus:outline-none focus:border-zinc-400 transition" />
+            </div>
+            <button id="clear-filters-btn" type="button" class="px-3 py-1.5 rounded-md bg-raised hover:bg-hover border border-line text-xs font-medium text-zinc-400 hover:text-zinc-200 transition shrink-0">Reset</button>
           </div>
-          <div class="space-y-2">
+          <div class="space-y-2 pt-1">
             <div class="flex items-center gap-2 flex-wrap">
-              <span class="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 w-16 shrink-0">Univs</span>
-              <div id="filter-inst-chips" class="flex flex-wrap gap-1.5"></div>
+              <span class="text-[11px] font-medium text-zinc-500 w-14 shrink-0">Univ</span>
+              <div id="filter-inst-chips" class="flex flex-wrap gap-1"></div>
             </div>
             <div class="flex items-center gap-2 flex-wrap">
-              <span class="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 w-16 shrink-0">Danger</span>
-              <div id="filter-fit-chips" class="flex flex-wrap gap-1.5"></div>
+              <span class="text-[11px] font-medium text-zinc-500 w-14 shrink-0">Risk</span>
+              <div id="filter-fit-chips" class="flex flex-wrap gap-1"></div>
             </div>
           </div>
         </div>
 
-        <!-- Results Table -->
-        <div class="glass-card rounded-2xl border border-surface-700/70 overflow-hidden shadow-xl shadow-black/20">
+        <!-- Data Table -->
+        <div class="bg-panel rounded-lg border border-line overflow-hidden">
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse text-sm">
-              <thead class="bg-surface-850/90 text-zinc-400 text-[11px] uppercase tracking-wider border-b border-surface-700/70">
+              <thead class="bg-raised/70 text-zinc-400 text-[11px] font-medium uppercase tracking-wider border-b border-line">
                 <tr>
-                  <th class="py-3 px-3">Choice</th>
-                  <th class="py-3 px-3">Code</th>
-                  <th class="py-3 px-2.5">Univ</th>
-                  <th class="py-3 px-3">Programme</th>
-                  <th class="py-3 px-2.5 text-right">Score</th>
-                  <th class="py-3 px-2.5 text-right">LQ</th>
-                  <th class="py-3 px-2.5 text-right">Med</th>
-                  <th class="py-3 px-2.5 text-right">UQ</th>
-                  <th class="py-3 px-2.5 text-right">Δ Med</th>
-                  <th class="py-3 px-3">Danger Level</th>
+                  <th class="py-2.5 px-3">List</th>
+                  <th class="py-2.5 px-3">Code</th>
+                  <th class="py-2.5 px-2.5">Univ</th>
+                  <th class="py-2.5 px-3">Programme</th>
+                  <th class="py-2.5 px-2.5 text-right">Score</th>
+                  <th class="py-2.5 px-2.5 text-right">LQ</th>
+                  <th class="py-2.5 px-2.5 text-right">Med</th>
+                  <th class="py-2.5 px-2.5 text-right">UQ</th>
+                  <th class="py-2.5 px-2.5 text-right">Diff</th>
+                  <th class="py-2.5 px-3">Status</th>
                 </tr>
               </thead>
-              <tbody id="results-tbody" class="divide-y divide-surface-700/40"></tbody>
+              <tbody id="results-tbody" class="divide-y divide-line/60"></tbody>
             </table>
           </div>
         </div>
@@ -241,56 +219,58 @@
 
       <!-- TAB 2: My Choices (A1–E20) -->
       <div id="view-choices" class="hidden space-y-4">
-        <div class="glass-card p-4 rounded-2xl border border-surface-700/70 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div class="bg-panel p-4 rounded-lg border border-line flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h3 class="text-sm font-bold text-zinc-100">Saved JUPAS Band Choices (A1 – E20)</h3>
-            <p class="text-xs text-zinc-400 mt-0.5">Search directly in any slot to add a programme. Drag the <span class="font-mono text-zinc-300">⋮⋮</span> handle (or use ↑↓) to reorder or swap slots.</p>
+            <h3 class="text-sm font-semibold text-zinc-100">JUPAS Band Choices (A1 – E20)</h3>
+            <p class="text-xs text-zinc-400 mt-0.5">Search in any empty slot to add. Drag the handle or use arrow keys to reorder.</p>
           </div>
           <div class="flex flex-wrap gap-2">
-            <button id="export-choices-btn" class="px-3 py-1.5 rounded-xl bg-surface-800 hover:bg-surface-700 border border-surface-700 text-xs font-semibold text-zinc-200 transition">⬇ Export CSV</button>
-            <button id="clear-choices-btn" class="px-3 py-1.5 rounded-xl bg-rose-950/60 hover:bg-rose-900/70 border border-rose-800/60 text-xs font-semibold text-rose-300 transition">Clear All</button>
+            <button id="export-choices-btn" class="px-3 py-1.5 rounded-md bg-raised hover:bg-hover border border-line text-xs font-medium text-zinc-200 transition">Export CSV</button>
+            <button id="clear-choices-btn" class="px-3 py-1.5 rounded-md bg-raised hover:bg-hover border border-line text-xs font-medium text-red-400 hover:text-red-300 transition">Clear All</button>
           </div>
         </div>
 
-        <!-- Band A Strategy Summary -->
-        <div id="band-a-summary" class="glass-card p-4 rounded-2xl border border-surface-700/70 text-xs text-zinc-300"></div>
+        <!-- Band A Notice -->
+        <div id="band-a-summary" class="bg-panel px-4 py-3 rounded-lg border border-line text-xs text-zinc-300"></div>
 
-        <!-- A1-E20 Bands Container -->
+        <!-- Bands List -->
         <div id="choices-bands-container" class="space-y-4"></div>
       </div>
     </section>
   </main>
 
-  <footer class="max-w-7xl mx-auto px-4 sm:px-6 py-6 border-t border-surface-700/50 text-center text-xs text-zinc-500">
+  <footer class="max-w-7xl mx-auto px-4 sm:px-6 py-6 mt-4 border-t border-line text-center text-xs text-zinc-500">
     Made by <span class="text-zinc-300 font-medium">@aidan.choi_</span>
   </footer>
 
-  <!-- Breakdown Modal -->
-  <div id="detail-modal" class="fixed inset-0 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="bg-surface-900 border border-surface-700 rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4">
+  <!-- Detail Modal -->
+  <div id="detail-modal" class="fixed inset-0 bg-black/70 hidden items-center justify-center p-4 z-50">
+    <div class="bg-panel border border-line-strong rounded-lg max-w-lg w-full p-5 shadow-2xl space-y-4">
       <div class="flex justify-between items-start gap-4">
         <div>
-          <span id="modal-code" class="text-xs font-mono font-bold uppercase tracking-wider text-indigo-400"></span>
-          <h3 id="modal-title" class="text-lg font-bold text-zinc-100 mt-0.5"></h3>
+          <span id="modal-code" class="text-xs font-mono text-zinc-400"></span>
+          <h3 id="modal-title" class="text-base font-semibold text-zinc-100 mt-0.5"></h3>
         </div>
-        <button id="modal-close" class="text-zinc-400 hover:text-zinc-100 text-2xl leading-none">&times;</button>
+        <button id="modal-close" class="text-zinc-500 hover:text-zinc-200 text-xl leading-none px-1">&times;</button>
       </div>
-      <div class="grid grid-cols-3 gap-3 bg-surface-850 border border-surface-700/60 p-3.5 rounded-xl text-center">
-        <div><div class="text-[11px] uppercase tracking-wider text-zinc-400">Your Score</div><div id="modal-score" class="text-xl font-extrabold font-mono text-indigo-400 mt-0.5"></div></div>
-        <div><div class="text-[11px] uppercase tracking-wider text-zinc-400">2026 Median</div><div id="modal-med" class="text-xl font-extrabold font-mono text-zinc-100 mt-0.5"></div></div>
-        <div><div class="text-[11px] uppercase tracking-wider text-zinc-400">Danger Level</div><div id="modal-fit" class="text-xs font-semibold mt-1.5"></div></div>
+      <div class="grid grid-cols-3 divide-x divide-line bg-raised border border-line rounded-md py-3 text-center">
+        <div><div class="text-[11px] text-zinc-500">Your Score</div><div id="modal-score" class="text-lg font-semibold font-mono tabular text-zinc-100 mt-0.5"></div></div>
+        <div><div class="text-[11px] text-zinc-500">2026 Median</div><div id="modal-med" class="text-lg font-semibold font-mono tabular text-zinc-100 mt-0.5"></div></div>
+        <div class="flex flex-col items-center justify-center"><div class="text-[11px] text-zinc-500">Status</div><div id="modal-fit" class="mt-1"></div></div>
       </div>
-      <div class="text-sm space-y-2 text-zinc-300">
-        <div><span class="font-semibold text-zinc-100">Subjects Counted:</span> <code id="modal-breakdown" class="bg-surface-850 border border-surface-700 px-2 py-0.5 rounded-md text-xs font-mono text-indigo-300"></code></div>
-        <div><span class="font-semibold text-zinc-100">Formula &amp; Scale:</span> <span id="modal-formula"></span></div>
-        <div><span class="font-semibold text-zinc-100">Eligibility:</span> <span id="modal-elig"></span></div>
-        <div><span class="font-semibold text-zinc-100">Official Notes:</span> <span id="modal-notes" class="text-zinc-400"></span></div>
+      <div class="text-xs space-y-2.5 text-zinc-300">
+        <div><span class="text-zinc-500 block mb-0.5">Subjects Counted</span><code id="modal-breakdown" class="inline-block bg-raised border border-line px-2 py-1 rounded font-mono text-[11px] text-zinc-200"></code></div>
+        <div class="grid grid-cols-2 gap-3">
+          <div><span class="text-zinc-500 block">Formula &amp; Scale</span><span id="modal-formula" class="font-mono text-zinc-200"></span></div>
+          <div><span class="text-zinc-500 block">Eligibility</span><span id="modal-elig" class="text-zinc-200"></span></div>
+        </div>
+        <div><span class="text-zinc-500 block">Notes</span><span id="modal-notes" class="text-zinc-400"></span></div>
       </div>
-      <div class="pt-3 border-t border-surface-700/70 flex items-center justify-between gap-3">
-        <label class="text-xs font-medium text-zinc-300">Save to Band Slot:</label>
+      <div class="pt-3 border-t border-line flex items-center justify-between gap-3">
+        <label class="text-xs text-zinc-400">Assign to slot</label>
         <div class="flex items-center gap-2">
-          <select id="modal-slot-select" class="rounded-lg bg-surface-850 border border-surface-700 text-zinc-100 px-2.5 py-1.5 text-xs"></select>
-          <button id="modal-save-slot" class="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition">Save</button>
+          <select id="modal-slot-select" class="rounded-md bg-raised border border-line text-zinc-100 px-2.5 py-1.5 text-xs focus:outline-none focus:border-zinc-400"></select>
+          <button id="modal-save-slot" class="px-3 py-1.5 rounded-md bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-semibold transition">Save</button>
         </div>
       </div>
     </div>
@@ -301,11 +281,11 @@
     const GRADE_RANK = { "U": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "5*": 6, "5**": 7 };
 
     const BAND_GROUPS = [
-      { band: "Band A", accent: "from-indigo-500 to-violet-500", badge: "text-indigo-300", slots: ["A1", "A2", "A3"], desc: "Top 3 Priority Choices" },
-      { band: "Band B", accent: "from-sky-500 to-cyan-500", badge: "text-sky-300", slots: ["B4", "B5", "B6"], desc: "Secondary Choices" },
-      { band: "Band C", accent: "from-teal-500 to-emerald-500", badge: "text-teal-300", slots: ["C7", "C8", "C9", "C10"], desc: "Mid-Tier Choices" },
-      { band: "Band D", accent: "from-amber-500 to-orange-500", badge: "text-amber-300", slots: ["D11", "D12", "D13", "D14", "D15"], desc: "Backup Choices" },
-      { band: "Band E", accent: "from-zinc-500 to-zinc-400", badge: "text-zinc-300", slots: ["E16", "E17", "E18", "E19", "E20"], desc: "Safety Net Choices" }
+      { band: "Band A", slots: ["A1", "A2", "A3"], desc: "Priority 1–3" },
+      { band: "Band B", slots: ["B4", "B5", "B6"], desc: "Priority 4–6" },
+      { band: "Band C", slots: ["C7", "C8", "C9", "C10"], desc: "Priority 7–10" },
+      { band: "Band D", slots: ["D11", "D12", "D13", "D14", "D15"], desc: "Priority 11–15" },
+      { band: "Band E", slots: ["E16", "E17", "E18", "E19", "E20"], desc: "Priority 16–20" }
     ];
     const ALL_SLOTS = BAND_GROUPS.flatMap(g => g.slots);
 
@@ -337,8 +317,8 @@
     let LAST_EVAL_MAP = {};
     let ACTIVE_MODAL_CODE = null;
     let DRAGGED_SLOT = null;
-    let SELECTED_INSTS = new Set(); // empty = All
-    let SELECTED_FITS = new Set();  // empty = All
+    let SELECTED_INSTS = new Set();
+    let SELECTED_FITS = new Set();
     const DANGER_TIERS = ["Safe", "Low Risk", "Moderate Danger", "High Danger"];
     const ALL_FILTER_FITS = ["Safe", "Low Risk", "Moderate Danger", "High Danger", "No Data", "Critical (Ineligible)"];
 
@@ -382,20 +362,20 @@
       return `<div class="grid grid-cols-8 gap-1 mt-1.5">` + GRADES.map(g => {
         const active = g === selectedGrade;
         const cls = active
-          ? "bg-indigo-600 text-white border-indigo-500 font-bold shadow-sm shadow-indigo-600/30"
-          : "bg-surface-900/90 text-zinc-400 border-surface-700/80 hover:bg-surface-800 hover:text-zinc-200";
-        return `<button type="button" ${attrName}="${attrVal}" data-grade="${g}" class="grade-pill py-1 rounded-md border text-[11px] font-mono text-center transition ${cls}">${g}</button>`;
+          ? "bg-zinc-100 text-zinc-950 border-zinc-100 font-semibold"
+          : "bg-canvas text-zinc-400 border-line hover:bg-hover hover:text-zinc-200";
+        return `<button type="button" ${attrName}="${attrVal}" data-grade="${g}" class="grade-pill py-1 rounded border text-[11px] font-mono text-center transition ${cls}">${g}</button>`;
       }).join("") + `</div>`;
     }
 
     function renderSidebarInputs() {
       const coreContainer = document.getElementById("core-inputs");
-      const coreLabels = { ENG: "English Language", CHI: "Chinese Language", MATH: "Mathematics (Comp.)" };
+      const coreLabels = { ENG: "English Language", CHI: "Chinese Language", MATH: "Mathematics" };
       coreContainer.innerHTML = ["ENG", "CHI", "MATH"].map(code => `
-        <div class="bg-surface-850/90 border border-surface-700/70 rounded-xl p-2.5">
+        <div class="bg-raised border border-line rounded-md p-2.5">
           <div class="flex justify-between items-center">
-            <span class="text-xs font-medium text-zinc-200">${coreLabels[code]}</span>
-            <span class="text-xs font-mono font-bold text-indigo-400">${STATE.core[code]}</span>
+            <span class="text-xs text-zinc-200">${coreLabels[code]}</span>
+            <span class="text-xs font-mono font-semibold text-zinc-100">${STATE.core[code]}</span>
           </div>
           ${gradePillBarHTML(STATE.core[code], "data-core", code)}
         </div>
@@ -412,15 +392,15 @@
 
       document.querySelectorAll(".csd-btn").forEach(btn => {
         const active = btn.dataset.csd === STATE.csd;
-        btn.className = `csd-btn px-2.5 py-1 rounded-md text-xs font-medium transition ${
-          active ? "bg-indigo-600 text-white shadow-sm" : "text-zinc-400 hover:text-zinc-200"
+        btn.className = `csd-btn px-2 py-0.5 rounded text-[11px] font-medium transition ${
+          active ? "bg-zinc-100 text-zinc-950" : "text-zinc-400 hover:text-zinc-200"
         }`;
       });
 
       document.querySelectorAll(".mext-btn").forEach(btn => {
         const active = btn.dataset.mext === STATE.mextMod;
-        btn.className = `mext-btn px-2 py-0.5 rounded-md text-xs font-medium transition ${
-          active ? "bg-indigo-600 text-white shadow-sm" : "text-zinc-400 hover:text-zinc-200"
+        btn.className = `mext-btn px-2 py-0.5 rounded text-[11px] font-medium transition ${
+          active ? "bg-zinc-100 text-zinc-950" : "text-zinc-400 hover:text-zinc-200"
         }`;
       });
 
@@ -431,8 +411,8 @@
         mextWrap.classList.remove("hidden");
         mextWrap.innerHTML = `
           <div class="flex justify-between items-center">
-            <span class="text-xs font-medium text-zinc-200">Math Extended (${STATE.mextMod})</span>
-            <span class="text-xs font-mono font-bold text-indigo-400">${STATE.mextGrade}</span>
+            <span class="text-xs text-zinc-200">Math Extended (${STATE.mextMod})</span>
+            <span class="text-xs font-mono font-semibold text-zinc-100">${STATE.mextGrade}</span>
           </div>
           ${gradePillBarHTML(STATE.mextGrade, "data-mext-grade", STATE.mextMod)}
         `;
@@ -446,21 +426,21 @@
         });
       }
 
-      document.getElementById("elec-count").textContent = `${STATE.electives.length} / 4`;
+      document.getElementById("elec-count").textContent = `${STATE.electives.length}/4`;
       const selContainer = document.getElementById("selected-electives");
       if (STATE.electives.length === 0) {
-        selContainer.innerHTML = `<div class="text-xs text-zinc-500 text-center py-3 bg-surface-850/50 rounded-xl border border-dashed border-surface-700">Search above to add up to 4 electives</div>`;
+        selContainer.innerHTML = `<div class="text-xs text-zinc-500 text-center py-3 bg-raised/40 rounded-md border border-dashed border-line">No electives added</div>`;
       } else {
         selContainer.innerHTML = STATE.electives.map((el, idx) => {
           const sName = DB.subjects[el.code]?.subject_name || el.code;
           return `
-            <div class="bg-surface-850/90 border border-surface-700/70 rounded-xl p-2.5">
+            <div class="bg-raised border border-line rounded-md p-2.5">
               <div class="flex justify-between items-center gap-2">
                 <div class="truncate">
-                  <span class="text-xs font-mono font-semibold text-indigo-300">${el.code}</span>
-                  <span class="text-xs text-zinc-300 ml-1">${sName}</span>
+                  <span class="text-xs font-mono font-medium text-zinc-100">${el.code}</span>
+                  <span class="text-xs text-zinc-400 ml-1">${sName}</span>
                 </div>
-                <button type="button" data-remove-elec="${idx}" class="text-zinc-500 hover:text-rose-400 text-sm font-bold px-1 transition" title="Remove">&times;</button>
+                <button type="button" data-remove-elec="${idx}" class="text-zinc-500 hover:text-zinc-200 text-sm px-1 transition" title="Remove">&times;</button>
               </div>
               ${gradePillBarHTML(el.grade, "data-elec-idx", idx)}
             </div>
@@ -498,14 +478,14 @@
           .filter(s => !q || s.subject_code.toLowerCase().includes(q) || s.subject_name.toLowerCase().includes(q));
 
         if (STATE.electives.length >= 4) {
-          dropdown.innerHTML = `<div class="px-3 py-2 text-xs text-amber-400">Maximum 4 electives reached. Remove one to add another.</div>`;
+          dropdown.innerHTML = `<div class="px-3 py-2 text-xs text-zinc-400">Maximum 4 electives reached.</div>`;
         } else if (matches.length === 0) {
-          dropdown.innerHTML = `<div class="px-3 py-2 text-xs text-zinc-500">No matching electives found.</div>`;
+          dropdown.innerHTML = `<div class="px-3 py-2 text-xs text-zinc-500">No matching electives.</div>`;
         } else {
           dropdown.innerHTML = matches.map(s => `
-            <button type="button" data-add-elec="${s.subject_code}" class="w-full text-left px-3 py-2 text-xs hover:bg-surface-700 flex items-center justify-between transition">
-              <span><strong class="font-mono text-indigo-300">${s.subject_code}</strong> <span class="text-zinc-200 ml-1">${s.subject_name}</span></span>
-              <span class="text-[11px] text-emerald-400 font-semibold">+ Add</span>
+            <button type="button" data-add-elec="${s.subject_code}" class="w-full text-left px-3 py-2 text-xs hover:bg-hover flex items-center justify-between transition">
+              <span><strong class="font-mono text-zinc-100">${s.subject_code}</strong> <span class="text-zinc-400 ml-1">${s.subject_name}</span></span>
+              <span class="text-[11px] text-zinc-400">+ Add</span>
             </button>
           `).join("");
           dropdown.querySelectorAll("[data-add-elec]").forEach(btn => {
@@ -567,7 +547,6 @@
       if (GRADE_RANK[userGrades.CHI] < GRADE_RANK[reqChi]) issues.push(`CHI < ${reqChi}`);
       if (GRADE_RANK[userGrades.MATH] < GRADE_RANK[reqMath]) issues.push(`MATH < ${reqMath}`);
 
-      // General 2-elective minimum level check (332A33 for HKU/CUHK/HKUST/PolyU/CityU; 332A22 for HKBU/LU/EdUHK)
       const minElecLvl = ["HKBU", "LU", "EDUHK"].includes(prog.institution_id) ? "2" : "3";
       const qualifiedElecs = Object.entries(userGrades).filter(([code, g]) => {
         const cat = DB.subjects[code]?.category;
@@ -585,7 +564,6 @@
         }
       });
 
-      // Compulsory elective group check (e.g. "CHEM:3" or "BIO|CHEM:3" or "CHEM:3;M1|M2:3")
       if (prog.compulsory_electives && prog.compulsory_electives.trim()) {
         const groups = prog.compulsory_electives.trim().split(";").map(g => g.trim()).filter(Boolean);
         groups.forEach(grp => {
@@ -682,19 +660,24 @@
     }
 
     function dangerBadge(level) {
-      const map = {
-        "Safe": "bg-emerald-950/80 text-emerald-300 border-emerald-700/60",
-        "Low Risk": "bg-sky-950/80 text-sky-300 border-sky-700/60",
-        "Moderate Danger": "bg-amber-950/80 text-amber-300 border-amber-700/60",
-        "High Danger": "bg-rose-950/80 text-rose-300 border-rose-700/60",
-        "No Data": "bg-surface-800 text-zinc-400 border-surface-700",
-        "Critical (Ineligible)": "bg-zinc-800 text-zinc-400 border-zinc-700 line-through"
+      const styles = {
+        "Safe": { dot: "bg-emerald-400", text: "text-emerald-300", box: "bg-emerald-950/40 border-emerald-900/70" },
+        "Low Risk": { dot: "bg-sky-400", text: "text-sky-300", box: "bg-sky-950/40 border-sky-900/70" },
+        "Moderate Danger": { dot: "bg-amber-400", text: "text-amber-300", box: "bg-amber-950/40 border-amber-900/70" },
+        "High Danger": { dot: "bg-red-400", text: "text-red-300", box: "bg-red-950/40 border-red-900/70" },
+        "No Data": { dot: "bg-zinc-500", text: "text-zinc-400", box: "bg-raised border-line" },
+        "Critical (Ineligible)": { dot: "bg-zinc-600", text: "text-zinc-500 line-through", box: "bg-raised/60 border-line" }
       };
-      const icons = {
-        "Safe": "🟢", "Low Risk": "🔵", "Moderate Danger": "🟡",
-        "High Danger": "🔴", "No Data": "⚪", "Critical (Ineligible)": "⛔"
+      const labels = {
+        "Safe": "Safe",
+        "Low Risk": "Low Risk",
+        "Moderate Danger": "Moderate",
+        "High Danger": "High Risk",
+        "No Data": "No Data",
+        "Critical (Ineligible)": "Ineligible"
       };
-      return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border whitespace-nowrap ${map[level] || ""}">${icons[level] || ""} ${level}</span>`;
+      const st = styles[level] || styles["No Data"];
+      return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-medium border whitespace-nowrap ${st.box} ${st.text}"><span class="w-1.5 h-1.5 rounded-full ${st.dot}"></span>${labels[level] || level}</span>`;
     }
 
     function getBandAdjustedDanger(baseLevel, slot) {
@@ -704,22 +687,19 @@
       const idx = DANGER_TIERS.indexOf(baseLevel);
       if (idx === -1) return { level: baseLevel, note: "" };
 
-      const band = slot[0]; // 'A', 'B', 'C', 'D', 'E'
+      const band = slot[0];
       let shift = 0;
       let note = "";
 
       if (band === "A") {
         shift = 0;
-        note = slot === "A1" ? "Band A1 priority" : "Band A priority";
       } else if (band === "B") {
-        // Band B: slightly higher risk (many programmes prioritize Band A for interviews)
         shift = 1;
-        note = "Band B (+1 risk tier)";
+        note = "Band B (+1 risk)";
       } else if (band === "C") {
         shift = 2;
-        note = "Band C (+2 risk tiers)";
+        note = "Band C (+2 risk)";
       } else {
-        // Band D & E: very low admission priority unless score is overwhelmingly safe
         shift = 3;
         note = `Band ${band} (low priority)`;
       }
@@ -732,28 +712,23 @@
       const instContainer = document.getElementById("filter-inst-chips");
       const allInsts = Object.values(DB.institutions);
       const instAllActive = SELECTED_INSTS.size === 0;
+      const chipBase = "px-2 py-1 rounded text-xs font-medium border transition";
+      const chipOn = "bg-zinc-100 text-zinc-950 border-zinc-100";
+      const chipOff = "bg-raised text-zinc-400 border-line hover:text-zinc-200 hover:border-line-strong";
+
       instContainer.innerHTML = `
-        <button type="button" data-inst-chip="ALL" class="px-2.5 py-1 rounded-lg text-xs font-medium border transition ${
-          instAllActive ? "bg-indigo-600 text-white border-indigo-500" : "bg-surface-850 text-zinc-400 border-surface-700 hover:text-zinc-200"
-        }">All</button>
+        <button type="button" data-inst-chip="ALL" class="${chipBase} ${instAllActive ? chipOn : chipOff}">All</button>
       ` + allInsts.map(inst => {
         const active = SELECTED_INSTS.has(inst.short_name);
-        return `
-          <button type="button" data-inst-chip="${inst.short_name}" class="px-2.5 py-1 rounded-lg text-xs font-medium border transition ${
-            active ? "bg-indigo-600 text-white border-indigo-500" : "bg-surface-850 text-zinc-400 border-surface-700 hover:text-zinc-200"
-          }">${inst.short_name}</button>
-        `;
+        return `<button type="button" data-inst-chip="${inst.short_name}" class="${chipBase} ${active ? chipOn : chipOff}">${inst.short_name}</button>`;
       }).join("");
 
       instContainer.querySelectorAll("[data-inst-chip]").forEach(btn => {
         btn.addEventListener("click", () => {
           const val = btn.dataset.instChip;
-          if (val === "ALL") {
-            SELECTED_INSTS.clear();
-          } else {
-            if (SELECTED_INSTS.has(val)) SELECTED_INSTS.delete(val);
-            else SELECTED_INSTS.add(val);
-          }
+          if (val === "ALL") SELECTED_INSTS.clear();
+          else if (SELECTED_INSTS.has(val)) SELECTED_INSTS.delete(val);
+          else SELECTED_INSTS.add(val);
           renderFilterChips();
           renderAll();
         });
@@ -761,32 +736,27 @@
 
       const fitContainer = document.getElementById("filter-fit-chips");
       const fitAllActive = SELECTED_FITS.size === 0;
-      const fitIcons = {
-        "Safe": "🟢", "Low Risk": "🔵", "Moderate Danger": "🟡",
-        "High Danger": "🔴", "No Data": "⚪", "Critical (Ineligible)": "⛔"
+      const fitDots = {
+        "Safe": "bg-emerald-400", "Low Risk": "bg-sky-400", "Moderate Danger": "bg-amber-400",
+        "High Danger": "bg-red-400", "No Data": "bg-zinc-500", "Critical (Ineligible)": "bg-zinc-600"
+      };
+      const fitLabels = {
+        "Safe": "Safe", "Low Risk": "Low Risk", "Moderate Danger": "Moderate",
+        "High Danger": "High Risk", "No Data": "No Data", "Critical (Ineligible)": "Ineligible"
       };
       fitContainer.innerHTML = `
-        <button type="button" data-fit-chip="ALL" class="px-2.5 py-1 rounded-lg text-xs font-medium border transition ${
-          fitAllActive ? "bg-indigo-600 text-white border-indigo-500" : "bg-surface-850 text-zinc-400 border-surface-700 hover:text-zinc-200"
-        }">All</button>
+        <button type="button" data-fit-chip="ALL" class="${chipBase} ${fitAllActive ? chipOn : chipOff}">All</button>
       ` + ALL_FILTER_FITS.map(fit => {
         const active = SELECTED_FITS.has(fit);
-        return `
-          <button type="button" data-fit-chip="${fit}" class="px-2.5 py-1 rounded-lg text-xs font-medium border transition ${
-            active ? "bg-indigo-600 text-white border-indigo-500" : "bg-surface-850 text-zinc-400 border-surface-700 hover:text-zinc-200"
-          }">${fitIcons[fit]} ${fit}</button>
-        `;
+        return `<button type="button" data-fit-chip="${fit}" class="${chipBase} inline-flex items-center gap-1.5 ${active ? chipOn : chipOff}"><span class="w-1.5 h-1.5 rounded-full ${fitDots[fit]}"></span>${fitLabels[fit]}</button>`;
       }).join("");
 
       fitContainer.querySelectorAll("[data-fit-chip]").forEach(btn => {
         btn.addEventListener("click", () => {
           const val = btn.dataset.fitChip;
-          if (val === "ALL") {
-            SELECTED_FITS.clear();
-          } else {
-            if (SELECTED_FITS.has(val)) SELECTED_FITS.delete(val);
-            else SELECTED_FITS.add(val);
-          }
+          if (val === "ALL") SELECTED_FITS.clear();
+          else if (SELECTED_FITS.has(val)) SELECTED_FITS.delete(val);
+          else SELECTED_FITS.add(val);
           renderFilterChips();
           renderAll();
         });
@@ -800,27 +770,25 @@
         const r = code ? LAST_EVAL_MAP[code] : null;
         if (!r) {
           return `
-            <div class="rounded-xl bg-surface-850/60 border border-dashed border-surface-700/80 p-3 flex items-center gap-2.5 text-zinc-500">
-              <span class="px-2 py-0.5 rounded-md bg-surface-800 border border-surface-700 text-[11px] font-mono font-bold text-zinc-400">${slot}</span>
-              <span class="text-xs">Empty Band A slot</span>
+            <div class="rounded-md bg-canvas/60 border border-dashed border-line p-2.5 flex items-center gap-2 text-zinc-500">
+              <span class="px-1.5 py-0.5 rounded bg-raised border border-line text-[11px] font-mono text-zinc-400">${slot}</span>
+              <span class="text-xs">Empty</span>
             </div>
           `;
         }
         const adj = getBandAdjustedDanger(r.dangerLevel, slot);
         return `
-          <div data-top3-inspect="${r.jupas_code}" class="cursor-pointer rounded-xl bg-surface-850/95 hover:bg-surface-800 border border-surface-700/80 hover:border-indigo-500/60 p-3 transition flex flex-col justify-between gap-2">
-            <div class="flex items-start justify-between gap-2">
-              <div class="min-w-0">
-                <div class="flex items-center gap-1.5">
-                  <span class="px-1.5 py-0.5 rounded-md bg-indigo-600/25 border border-indigo-500/60 text-[11px] font-mono font-bold text-indigo-300">${slot}</span>
-                  <span class="font-mono text-xs font-bold text-indigo-400">${r.jupas_code}</span>
-                  <span class="text-[11px] text-zinc-400">${r.institution}</span>
-                </div>
-                <div class="text-xs font-semibold text-zinc-100 truncate mt-1" title="${r.programme_name}">${r.programme_name}</div>
+          <div data-top3-inspect="${r.jupas_code}" class="cursor-pointer rounded-md bg-raised hover:bg-hover border border-line hover:border-line-strong p-2.5 transition flex flex-col justify-between gap-2">
+            <div class="min-w-0">
+              <div class="flex items-center gap-1.5">
+                <span class="px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-950 text-[10px] font-mono font-semibold">${slot}</span>
+                <span class="font-mono text-xs font-medium text-zinc-200">${r.jupas_code}</span>
+                <span class="text-[11px] text-zinc-500">${r.institution}</span>
               </div>
+              <div class="text-xs font-medium text-zinc-100 truncate mt-1" title="${r.programme_name}">${r.programme_name}</div>
             </div>
-            <div class="flex items-center justify-between gap-2 pt-1 border-t border-surface-700/50">
-              <span class="text-[11px] font-mono text-zinc-400">Score <strong class="text-zinc-100">${r.userScore.toFixed(1)}</strong> / Med ${r.med !== null ? r.med.toFixed(1) : "—"}</span>
+            <div class="flex items-center justify-between gap-2 pt-1.5 border-t border-line">
+              <span class="text-[11px] font-mono tabular text-zinc-400">${r.userScore.toFixed(1)} <span class="text-zinc-600">/</span> ${r.med !== null ? r.med.toFixed(1) : "—"}</span>
               ${dangerBadge(adj.level)}
             </div>
           </div>
@@ -856,7 +824,6 @@
         renderAll();
         return;
       }
-      // Find the next slot after the last occupied slot; fallback to first empty slot
       let lastOccupiedIdx = -1;
       ALL_SLOTS.forEach((s, idx) => {
         if (STATE.choices[s]) lastOccupiedIdx = idx;
@@ -899,19 +866,21 @@
       const r = LAST_EVAL_MAP[code];
       if (!r) return;
       ACTIVE_MODAL_CODE = code;
-      document.getElementById("modal-code").textContent = `${r.jupas_code} • ${r.institution} (${r.faculty})`;
+      const curSlot = getAssignedSlot(code);
+      const adj = getBandAdjustedDanger(r.dangerLevel, curSlot);
+
+      document.getElementById("modal-code").textContent = `${r.jupas_code} · ${r.institution} · ${r.faculty}`;
       document.getElementById("modal-title").textContent = r.programme_name;
       document.getElementById("modal-score").textContent = r.userScore.toFixed(2);
-      document.getElementById("modal-med").textContent = r.med !== null ? r.med.toFixed(1) : "N/A";
-      document.getElementById("modal-fit").innerHTML = dangerBadge(r.dangerLevel);
+      document.getElementById("modal-med").textContent = r.med !== null ? r.med.toFixed(1) : "—";
+      document.getElementById("modal-fit").innerHTML = dangerBadge(adj.level);
       document.getElementById("modal-breakdown").textContent = r.breakdown;
       document.getElementById("modal-formula").textContent = `${r.formula_type} (${r.scaleId})`;
       document.getElementById("modal-elig").textContent = r.eligNotes;
       document.getElementById("modal-notes").textContent = r.scoringNotes || "—";
 
-      const curSlot = getAssignedSlot(code);
       const sel = document.getElementById("modal-slot-select");
-      sel.innerHTML = `<option value="">-- Remove / Unassigned --</option>` +
+      sel.innerHTML = `<option value="">Unassigned</option>` +
         ALL_SLOTS.map(s => {
           const occ = STATE.choices[s];
           const label = occ && occ !== code ? `${s} (replaces ${occ})` : s;
@@ -941,29 +910,30 @@
             .slice(0, 18);
 
           if (matches.length === 0) {
-            dropdown.innerHTML = `<div class="px-3 py-2.5 text-xs text-zinc-500">No matching programmes found.</div>`;
+            dropdown.innerHTML = `<div class="px-3 py-2 text-xs text-zinc-500">No matching programmes.</div>`;
           } else {
             dropdown.innerHTML = matches.map(r => {
               const existingSlot = getAssignedSlot(r.jupas_code);
-              const tag = existingSlot ? `<span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-700/60 ml-1">${existingSlot}</span>` : "";
+              const tag = existingSlot ? `<span class="text-[10px] font-mono px-1 py-0.5 rounded bg-raised text-zinc-300 border border-line ml-1">${existingSlot}</span>` : "";
+              const adj = getBandAdjustedDanger(r.dangerLevel, slot);
               return `
-                <button type="button" data-pick-code="${r.jupas_code}" class="w-full text-left px-3 py-2 text-xs hover:bg-surface-700 flex items-center justify-between gap-2 transition">
+                <button type="button" data-pick-code="${r.jupas_code}" class="w-full text-left px-3 py-2 text-xs hover:bg-hover flex items-center justify-between gap-2 transition">
                   <div class="min-w-0 flex-1">
                     <div class="flex items-center gap-1.5">
-                      <span class="font-mono font-bold text-indigo-400">${r.jupas_code}</span>
-                      <span class="text-zinc-400">${r.institution}</span>
+                      <span class="font-mono font-medium text-zinc-100">${r.jupas_code}</span>
+                      <span class="text-zinc-500">${r.institution}</span>
                       ${tag}
                     </div>
-                    <div class="text-zinc-200 truncate mt-0.5">${r.programme_name}</div>
+                    <div class="text-zinc-300 truncate mt-0.5">${r.programme_name}</div>
                   </div>
-                  <div class="shrink-0">${dangerBadge(r.dangerLevel)}</div>
+                  <div class="shrink-0">${dangerBadge(adj.level)}</div>
                 </button>
               `;
             }).join("");
 
             dropdown.querySelectorAll("[data-pick-code]").forEach(btn => {
               btn.addEventListener("mousedown", (e) => {
-                e.preventDefault(); // prevent blur before click
+                e.preventDefault();
                 assignProgrammeToSlot(btn.dataset.pickCode, slot);
               });
             });
@@ -982,7 +952,6 @@
     function setupSlotDragAndDrop(container) {
       const rows = container.querySelectorAll(".slot-row");
 
-      // Desktop HTML5 Drag & Drop
       rows.forEach(row => {
         row.addEventListener("dragstart", (e) => {
           DRAGGED_SLOT = row.dataset.slot;
@@ -1015,12 +984,11 @@
         });
       });
 
-      // Touch Drag & Drop for iPad / Mobile via drag handle
       container.querySelectorAll(".drag-handle").forEach(handle => {
         let touchFromSlot = null;
         let lastOverRow = null;
 
-        handle.addEventListener("touchstart", (e) => {
+        handle.addEventListener("touchstart", () => {
           const row = handle.closest(".slot-row");
           if (!row) return;
           touchFromSlot = row.dataset.slot;
@@ -1033,9 +1001,7 @@
           const touch = e.touches[0];
           const el = document.elementFromPoint(touch.clientX, touch.clientY);
           const overRow = el ? el.closest(".slot-row") : null;
-          if (lastOverRow && lastOverRow !== overRow) {
-            lastOverRow.classList.remove("drag-over");
-          }
+          if (lastOverRow && lastOverRow !== overRow) lastOverRow.classList.remove("drag-over");
           if (overRow && overRow.dataset.slot !== touchFromSlot) {
             overRow.classList.add("drag-over");
             lastOverRow = overRow;
@@ -1065,52 +1031,49 @@
       document.getElementById("kpi-saved").textContent = `${savedCount} / 20`;
       document.getElementById("tab-choices-badge").textContent = savedCount;
 
-      // Band A Risk Summary
       const bandACodes = ["A1", "A2", "A3"].map(s => STATE.choices[s]).filter(Boolean);
       const bandAEvals = bandACodes.map(c => LAST_EVAL_MAP[c]).filter(Boolean);
       const summaryEl = document.getElementById("band-a-summary");
       if (bandAEvals.length === 0) {
-        summaryEl.innerHTML = `💡 <strong>Band A Strategy:</strong> Search and add your top 3 choices (A1, A2, A3) below to see a real-time danger assessment.`;
+        summaryEl.innerHTML = `<span class="text-zinc-400">Assign choices to A1–A3 to see a Band A risk summary.</span>`;
       } else {
         const safeCount = bandAEvals.filter(e => e.dangerLevel === "Safe" || e.dangerLevel === "Low Risk").length;
         const highDangerCount = bandAEvals.filter(e => e.dangerLevel === "High Danger" || e.dangerLevel === "Critical (Ineligible)").length;
         if (highDangerCount === bandAEvals.length) {
-          summaryEl.innerHTML = `🔴 <strong>High-Risk Band A Warning:</strong> All ${bandAEvals.length} of your Band A choices are High Danger or Ineligible. Consider placing at least one Safe/Low Risk programme in A3.`;
+          summaryEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-red-400 mr-2"></span><strong class="text-zinc-100">High-Risk Band A:</strong> All ${bandAEvals.length} choices in Band A are High Risk or Ineligible. Consider placing a Safe or Low Risk anchor in A3.`;
         } else if (safeCount >= 1) {
-          summaryEl.innerHTML = `🟢 <strong>Balanced Band A:</strong> You have ${safeCount} Safe/Low Risk anchor(s) in Band A (${bandAEvals.length}/3 filled).`;
+          summaryEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-emerald-400 mr-2"></span><strong class="text-zinc-100">Balanced Band A:</strong> ${safeCount} Safe/Low Risk anchor(s) in Band A (${bandAEvals.length}/3 filled).`;
         } else {
-          summaryEl.innerHTML = `🟡 <strong>Moderate-Risk Band A:</strong> Your Band A choices are mostly Moderate Danger. Make sure your Band B choices include a Safe backup.`;
+          summaryEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-amber-400 mr-2"></span><strong class="text-zinc-100">Moderate Band A:</strong> Band A choices are mostly borderline. Ensure Band B includes a Safe fallback.`;
         }
       }
 
       const container = document.getElementById("choices-bands-container");
       container.innerHTML = BAND_GROUPS.map(group => `
-        <div class="glass-card rounded-2xl border border-surface-700/70 overflow-visible shadow-lg shadow-black/20">
-          <div class="relative px-4 py-2.5 border-b border-surface-700/70 flex items-center justify-between bg-surface-850/80 rounded-t-2xl overflow-hidden">
-            <div class="absolute inset-y-0 left-0 w-1 bg-gradient-to-b ${group.accent}"></div>
-            <span class="text-xs font-extrabold uppercase tracking-wider pl-2 ${group.badge}">${group.band}</span>
-            <span class="text-[11px] text-zinc-400">${group.desc}</span>
+        <div class="bg-panel rounded-lg border border-line overflow-visible">
+          <div class="px-3.5 py-2 border-b border-line flex items-center justify-between bg-raised/50 rounded-t-lg">
+            <span class="text-xs font-semibold text-zinc-200">${group.band}</span>
+            <span class="text-[11px] text-zinc-500">${group.desc}</span>
           </div>
-          <div class="divide-y divide-surface-700/40">
+          <div class="divide-y divide-line/60">
             ${group.slots.map(slot => {
               const code = STATE.choices[slot] || "";
               const r = code ? LAST_EVAL_MAP[code] : null;
               const slotIdx = ALL_SLOTS.indexOf(slot);
               return `
-                <div class="slot-row p-3 flex flex-col md:flex-row md:items-center justify-between gap-2.5 hover:bg-surface-850/60 transition" data-slot="${slot}" draggable="${r ? "true" : "false"}">
+                <div class="slot-row px-3 py-2.5 flex flex-col md:flex-row md:items-center justify-between gap-2 hover:bg-hover/40 transition" data-slot="${slot}" draggable="${r ? "true" : "false"}">
                   <div class="flex items-center gap-2.5 flex-1 min-w-0">
-                    ${r ? `<span class="drag-handle text-zinc-500 hover:text-zinc-200 px-1 py-1 text-sm select-none" title="Drag to reorder">⋮⋮</span>` : `<span class="w-5 shrink-0"></span>`}
-                    <span class="w-9 text-center py-1 rounded-lg bg-surface-800 border border-surface-700 text-xs font-mono font-bold text-zinc-200 shrink-0">${slot}</span>
+                    ${r ? `<span class="drag-handle text-zinc-600 hover:text-zinc-300 px-0.5 text-sm select-none" title="Drag to reorder">⋮⋮</span>` : `<span class="w-4 shrink-0"></span>`}
+                    <span class="w-8 text-center py-0.5 rounded bg-raised border border-line text-[11px] font-mono font-medium text-zinc-300 shrink-0">${slot}</span>
                     ${r ? `
                       <div class="min-w-0 flex-1 cursor-pointer" data-inspect="${r.jupas_code}">
                         <div class="flex items-center gap-2">
-                          <span class="font-mono text-xs font-bold text-indigo-400">${r.jupas_code}</span>
-                          <span class="text-xs font-medium text-zinc-400">${r.institution}</span>
-                          <span class="text-sm font-medium text-zinc-100 truncate">${r.programme_name}</span>
+                          <span class="font-mono text-xs font-medium text-zinc-100">${r.jupas_code}</span>
+                          <span class="text-xs text-zinc-500">${r.institution}</span>
+                          <span class="text-sm text-zinc-200 truncate">${r.programme_name}</span>
                         </div>
-                        <div class="text-[11px] text-zinc-400 mt-0.5 font-mono">
-                          Score: <strong class="text-zinc-200">${r.userScore.toFixed(2)}</strong>
-                          • 2026 LQ/Med/UQ: ${r.lq !== null ? r.lq.toFixed(1) : "—"} / ${r.med !== null ? r.med.toFixed(1) : "—"} / ${r.uq !== null ? r.uq.toFixed(1) : "—"}
+                        <div class="text-[11px] text-zinc-500 mt-0.5 font-mono tabular">
+                          Score <span class="text-zinc-300">${r.userScore.toFixed(2)}</span> · LQ ${r.lq !== null ? r.lq.toFixed(1) : "—"} · Med ${r.med !== null ? r.med.toFixed(1) : "—"} · UQ ${r.uq !== null ? r.uq.toFixed(1) : "—"}
                         </div>
                       </div>
                     ` : `
@@ -1119,26 +1082,26 @@
                           type="text"
                           autocomplete="off"
                           data-slot="${slot}"
-                          placeholder="🔍 Search code, univ, or programme for ${slot}..."
-                          class="slot-search-input w-full rounded-xl bg-surface-850/90 border border-surface-700/80 text-zinc-100 placeholder-zinc-500 px-3 py-1.5 text-xs focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40 transition"
+                          placeholder="Search code or programme for ${slot}..."
+                          class="slot-search-input w-full rounded-md bg-raised border border-line text-zinc-100 placeholder-zinc-500 px-2.5 py-1 text-xs focus:outline-none focus:border-zinc-400 transition"
                         />
-                        <div data-slot="${slot}" class="slot-search-dropdown hidden absolute left-0 right-0 mt-1 max-h-60 overflow-y-auto bg-surface-800 border border-surface-700 rounded-xl shadow-2xl z-40 divide-y divide-surface-700/60"></div>
+                        <div data-slot="${slot}" class="slot-search-dropdown hidden absolute left-0 right-0 mt-1 max-h-60 overflow-y-auto bg-panel border border-line-strong rounded-md shadow-xl z-40 divide-y divide-line"></div>
                       </div>
                     `}
                   </div>
                   ${r ? (() => {
                     const adj = getBandAdjustedDanger(r.dangerLevel, slot);
                     return `
-                    <div class="flex items-center gap-1.5 shrink-0 pl-12 md:pl-0">
+                    <div class="flex items-center gap-2 shrink-0 pl-10 md:pl-0">
                       <div class="flex flex-col items-end">
                         ${dangerBadge(adj.level)}
                         ${adj.note ? `<span class="text-[10px] text-zinc-500 mt-0.5">${adj.note}</span>` : ""}
                       </div>
-                      <div class="flex items-center bg-surface-850 border border-surface-700/70 rounded-lg overflow-hidden ml-1">
-                        <button type="button" data-move-up="${slot}" ${slotIdx === 0 ? "disabled" : ""} class="px-1.5 py-1 text-[11px] text-zinc-400 hover:text-zinc-100 hover:bg-surface-700 disabled:opacity-30 transition" title="Move Up">↑</button>
-                        <button type="button" data-move-down="${slot}" ${slotIdx === ALL_SLOTS.length - 1 ? "disabled" : ""} class="px-1.5 py-1 text-[11px] text-zinc-400 hover:text-zinc-100 hover:bg-surface-700 disabled:opacity-30 border-l border-surface-700/70 transition" title="Move Down">↓</button>
+                      <div class="flex items-center bg-raised border border-line rounded overflow-hidden">
+                        <button type="button" data-move-up="${slot}" ${slotIdx === 0 ? "disabled" : ""} class="px-1.5 py-0.5 text-[11px] text-zinc-400 hover:text-zinc-100 hover:bg-hover disabled:opacity-25 transition" title="Move Up">↑</button>
+                        <button type="button" data-move-down="${slot}" ${slotIdx === ALL_SLOTS.length - 1 ? "disabled" : ""} class="px-1.5 py-0.5 text-[11px] text-zinc-400 hover:text-zinc-100 hover:bg-hover disabled:opacity-25 border-l border-line transition" title="Move Down">↓</button>
                       </div>
-                      <button type="button" data-clear-slot="${slot}" class="text-xs text-zinc-500 hover:text-rose-400 px-1.5 py-1 rounded-lg hover:bg-surface-800 transition" title="Remove from ${slot}">✕</button>
+                      <button type="button" data-clear-slot="${slot}" class="text-xs text-zinc-500 hover:text-red-400 px-1.5 py-0.5 rounded hover:bg-raised transition" title="Remove">&times;</button>
                     </div>`;
                   })() : ""}
                 </div>
@@ -1199,26 +1162,25 @@
       tbody.innerHTML = filtered.map(r => {
         const curSlot = getAssignedSlot(r.jupas_code);
         return `
-          <tr class="hover:bg-surface-850/80 transition" data-row-code="${r.jupas_code}">
+          <tr class="hover:bg-hover/50 transition" data-row-code="${r.jupas_code}">
             <td class="py-2.5 px-3" onclick="event.stopPropagation()">
               <button type="button" data-toggle-choice="${r.jupas_code}" title="${curSlot ? `Remove from ${curSlot}` : 'Append to end of choices'}"
-                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-mono font-semibold transition whitespace-nowrap ${
+                class="inline-flex items-center justify-center min-w-[52px] px-2 py-0.5 rounded border text-xs font-mono font-medium transition ${
                   curSlot
-                    ? "bg-indigo-600/25 border-indigo-500 text-indigo-300 hover:bg-rose-950/60 hover:border-rose-600/70 hover:text-rose-300"
-                    : "bg-surface-850 border-surface-700 text-zinc-400 hover:border-indigo-500 hover:text-indigo-300 hover:bg-surface-800"
+                    ? "bg-zinc-100 border-zinc-100 text-zinc-950 hover:bg-zinc-300"
+                    : "bg-raised border-line text-zinc-400 hover:border-line-strong hover:text-zinc-200"
                 }">
-                <span>${curSlot ? "☑" : "☐"}</span>
-                <span>${curSlot ? curSlot : "Add"}</span>
+                ${curSlot ? curSlot : "+ Add"}
               </button>
             </td>
-            <td class="py-2.5 px-3 font-mono font-semibold text-indigo-400 cursor-pointer">${r.jupas_code}</td>
-            <td class="py-2.5 px-2.5 font-medium text-zinc-300 cursor-pointer">${r.institution}</td>
+            <td class="py-2.5 px-3 font-mono text-xs font-medium text-zinc-100 cursor-pointer">${r.jupas_code}</td>
+            <td class="py-2.5 px-2.5 text-xs text-zinc-400 cursor-pointer">${r.institution}</td>
             <td class="py-2.5 px-3 text-zinc-200 cursor-pointer">${r.programme_name}</td>
-            <td class="py-2.5 px-2.5 text-right font-mono font-bold text-zinc-100 cursor-pointer">${r.userScore.toFixed(2)}</td>
-            <td class="py-2.5 px-2.5 text-right font-mono text-zinc-400 cursor-pointer">${r.lq !== null ? r.lq.toFixed(1) : "—"}</td>
-            <td class="py-2.5 px-2.5 text-right font-mono text-zinc-300 cursor-pointer">${r.med !== null ? r.med.toFixed(1) : "—"}</td>
-            <td class="py-2.5 px-2.5 text-right font-mono text-zinc-400 cursor-pointer">${r.uq !== null ? r.uq.toFixed(1) : "—"}</td>
-            <td class="py-2.5 px-2.5 text-right font-mono font-semibold cursor-pointer ${r.deltaMed === null ? "text-zinc-500" : r.deltaMed >= 0 ? "text-emerald-400" : "text-rose-400"}">
+            <td class="py-2.5 px-2.5 text-right font-mono tabular font-semibold text-zinc-100 cursor-pointer">${r.userScore.toFixed(2)}</td>
+            <td class="py-2.5 px-2.5 text-right font-mono tabular text-xs text-zinc-500 cursor-pointer">${r.lq !== null ? r.lq.toFixed(1) : "—"}</td>
+            <td class="py-2.5 px-2.5 text-right font-mono tabular text-xs text-zinc-300 cursor-pointer">${r.med !== null ? r.med.toFixed(1) : "—"}</td>
+            <td class="py-2.5 px-2.5 text-right font-mono tabular text-xs text-zinc-500 cursor-pointer">${r.uq !== null ? r.uq.toFixed(1) : "—"}</td>
+            <td class="py-2.5 px-2.5 text-right font-mono tabular text-xs font-medium cursor-pointer ${r.deltaMed === null ? "text-zinc-600" : r.deltaMed >= 0 ? "text-emerald-400" : "text-red-400"}">
               ${r.deltaMed !== null ? (r.deltaMed >= 0 ? "+" : "") + r.deltaMed.toFixed(2) : "—"}
             </td>
             <td class="py-2.5 px-3 cursor-pointer">${(() => {
@@ -1291,14 +1253,14 @@
       tabExp.addEventListener("click", () => {
         viewExp.classList.remove("hidden");
         viewCho.classList.add("hidden");
-        tabExp.className = "tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-indigo-600 text-white shadow-md shadow-indigo-600/20";
-        tabCho.className = "tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition text-zinc-400 hover:text-zinc-200 hover:bg-surface-850";
+        tabExp.className = "pb-2.5 text-sm font-medium border-b-2 border-zinc-100 text-zinc-100 transition";
+        tabCho.className = "pb-2.5 text-sm font-medium border-b-2 border-transparent text-zinc-500 hover:text-zinc-200 transition inline-flex items-center gap-1.5";
       });
       tabCho.addEventListener("click", () => {
         viewCho.classList.remove("hidden");
         viewExp.classList.add("hidden");
-        tabCho.className = "tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-indigo-600 text-white shadow-md shadow-indigo-600/20";
-        tabExp.className = "tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition text-zinc-400 hover:text-zinc-200 hover:bg-surface-850";
+        tabCho.className = "pb-2.5 text-sm font-medium border-b-2 border-zinc-100 text-zinc-100 transition inline-flex items-center gap-1.5";
+        tabExp.className = "pb-2.5 text-sm font-medium border-b-2 border-transparent text-zinc-500 hover:text-zinc-200 transition";
       });
 
       document.getElementById("clear-choices-btn").addEventListener("click", () => {
@@ -1369,14 +1331,13 @@
 
         renderFilterChips();
 
-        document.getElementById("db-status").innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span><span>${progs.length} programmes loaded</span>`;
+        document.getElementById("db-status").innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span><span>${progs.length} programmes</span>`;
         wireGlobalEvents();
         setupElectiveSearch();
         renderSidebarInputs();
         renderAll();
       } catch (err) {
-        document.getElementById("db-status").textContent = "Error loading CSVs (use GitHub Pages / HTTP server)";
-        document.getElementById("db-status").className = "text-xs bg-rose-950 border border-rose-800 px-3 py-1.5 rounded-full text-rose-300 font-medium";
+        document.getElementById("db-status").innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-red-400"></span><span class="text-red-400">Failed to load CSVs</span>`;
         console.error(err);
       }
     }
