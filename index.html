@@ -349,10 +349,18 @@
               <div id="filter-inst-chips" class="flex flex-wrap gap-1"></div>
             </div>
             <div class="flex items-center gap-2 flex-wrap">
-              <span class="text-[11px] font-medium text-zinc-500 w-14 shrink-0">Risk</span>
+              <span class="text-[11px] font-medium text-zinc-500 w-14 shrink-0" title="Directional risk tier relative to 2026 LQ / Med / UQ and slot position (historical reference only, not admission odds)">Risk</span>
               <div id="filter-fit-chips" class="flex flex-wrap gap-1"></div>
             </div>
           </div>
+        </div>
+
+        <!-- Directional Comparison Reference Notice -->
+        <div class="bg-panel/80 px-3.5 py-2.5 rounded-lg border border-line flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-[11px] text-zinc-400">
+          <div>
+            <strong class="text-zinc-200">Directional Reference Only:</strong> <span class="text-zinc-300">Diff</span> and <span class="text-zinc-300">Risk</span> reflect your point gap against 2026 LQ / Median / UQ benchmarks and A1–E20 slot placement—historical positioning only, <strong class="text-zinc-200">not admission odds</strong>.
+          </div>
+          <span class="text-zinc-500 shrink-0">≥ UQ: Safe · ≥ Med: Low Risk · ≥ LQ: Risky · &lt; LQ: High Risk</span>
         </div>
 
         <!-- Mobile Card View (< 768px) -->
@@ -374,8 +382,8 @@
                   <th class="py-2.5 px-2.5 text-right">LQ</th>
                   <th class="py-2.5 px-2.5 text-right">Med</th>
                   <th class="py-2.5 px-2.5 text-right">UQ</th>
-                  <th class="py-2.5 px-2.5 text-right">Diff</th>
-                  <th class="py-2.5 px-3">Status</th>
+                  <th class="py-2.5 px-2.5 text-right" title="Directional point gap vs. 2026 Median (historical reference only, not admission odds)">Diff (vs 26 Med)</th>
+                  <th class="py-2.5 px-3" title="Directional benchmark &amp; slot-adjusted risk tier (historical reference only, not admission odds)">Risk</th>
                 </tr>
               </thead>
               <tbody id="results-tbody" class="divide-y divide-line/60"></tbody>
@@ -472,7 +480,7 @@
         </a>
       </div>
       <p class="text-[11px] text-zinc-500 leading-relaxed">
-        <strong class="text-zinc-300">Disclaimer — Estimates Only:</strong> All calculated admission scores, cut-off comparisons (LQ / Median / UQ), and band risk indicators are unofficial estimates based on historical 2026 JUPAS admission figures and published 2027 scoring formulas. Actual 2027 admission outcomes depend on annual applicant pool competitiveness, interview performance, and institutional discretion. Always verify official JUPAS and university brochures before locking in your choices on <strong class="text-zinc-300">December 2, 2026</strong> (a <strong class="text-zinc-300">HK$100</strong> amendment fee applies afterward).
+        <strong class="text-zinc-300">Disclaimer — Directional Historical Reference Only (Not Admission Odds):</strong> All calculated scores, Diff values, and risk tiers (Safe / Low Risk / Risky / High Risk / Ineligible) are directional comparisons against historical 2026 JUPAS LQ / Median / UQ figures, slot placement, and 2027 formulas—they do not represent admission probabilities or guaranteed offers. Actual 2027 admission outcomes depend on annual applicant pool competitiveness, interview performance, and institutional discretion. Always verify official JUPAS and university brochures before locking in your choices on <strong class="text-zinc-300">December 2, 2026</strong> (a <strong class="text-zinc-300">HK$100</strong> amendment fee applies afterward).
       </p>
       <div class="pt-1 flex items-center justify-between text-[11px] text-zinc-500">
         <span>Made by <a href="https://www.instagram.com/aidan.choi_/" target="_blank" rel="noopener noreferrer" class="text-zinc-200 hover:text-white underline decoration-zinc-600 underline-offset-4 hover:decoration-zinc-200 font-medium transition">@aidan.choi_</a></span>
@@ -1135,41 +1143,142 @@
       const labels = {
         "Safe": "Safe",
         "Low Risk": "Low Risk",
-        "Moderate Danger": "Moderate",
+        "Moderate Danger": "Risky",
         "High Danger": "High Risk",
         "No Data": "No Data",
         "Critical (Ineligible)": "Ineligible"
       };
+      const tips = {
+        "Safe": "Directional benchmark: At or above 2026 Upper Quartile (historical reference only, not admission odds)",
+        "Low Risk": "Directional benchmark: At or above 2026 Median (historical reference only, not admission odds)",
+        "Moderate Danger": "Directional benchmark: Between 2026 Median and Lower Quartile (historical reference only, not admission odds)",
+        "High Danger": "Directional benchmark: Below 2026 Lower Quartile (historical reference only, not admission odds)",
+        "No Data": "No 2026 historical benchmark data available",
+        "Critical (Ineligible)": "Does not meet minimum subject or level requirements"
+      };
       const st = styles[level] || styles["No Data"];
-      return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-medium border whitespace-nowrap ${st.box} ${st.text}"><span class="w-1.5 h-1.5 rounded-full ${st.dot}"></span>${labels[level] || level}</span>`;
+      const tip = tips[level] || "";
+      return `<span title="${tip}" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-medium border whitespace-nowrap ${st.box} ${st.text}"><span class="w-1.5 h-1.5 rounded-full ${st.dot}"></span>${labels[level] || level}</span>`;
     }
 
-    function getBandAdjustedDanger(baseLevel, slot) {
+    function evaluateSlotPlacement(progOrLevel, slot) {
+      const r = (progOrLevel && typeof progOrLevel === "object") ? progOrLevel : { dangerLevel: progOrLevel };
+      const baseLevel = r.dangerLevel || "No Data";
       if (!slot || baseLevel === "Critical (Ineligible)" || baseLevel === "No Data") {
-        return { level: baseLevel, note: "" };
+        return { level: baseLevel, note: "", tooltip: "" };
       }
       const idx = DANGER_TIERS.indexOf(baseLevel);
-      if (idx === -1) return { level: baseLevel, note: "" };
+      if (idx === -1) return { level: baseLevel, note: "", tooltip: "" };
 
       const band = slot[0];
-      let shift = 0;
-      let note = "";
+      const slotIdx = ALL_SLOTS.indexOf(slot); // 0..19
+      const quota = parseQuotaNumber(r.intake_2026);
+      const iv = (r.interview_req || "").toLowerCase();
+      const isCompBandA = iv.includes("compulsory") && iv.includes("band a");
+      const isCompAny = iv.startsWith("compulsory");
+      const isSelective = iv.startsWith("selective");
+      const isSmallQuota = quota !== null && quota <= 45;
+      const isLargeCohort = quota !== null && quota >= 140;
+
+      // 1. Base directional penalty by exact position (A1..E20) + programme Band-A sensitivity
+      let rawShift = 0;
+      const reasons = [];
 
       if (band === "A") {
-        shift = 0;
+        // Within Band A (A1, A2, A3), order still matters if an earlier Band A slot already has a stronger/equal anchor
+        if (slot === "A2" || slot === "A3") {
+          const earlierBandA = ["A1", "A2"].slice(0, slotIdx)
+            .map(s => STATE.choices[s])
+            .filter(Boolean)
+            .map(c => LAST_EVAL_MAP[c])
+            .filter(Boolean);
+          const hasEarlierSafeOrMed = earlierBandA.some(e => e.eligible && (e.dangerLevel === "Safe" || e.dangerLevel === "Low Risk"));
+          if (hasEarlierSafeOrMed && (baseLevel === "Moderate Danger" || baseLevel === "High Danger")) {
+            rawShift += 0.5;
+            reasons.push(`${slot} after a Safe/Low Risk choice in Band A`);
+          }
+        }
       } else if (band === "B") {
-        shift = 1;
-        note = "Band B (+1 risk)";
+        rawShift += 0.65;
+        if (isCompBandA) {
+          rawShift += 1.35;
+          reasons.push("Compulsory Band A interview missed");
+        } else if (isCompAny || isSmallQuota) {
+          rawShift += 0.65;
+          reasons.push(isCompAny ? "Compulsory interview outside Band A" : `Small intake (${r.intake_2026}) outside Band A`);
+        } else if (isLargeCohort && (baseLevel === "Safe" || baseLevel === "Low Risk")) {
+          rawShift -= 0.25;
+          reasons.push(`Large cohort (${r.intake_2026}) absorbs Band B`);
+        }
       } else if (band === "C") {
-        shift = 2;
-        note = "Band C (+2 risk)";
+        rawShift += 1.4;
+        if (isCompBandA || isCompAny) {
+          rawShift += 1.1;
+          reasons.push("Interview priority heavily favours Band A");
+        } else if (isSmallQuota) {
+          rawShift += 0.6;
+          reasons.push(`Small intake (${r.intake_2026}) rarely reaches Band C`);
+        } else if (isLargeCohort && baseLevel === "Safe") {
+          rawShift -= 0.35;
+          reasons.push(`Large cohort (${r.intake_2026}) occasionally reaches Band C`);
+        }
+      } else if (band === "D") {
+        rawShift += 2.25;
+        if (isCompBandA || isCompAny || isSmallQuota) rawShift += 0.75;
+        reasons.push("Band D (slots 11–15) low allocation priority");
       } else {
-        shift = 3;
-        note = `Band ${band} (low priority)`;
+        rawShift += 2.75;
+        reasons.push("Band E (slots 16–20) residual priority only");
       }
 
+      // 2. Context-aware interaction with earlier choices in A1..slot-1
+      if (slotIdx > 0) {
+        const earlierChoices = ALL_SLOTS.slice(0, slotIdx)
+          .map(s => ({ s, code: STATE.choices[s] }))
+          .filter(x => x.code && LAST_EVAL_MAP[x.code])
+          .map(x => ({ s: x.s, p: LAST_EVAL_MAP[x.code] }));
+
+        // If an earlier choice is eligible & Above UQ (Safe) in Band A, later slots in Band B–E are unlikely to be reached
+        const earlierBandAAnchor = earlierChoices.find(x => x.s[0] === "A" && x.p.eligible && x.p.dangerLevel === "Safe");
+        if (earlierBandAAnchor && band !== "A") {
+          reasons.push(`Likely absorbed earlier by ${earlierBandAAnchor.s} (${earlierBandAAnchor.p.jupas_code})`);
+        }
+
+        // If earlier Band A slots are all reaches (Below LQ / Ineligible), a Band B Above-Med/Above-UQ choice acts as a critical safety net
+        const earlierBandAChoices = earlierChoices.filter(x => x.s[0] === "A");
+        const allEarlierBandAReaches = earlierBandAChoices.length > 0 &&
+          earlierBandAChoices.every(x => !x.p.eligible || x.p.dangerLevel === "High Danger");
+        if (band === "B" && allEarlierBandAReaches && (baseLevel === "Safe" || baseLevel === "Low Risk")) {
+          rawShift = Math.max(0, rawShift - 0.35);
+          reasons.push("Primary safety net below reach-heavy Band A");
+        }
+      }
+
+      const shift = Math.min(3, Math.max(0, Math.round(rawShift)));
       const newIdx = Math.min(DANGER_TIERS.length - 1, idx + shift);
-      return { level: DANGER_TIERS[newIdx], note: shift > 0 ? note : "" };
+      const adjLevel = DANGER_TIERS[newIdx];
+
+      let note = "";
+      if (shift > 0) {
+        const shortTag = isCompBandA ? "Band A interview req."
+          : (band !== "A" && isCompAny) ? "Interview priority"
+          : (band !== "A" && isSmallQuota) ? `Small quota (${r.intake_2026})`
+          : (band === "B" && isLargeCohort && (baseLevel === "Safe" || baseLevel === "Low Risk")) ? "Large cohort buffer"
+          : `${slot} (-${shift} tier ref.)`;
+        note = `${slot}: ${shortTag}`;
+      } else if (reasons.length > 0) {
+        note = `${slot}: ${reasons[0]}`;
+      }
+
+      const tooltip = reasons.length > 0
+        ? `Slot ${slot} context: ${reasons.join("; ")} (directional reference only, not admission odds).`
+        : `Placed in ${slot} (directional reference only, not admission odds).`;
+
+      return { level: adjLevel, note, tooltip };
+    }
+
+    function getBandAdjustedDanger(baseLevelOrProg, slot) {
+      return evaluateSlotPlacement(baseLevelOrProg, slot);
     }
 
     function renderFilterChips() {
@@ -1205,7 +1314,7 @@
         "High Danger": "bg-red-400", "No Data": "bg-zinc-500", "Critical (Ineligible)": "bg-zinc-600"
       };
       const fitLabels = {
-        "Safe": "Safe", "Low Risk": "Low Risk", "Moderate Danger": "Moderate",
+        "Safe": "Safe", "Low Risk": "Low Risk", "Moderate Danger": "Risky",
         "High Danger": "High Risk", "No Data": "No Data", "Critical (Ineligible)": "Ineligible"
       };
       fitContainer.innerHTML = `
@@ -1240,7 +1349,7 @@
             </div>
           `;
         }
-        const adj = getBandAdjustedDanger(r.dangerLevel, slot);
+        const adj = evaluateSlotPlacement(r, slot);
         return `
           <div data-top3-inspect="${r.jupas_code}" class="cursor-pointer rounded-md bg-raised hover:bg-hover border border-line hover:border-line-strong p-2.5 transition flex flex-col justify-between gap-2">
             <div class="min-w-0">
@@ -1338,7 +1447,7 @@
       if (!r) return;
       ACTIVE_MODAL_CODE = code;
       const curSlot = getAssignedSlot(code);
-      const adj = getBandAdjustedDanger(r.dangerLevel, curSlot);
+      const adj = evaluateSlotPlacement(r, curSlot);
 
       document.getElementById("modal-code").textContent = `${r.jupas_code} · ${r.institution} · ${r.faculty}`;
       document.getElementById("modal-title").textContent = r.programme_name;
@@ -1392,7 +1501,7 @@
             dropdown.innerHTML = matches.map(r => {
               const existingSlot = getAssignedSlot(r.jupas_code);
               const tag = existingSlot ? `<span class="text-[10px] px-1 py-0.5 rounded bg-raised text-zinc-300 border border-line ml-1">${existingSlot}</span>` : "";
-              const adj = getBandAdjustedDanger(r.dangerLevel, slot);
+              const adj = evaluateSlotPlacement(r, slot);
               return `
                 <button type="button" data-pick-code="${r.jupas_code}" class="w-full text-left px-3 py-2 text-xs hover:bg-hover flex items-center justify-between gap-2 transition">
                   <div class="min-w-0 flex-1">
@@ -1512,16 +1621,16 @@
       const bandAEvals = bandACodes.map(c => LAST_EVAL_MAP[c]).filter(Boolean);
       const summaryEl = document.getElementById("band-a-summary");
       if (bandAEvals.length === 0) {
-        summaryEl.innerHTML = `<span class="text-zinc-400">Assign choices to A1–A3 to see a Band A risk summary.</span>`;
+        summaryEl.innerHTML = `<span class="text-zinc-400">Assign choices to A1–A3 to compare against 2026 LQ / Median / UQ benchmarks (directional reference only, not admission odds).</span>`;
       } else {
         const safeCount = bandAEvals.filter(e => e.dangerLevel === "Safe" || e.dangerLevel === "Low Risk").length;
         const highDangerCount = bandAEvals.filter(e => e.dangerLevel === "High Danger" || e.dangerLevel === "Critical (Ineligible)").length;
         if (highDangerCount === bandAEvals.length) {
-          summaryEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-red-400 mr-2"></span><strong class="text-zinc-100">High-Risk Band A:</strong> All ${bandAEvals.length} choices in Band A are High Risk or Ineligible. Consider placing a Safe or Low Risk anchor in A3.`;
+          summaryEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-red-400 mr-2"></span><strong class="text-zinc-100">High-Risk Band A:</strong> All ${bandAEvals.length} Band A choices are High Risk or Ineligible. Consider placing a Safe or Low Risk anchor in A3 (directional reference only, not admission odds).`;
         } else if (safeCount >= 1) {
-          summaryEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-emerald-400 mr-2"></span><strong class="text-zinc-100">Balanced Band A:</strong> ${safeCount} Safe/Low Risk anchor(s) in Band A (${bandAEvals.length}/3 filled).`;
+          summaryEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-emerald-400 mr-2"></span><strong class="text-zinc-100">Balanced Band A:</strong> ${safeCount} Safe/Low Risk anchor(s) in Band A (${bandAEvals.length}/3 filled; directional reference only, not admission odds).`;
         } else {
-          summaryEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-amber-400 mr-2"></span><strong class="text-zinc-100">Moderate Band A:</strong> Band A choices are mostly borderline. Ensure Band B includes a Safe fallback.`;
+          summaryEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-amber-400 mr-2"></span><strong class="text-zinc-100">Risky Band A:</strong> Band A choices fall in the Risky (Med–LQ) range. Ensure Band B includes a Safe or Low Risk option (directional reference only).`;
         }
       }
 
@@ -1567,12 +1676,12 @@
                     `}
                   </div>
                   ${r ? (() => {
-                    const adj = getBandAdjustedDanger(r.dangerLevel, slot);
+                    const adj = evaluateSlotPlacement(r, slot);
                     return `
                     <div class="flex items-center gap-2 shrink-0 pl-10 md:pl-0">
                       <div class="flex flex-col items-end">
                         ${dangerBadge(adj.level)}
-                        ${adj.note ? `<span class="text-[10px] text-zinc-500 mt-0.5">${adj.note}</span>` : ""}
+                        ${adj.note ? `<span title="${adj.tooltip}" class="text-[10px] text-zinc-500 mt-0.5 cursor-help">${adj.note}</span>` : ""}
                       </div>
                       <div class="flex items-center bg-raised border border-line rounded overflow-hidden">
                         <button type="button" data-move-up="${slot}" ${slotIdx === 0 ? "disabled" : ""} class="px-1.5 py-0.5 text-[11px] text-zinc-400 hover:text-zinc-100 hover:bg-hover disabled:opacity-25 transition" title="Move Up">↑</button>
@@ -1628,7 +1737,7 @@
 
       const filtered = evaluated.filter(r => {
         const curSlot = getAssignedSlot(r.jupas_code);
-        const effDanger = getBandAdjustedDanger(r.dangerLevel, curSlot).level;
+        const effDanger = evaluateSlotPlacement(r, curSlot).level;
         const instMatch = SELECTED_INSTS.size === 0 || SELECTED_INSTS.has(r.institution);
         const fitMatch = SELECTED_FITS.size === 0 || SELECTED_FITS.has(effDanger);
         const qMatch = !q || r.jupas_code.toLowerCase().includes(q) || r.programme_name.toLowerCase().includes(q) || r.faculty.toLowerCase().includes(q);
@@ -1668,8 +1777,8 @@
               ${r.deltaMed !== null ? (r.deltaMed >= 0 ? "+" : "") + r.deltaMed.toFixed(2) : "—"}
             </td>
             <td class="py-2.5 px-3 cursor-pointer">${(() => {
-              const adj = getBandAdjustedDanger(r.dangerLevel, curSlot);
-              return dangerBadge(adj.level) + (adj.note ? `<div class="text-[10px] text-zinc-500 mt-0.5">${adj.note}</div>` : "");
+              const adj = evaluateSlotPlacement(r, curSlot);
+              return dangerBadge(adj.level) + (adj.note ? `<div title="${adj.tooltip}" class="text-[10px] text-zinc-500 mt-0.5">${adj.note}</div>` : "");
             })()}</td>
           </tr>
         `;
@@ -1687,7 +1796,7 @@
       if (mobileContainer) {
         mobileContainer.innerHTML = filtered.map(r => {
           const curSlot = getAssignedSlot(r.jupas_code);
-          const adj = getBandAdjustedDanger(r.dangerLevel, curSlot);
+          const adj = evaluateSlotPlacement(r, curSlot);
           const diffStr = r.deltaMed !== null ? (r.deltaMed >= 0 ? "+" : "") + r.deltaMed.toFixed(2) : "—";
           const diffCls = r.deltaMed === null ? "text-zinc-500" : r.deltaMed >= 0 ? "text-emerald-400" : "text-red-400";
           return `
@@ -1716,7 +1825,7 @@
                   <div class="text-sm font-medium text-zinc-300 mt-0.5">${r.med !== null ? r.med.toFixed(1) : "—"}</div>
                 </div>
                 <div>
-                  <div class="text-[10px] text-zinc-500">DIFF</div>
+                  <div class="text-[10px] text-zinc-500">DIFF (VS 26 MED)</div>
                   <div class="text-sm font-semibold ${diffCls} mt-0.5">${diffStr}</div>
                 </div>
               </div>
@@ -1917,7 +2026,7 @@
           const code = STATE.choices[slot];
           if (code && LAST_EVAL_MAP[code]) {
             const r = LAST_EVAL_MAP[code];
-            const adj = getBandAdjustedDanger(r.dangerLevel, slot);
+            const adj = evaluateSlotPlacement(r, slot);
             rows.push([slot, r.jupas_code, r.institution, `"${r.programme_name.replace(/"/g, '""')}"`, r.userScore.toFixed(2), r.lq ?? "", r.med ?? "", r.uq ?? "", adj.level]);
           }
         });
@@ -1993,6 +2102,24 @@
           title: "Eligibility requirement gaps",
           body: "One or more saved choices currently fail a subject or minimum level requirement based on your entered grades.",
           items: ineligibleSaved.map(({ slot, r }) => `${slot} · ${r.jupas_code} (${r.eligNotes})`)
+        });
+      }
+
+      // 3b. Inverted ordering within Band A or Band B (placing a safer/higher-margin choice above a reach in the same band)
+      const bandInversions = [];
+      [["A1", "A2"], ["A2", "A3"], ["B4", "B5"], ["B5", "B6"]].forEach(([s1, s2]) => {
+        const c1 = STATE.choices[s1], c2 = STATE.choices[s2];
+        if (!c1 || !c2 || !LAST_EVAL_MAP[c1] || !LAST_EVAL_MAP[c2]) return;
+        const p1 = LAST_EVAL_MAP[c1], p2 = LAST_EVAL_MAP[c2];
+        if (p1.eligible && p2.eligible && p1.dangerLevel === "Safe" && (p2.dangerLevel === "Moderate Danger" || p2.dangerLevel === "High Danger")) {
+          bandInversions.push(`${s1} (${p1.jupas_code}, Safe) → ${s2} (${p2.jupas_code})`);
+        }
+      });
+      if (bandInversions.length > 0) {
+        notes.push({
+          title: "Priority order check within the same band",
+          body: "JUPAS considers choices strictly in A1 → E20 order. Placing a Safe programme ahead of a Risky or High Risk target in the same band means the earlier choice will likely be allocated first.",
+          items: bandInversions
         });
       }
 
