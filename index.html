@@ -64,8 +64,10 @@
           2027 Formula Verified / Data as of 24 Nov 2026
         </span>
       </div>
-      <div class="flex items-center gap-3">
-        <span id="saved-toast" class="text-[11px] text-zinc-500 opacity-0 transition-opacity duration-200">Saved</span>
+      <div class="flex flex-wrap items-center gap-2">
+        <button id="load-demo-btn" type="button" title="Load sample DSE grades and A1–E20 choices to test immediately" class="px-2.5 py-1 rounded bg-raised hover:bg-hover border border-line text-xs font-medium text-zinc-200 transition">Load Sample Demo</button>
+        <button id="copy-share-link-btn" type="button" title="Copy shareable URL encoding your current grades and choices" class="px-2.5 py-1 rounded bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-semibold transition">Copy Share Link</button>
+        <span id="saved-toast" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-raised border border-line text-[11px] text-emerald-400">Auto-saved</span>
         <div id="db-status" class="inline-flex items-center gap-2 text-xs text-zinc-400">
           <span class="w-1.5 h-1.5 rounded-full bg-zinc-500"></span>
           <span>Loading...</span>
@@ -143,6 +145,17 @@
 
     <!-- Main Workspace -->
     <section class="lg:col-span-8 xl:col-span-9 space-y-5">
+
+      <!-- Onboarding & URL Share Notice -->
+      <div id="onboarding-banner" class="bg-panel rounded-lg border border-line px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+        <div class="text-xs text-zinc-300">
+          <span class="font-semibold text-zinc-100">New here?</span> Load a sample HKDSE profile with pre-filled A1–E20 choices in one click, or share your plan via URL.
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <button type="button" data-trigger-demo="1" class="px-3 py-1.5 rounded-md bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-semibold transition">Load Sample DSE Scores</button>
+          <button type="button" id="dismiss-onboarding-btn" class="px-2 py-1.5 rounded-md text-xs text-zinc-500 hover:text-zinc-200 transition">Dismiss</button>
+        </div>
+      </div>
 
       <!-- Unified Metrics Strip -->
       <div class="bg-panel rounded-lg border border-line grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-line">
@@ -295,15 +308,34 @@
     </section>
   </main>
 
-  <footer class="max-w-7xl mx-auto px-4 sm:px-6 py-6 mt-4 border-t border-line space-y-2 text-center text-xs text-zinc-500">
-    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-panel border border-line text-[11px] text-zinc-400">
-      <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-      <span>2027 Formula Verified / Data as of 24 Nov 2026</span>
+  <footer class="max-w-7xl mx-auto px-4 sm:px-6 py-7 mt-6 border-t border-line text-xs text-zinc-400">
+    <div class="bg-panel border border-line rounded-lg p-4 sm:p-5 space-y-3">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b border-line">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-raised border border-line text-[11px] text-zinc-200 font-medium">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            Data Provenance
+          </span>
+          <span class="text-[11px] text-zinc-400">Source: <strong class="text-zinc-200">2026 JUPAS Admission Figures &amp; 2027 UGC Programme Weightings</strong></span>
+          <span class="text-[11px] text-zinc-500">· Last Updated: <strong class="text-zinc-300">24 Nov 2026</strong></span>
+        </div>
+        <a
+          href="https://github.com/aidan-c123/aidan-c123.github.io/issues/new?title=JUPAS%202027%20Data%20Error%20Report&amp;body=JUPAS%20Code%3A%20%0AField%20with%20error%20(Score%20%2F%20Weighting%20%2F%20Quota%20%2F%20Eligibility)%3A%20%0ACorrect%20value%20%26%20official%20source%20link%3A%20"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center px-3 py-1.5 rounded bg-raised hover:bg-hover border border-line text-xs font-medium text-zinc-200 transition shrink-0"
+        >
+          Report Data Error
+        </a>
+      </div>
+      <p class="text-[11px] text-zinc-500 leading-relaxed">
+        <strong class="text-zinc-300">Disclaimer — Estimates Only:</strong> All calculated admission scores, cut-off comparisons (LQ / Median / UQ), and band risk indicators are unofficial estimates based on historical 2026 JUPAS admission figures and published 2027 scoring formulas. Actual 2027 admission outcomes depend on annual applicant pool competitiveness, interview performance, and institutional discretion. Always verify official JUPAS and university brochures before locking in your choices on <strong class="text-zinc-300">December 2, 2026</strong> (a <strong class="text-zinc-300">HK$100</strong> amendment fee applies afterward).
+      </p>
+      <div class="pt-1 flex items-center justify-between text-[11px] text-zinc-500">
+        <span>Made by <span class="text-zinc-300 font-medium">@aidan.choi_</span></span>
+        <span>3NF Relational CSV Engine</span>
+      </div>
     </div>
-    <p class="max-w-2xl mx-auto text-[11px] text-zinc-500 leading-relaxed">
-      Always double-check official JUPAS and institution brochures before locking in your choices on <strong class="text-zinc-300">December 2, 2026</strong> (a <strong class="text-zinc-300">HK$100</strong> amendment fee applies afterward).
-    </p>
-    <div>Made by <span class="text-zinc-300 font-medium">@aidan.choi_</span></div>
   </footer>
 
   <!-- Detail Modal -->
@@ -328,7 +360,10 @@
         <div><div class="text-[11px] text-zinc-500">2026 UQ</div><div id="modal-uq" class="text-base font-semibold text-zinc-400 mt-0.5"></div></div>
       </div>
       <div class="text-xs space-y-2.5 text-zinc-300">
-        <div><span class="text-zinc-500 block mb-0.5">Subjects Counted</span><code id="modal-breakdown" class="inline-block bg-raised border border-line px-2 py-1 rounded text-[11px] text-zinc-200"></code></div>
+        <div>
+          <span class="text-zinc-500 block mb-1">Formula Breakdown (Base + Weightings + Bonus = Total)</span>
+          <div id="modal-breakdown" class="bg-raised border border-line px-2.5 py-2 rounded text-[11px] text-zinc-200 leading-relaxed"></div>
+        </div>
         <div class="grid grid-cols-2 gap-3">
           <div><span class="text-zinc-500 block">Formula &amp; Scale</span><span id="modal-formula" class="text-zinc-200"></span></div>
           <div><span class="text-zinc-500 block">Eligibility</span><span id="modal-elig" class="text-zinc-200"></span></div>
@@ -400,7 +435,88 @@
     const DANGER_TIERS = ["Safe", "Low Risk", "Moderate Danger", "High Danger"];
     const ALL_FILTER_FITS = ["Safe", "Low Risk", "Moderate Danger", "High Danger", "No Data", "Critical (Ineligible)"];
 
+    function encodeStateToHash() {
+      try {
+        const payload = {
+          c: STATE.core,
+          s: STATE.csd === "Attained" ? 1 : 0,
+          m: STATE.mextMod,
+          mg: STATE.mextGrade,
+          e: STATE.electives.map(x => [x.code, x.grade]),
+          p: STATE.choices
+        };
+        const jsonStr = JSON.stringify(payload);
+        const b64 = btoa(unescape(encodeURIComponent(jsonStr)))
+          .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+        return "#s=" + b64;
+      } catch (e) {
+        return "";
+      }
+    }
+
+    function tryLoadFromHash() {
+      try {
+        const h = window.location.hash || "";
+        if (!h.startsWith("#s=")) return false;
+        let b64 = h.slice(3).replace(/-/g, "+").replace(/_/g, "/");
+        while (b64.length % 4) b64 += "=";
+        const jsonStr = decodeURIComponent(escape(atob(b64)));
+        const parsed = JSON.parse(jsonStr);
+        if (parsed && parsed.c) STATE.core = parsed.c;
+        if (parsed && typeof parsed.s !== "undefined") STATE.csd = parsed.s ? "Attained" : "Unattained";
+        if (parsed && typeof parsed.m !== "undefined") STATE.mextMod = parsed.m;
+        if (parsed && parsed.mg) STATE.mextGrade = parsed.mg;
+        if (parsed && Array.isArray(parsed.e)) {
+          STATE.electives = parsed.e.map(([code, grade]) => ({ code, grade }));
+        }
+        if (parsed && parsed.p && typeof parsed.p === "object") {
+          STATE.choices = parsed.p;
+        }
+        return true;
+      } catch (e) {
+        console.warn("Invalid URL state hash:", e);
+        return false;
+      }
+    }
+
+    function loadSampleDemo() {
+      STATE.core = { ENG: "5*", CHI: "4", MATH: "5**" };
+      STATE.csd = "Attained";
+      STATE.mextMod = "M2";
+      STATE.mextGrade = "5*";
+      STATE.electives = [
+        { code: "PHY", grade: "5*" },
+        { code: "CHEM", grade: "5" },
+        { code: "ECON", grade: "5*" }
+      ];
+      const demoPlan = {
+        A1: "JS6858",
+        A2: "JS6303",
+        A3: "JS5332",
+        B4: "JS4412",
+        B5: "JS6999",
+        B6: "JS5240",
+        C7: "JS3868",
+        C8: "JS1204",
+        D11: "JS3005",
+        E16: "JS7225"
+      };
+      const validChoices = {};
+      Object.entries(demoPlan).forEach(([slot, code]) => {
+        if (LAST_EVAL_MAP[code]) validChoices[slot] = code;
+      });
+      STATE.choices = validChoices;
+      persistState();
+      renderSidebarInputs();
+      renderAll();
+    }
+
     function loadSavedState() {
+      const fromUrl = tryLoadFromHash();
+      if (fromUrl) {
+        persistState();
+        return;
+      }
       try {
         const g = localStorage.getItem(STORAGE_GRADES_KEY);
         if (g) {
@@ -427,11 +543,19 @@
           electives: STATE.electives
         }));
         localStorage.setItem(STORAGE_CHOICES_KEY, JSON.stringify(STATE.choices));
+        const hashStr = encodeStateToHash();
+        if (hashStr && window.history && window.history.replaceState) {
+          window.history.replaceState(null, "", hashStr);
+        }
         const toast = document.getElementById("saved-toast");
         if (toast) {
-          toast.classList.remove("opacity-0");
+          toast.textContent = "Saved just now";
+          toast.classList.add("border-emerald-800/70", "text-emerald-300");
           clearTimeout(SAVE_TOAST_TIMER);
-          SAVE_TOAST_TIMER = setTimeout(() => toast.classList.add("opacity-0"), 1200);
+          SAVE_TOAST_TIMER = setTimeout(() => {
+            toast.textContent = "Auto-saved";
+            toast.classList.remove("border-emerald-800/70", "text-emerald-300");
+          }, 1500);
         }
       } catch (e) {}
     }
@@ -774,6 +898,26 @@
         }
       }
 
+      const baseRawSum = Math.round(selected.reduce((acc, s) => acc + s.raw, 0) * 100) / 100;
+      const weightedSum = Math.round(selected.reduce((acc, s) => acc + s.weighted, 0) * 100) / 100;
+      const weightBonusDelta = Math.round((weightedSum - baseRawSum) * 100) / 100;
+      let extraBonusPts = 0;
+      let extraBonusLabel = "";
+      if (bonusW > 0) {
+        const leftover = Object.values(candidates).filter(c => !selectedSet.has(c.code)).sort((a, b) => b.raw - a.raw);
+        if (leftover.length > 0) {
+          extraBonusPts = Math.round(leftover[0].raw * bonusW * 100) / 100;
+          extraBonusLabel = `${bonusW}×${leftover[0].code}(${leftover[0].grade}=${leftover[0].raw} → +${extraBonusPts.toFixed(2)})`;
+        }
+      }
+      const termDetails = selected.map(s =>
+        s.mult !== 1
+          ? `${s.code}(${s.grade}: ${s.raw}×${s.mult} = ${s.weighted.toFixed(2)})`
+          : `${s.code}(${s.grade}: ${s.raw})`
+      );
+      if (extraBonusLabel) termDetails.push(`Bonus ${extraBonusLabel}`);
+      const equationSummary = `Base ${baseRawSum.toFixed(2)} + Weighting ${weightBonusDelta >= 0 ? "+" : ""}${weightBonusDelta.toFixed(2)} + Extra Bonus ${extraBonusPts.toFixed(2)} = ${Math.round(total * 100) / 100}`;
+      const fullBreakdownHTML = `<div class="font-semibold text-zinc-100 mb-1">${equationSummary}</div><div class="text-zinc-400">${termDetails.join(" + ")}</div>`;
       total = Math.round(total * 100) / 100;
       const eligible = issues.length === 0;
       const uq = hist.score_uq ? parseFloat(hist.score_uq) : null;
@@ -802,6 +946,7 @@
         eligible,
         eligNotes: eligible ? "Eligible" : issues.join("; "),
         breakdown: parts.join(" + "),
+        fullBreakdownHTML,
         scoringNotes: hist.scoring_notes || ""
       };
     }
@@ -1025,7 +1170,7 @@
       document.getElementById("modal-fit").innerHTML = dangerBadge(adj.level);
       document.getElementById("modal-slot-pill").textContent = curSlot ? `Slot ${curSlot}` : "Unassigned";
       document.getElementById("modal-quota-pill").textContent = `2026 Intake: ${r.intake_2026 || "—"}`;
-      document.getElementById("modal-breakdown").textContent = r.breakdown;
+      document.getElementById("modal-breakdown").innerHTML = r.fullBreakdownHTML || r.breakdown;
       document.getElementById("modal-formula").textContent = `${r.formula_type} (${r.scaleId})`;
       document.getElementById("modal-elig").textContent = r.eligNotes;
       document.getElementById("modal-quota").textContent = r.intake_2026 || "—";
@@ -1334,7 +1479,9 @@
               (r.interview_req || "").startsWith("Compulsory") ? "text-amber-300 font-medium" :
               (r.interview_req || "").startsWith("Not Required") ? "text-zinc-500" : "text-zinc-400"
             }">${r.interview_req || "—"}</td>
-            <td class="py-2.5 px-2.5 text-right font-semibold text-zinc-100 cursor-pointer">${r.userScore.toFixed(2)}</td>
+            <td class="py-2.5 px-2.5 text-right cursor-pointer" title="Click to inspect exact formula &amp; subject weighting breakdown">
+              <span class="inline-flex items-center justify-end font-semibold text-zinc-100 underline decoration-zinc-600 underline-offset-4 hover:decoration-zinc-200">${r.userScore.toFixed(2)}</span>
+            </td>
             <td class="py-2.5 px-2.5 text-right text-xs text-zinc-500 cursor-pointer">${r.lq !== null ? r.lq.toFixed(1) : "—"}</td>
             <td class="py-2.5 px-2.5 text-right text-xs text-zinc-300 cursor-pointer">${r.med !== null ? r.med.toFixed(1) : "—"}</td>
             <td class="py-2.5 px-2.5 text-right text-xs text-zinc-500 cursor-pointer">${r.uq !== null ? r.uq.toFixed(1) : "—"}</td>
@@ -1381,9 +1528,9 @@
               </div>
 
               <div class="grid grid-cols-3 divide-x divide-line bg-raised border border-line rounded py-2 text-center">
-                <div>
+                <div title="Tap to view formula breakdown">
                   <div class="text-[10px] text-zinc-500">YOUR SCORE</div>
-                  <div class="text-sm font-semibold text-zinc-100 mt-0.5">${r.userScore.toFixed(2)}</div>
+                  <div class="text-sm font-semibold text-zinc-100 underline decoration-zinc-600 underline-offset-4 mt-0.5">${r.userScore.toFixed(2)}</div>
                 </div>
                 <div>
                   <div class="text-[10px] text-zinc-500">2026 MED</div>
@@ -1427,6 +1574,40 @@
     }
 
     function wireGlobalEvents() {
+      const demoHeaderBtn = document.getElementById("load-demo-btn");
+      if (demoHeaderBtn) demoHeaderBtn.addEventListener("click", loadSampleDemo);
+      document.querySelectorAll("[data-trigger-demo]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          loadSampleDemo();
+          const b = document.getElementById("onboarding-banner");
+          if (b) b.classList.add("hidden");
+        });
+      });
+      const dismissBtn = document.getElementById("dismiss-onboarding-btn");
+      if (dismissBtn) {
+        dismissBtn.addEventListener("click", () => {
+          const b = document.getElementById("onboarding-banner");
+          if (b) b.classList.add("hidden");
+        });
+      }
+      const shareBtn = document.getElementById("copy-share-link-btn");
+      if (shareBtn) {
+        shareBtn.addEventListener("click", async () => {
+          const hashStr = encodeStateToHash();
+          if (hashStr && window.history && window.history.replaceState) {
+            window.history.replaceState(null, "", hashStr);
+          }
+          const shareUrl = window.location.href;
+          try {
+            await navigator.clipboard.writeText(shareUrl);
+            const orig = shareBtn.textContent;
+            shareBtn.textContent = "Copied Link!";
+            setTimeout(() => { shareBtn.textContent = orig; }, 1600);
+          } catch (e) {
+            prompt("Copy this shareable URL:", shareUrl);
+          }
+        });
+      }
       document.querySelectorAll(".csd-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           STATE.csd = btn.dataset.csd;
