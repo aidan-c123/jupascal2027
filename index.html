@@ -1307,14 +1307,21 @@
       renderAll();
     }
 
-    function swapSlots(slotA, slotB) {
-      if (!slotA || !slotB || slotA === slotB) return;
-      const valA = STATE.choices[slotA];
-      const valB = STATE.choices[slotB];
-      if (valB) STATE.choices[slotA] = valB;
-      else delete STATE.choices[slotA];
-      if (valA) STATE.choices[slotB] = valA;
-      else delete STATE.choices[slotB];
+    function reorderSlots(fromSlot, toSlot) {
+      if (!fromSlot || !toSlot || fromSlot === toSlot) return;
+      const fromIdx = ALL_SLOTS.indexOf(fromSlot);
+      const toIdx = ALL_SLOTS.indexOf(toSlot);
+      if (fromIdx === -1 || toIdx === -1) return;
+
+      const list = ALL_SLOTS.map(s => STATE.choices[s] || "");
+      const [moved] = list.splice(fromIdx, 1);
+      list.splice(toIdx, 0, moved);
+
+      const nextChoices = {};
+      ALL_SLOTS.forEach((s, i) => {
+        if (list[i]) nextChoices[s] = list[i];
+      });
+      STATE.choices = nextChoices;
       persistState();
       renderAll();
     }
@@ -1323,7 +1330,7 @@
       const idx = ALL_SLOTS.indexOf(slot);
       const targetIdx = idx + direction;
       if (targetIdx < 0 || targetIdx >= ALL_SLOTS.length) return;
-      swapSlots(slot, ALL_SLOTS[targetIdx]);
+      reorderSlots(slot, ALL_SLOTS[targetIdx]);
     }
 
     function openDetailModal(code) {
@@ -1449,7 +1456,7 @@
           const fromSlot = DRAGGED_SLOT || e.dataTransfer.getData("text/plain");
           const toSlot = row.dataset.slot;
           if (fromSlot && toSlot && fromSlot !== toSlot) {
-            swapSlots(fromSlot, toSlot);
+            reorderSlots(fromSlot, toSlot);
           }
         });
       });
@@ -1487,7 +1494,7 @@
             const toSlot = lastOverRow.dataset.slot;
             lastOverRow.classList.remove("drag-over");
             if (touchFromSlot && toSlot && touchFromSlot !== toSlot) {
-              swapSlots(touchFromSlot, toSlot);
+              reorderSlots(touchFromSlot, toSlot);
             }
           }
           touchFromSlot = null;
