@@ -171,7 +171,18 @@
   <header class="bg-canvas/95 backdrop-blur border-b border-line sticky top-0 z-30">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2.5">
       <div class="flex items-center gap-2.5">
-        <span class="w-6 h-6 rounded bg-zinc-100 text-zinc-950 font-bold text-xs flex items-center justify-center tracking-tighter shrink-0">J</span>
+        <span class="w-7 h-7 rounded-md bg-raised border border-line flex items-center justify-center shrink-0 text-zinc-100" aria-hidden="true">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v3"/>
+            <path d="M7 9l5-4 5 4"/>
+            <path d="M7 9v11h10V9"/>
+            <path d="M3 13h4v7H3z"/>
+            <path d="M17 13h4v7h-4z"/>
+            <path d="M10.5 20v-4a1.5 1.5 0 0 1 3 0v4"/>
+            <circle cx="12" cy="10.5" r="1"/>
+            <path d="M2 20h20"/>
+          </svg>
+        </span>
         <h1 class="text-sm sm:text-base font-semibold tracking-tight text-zinc-100">JUPAS 2027 Calculator</h1>
         <span class="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-raised border border-line text-[11px] text-zinc-400">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
@@ -179,9 +190,9 @@
         </span>
       </div>
       <div class="flex flex-wrap items-center gap-2">
-        <!-- Dark / Light Mode Toggle -->
-        <button id="theme-toggle-btn" type="button" title="Switch Dark / Light mode" class="px-2.5 py-1 rounded bg-raised hover:bg-hover border border-line text-xs font-medium text-zinc-200 transition">
-          Light Mode
+        <!-- Dark / Light Mode Toggle (Logograph) -->
+        <button id="theme-toggle-btn" type="button" aria-label="Toggle dark or light mode" title="Toggle dark or light mode" class="w-7 h-7 rounded bg-raised hover:bg-hover border border-line flex items-center justify-center text-zinc-200 transition shrink-0">
+          <span id="theme-icon-wrap" class="flex items-center justify-center"></span>
         </button>
 
         <button id="load-demo-btn" type="button" title="Load sample DSE grades and A1–E20 choices to test immediately" class="px-2.5 py-1 rounded bg-raised hover:bg-hover border border-line text-xs font-medium text-zinc-200 transition">Load Sample Demo</button>
@@ -554,6 +565,9 @@
     let SELECTED_FITS = new Set();
     let THEME = "dark"; // 'dark' | 'light'
 
+    const SUN_SVG = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>`;
+    const MOON_SVG = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`;
+
     function applyTheme() {
       const root = document.getElementById("doc-root");
       if (!root) return;
@@ -565,7 +579,15 @@
         root.classList.add("dark");
       }
       const btn = document.getElementById("theme-toggle-btn");
-      if (btn) btn.textContent = THEME === "light" ? "Dark Mode" : "Light Mode";
+      const iconWrap = document.getElementById("theme-icon-wrap");
+      const label = THEME === "light" ? "Switch to dark mode" : "Switch to light mode";
+      if (btn) {
+        btn.title = label;
+        btn.setAttribute("aria-label", label);
+      }
+      if (iconWrap) {
+        iconWrap.innerHTML = THEME === "light" ? MOON_SVG : SUN_SVG;
+      }
     }
 
     const DANGER_TIERS = ["Safe", "Low Risk", "Moderate Danger", "High Danger"];
