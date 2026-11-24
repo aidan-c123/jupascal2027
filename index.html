@@ -555,13 +555,24 @@
 
       const issues = [];
       if (String(inst.requires_csd_attained).toUpperCase() === "TRUE" && !csdAttained) issues.push("CSD Not Attained");
-      const reqEng = prog.min_eng_override || inst.min_eng;
-      const reqChi = prog.min_chi_override || inst.min_chi;
-      const reqMath = prog.min_math_override || inst.min_math;
+      const normLvl = v => (v !== undefined && v !== null && String(v).trim() !== "") ? String(parseInt(parseFloat(v), 10)) : "";
+      const reqEng = normLvl(prog.min_eng_override) || normLvl(inst.min_eng) || "3";
+      const reqChi = normLvl(prog.min_chi_override) || normLvl(inst.min_chi) || "3";
+      const reqMath = normLvl(prog.min_math_override) || normLvl(inst.min_math) || "2";
 
       if (GRADE_RANK[userGrades.ENG] < GRADE_RANK[reqEng]) issues.push(`ENG < ${reqEng}`);
       if (GRADE_RANK[userGrades.CHI] < GRADE_RANK[reqChi]) issues.push(`CHI < ${reqChi}`);
       if (GRADE_RANK[userGrades.MATH] < GRADE_RANK[reqMath]) issues.push(`MATH < ${reqMath}`);
+
+      // General 2-elective minimum level check (332A33 for HKU/CUHK/HKUST/PolyU/CityU; 332A22 for HKBU/LU/EdUHK)
+      const minElecLvl = ["HKBU", "LU", "EDUHK"].includes(prog.institution_id) ? "2" : "3";
+      const qualifiedElecs = Object.entries(userGrades).filter(([code, g]) => {
+        const cat = DB.subjects[code]?.category;
+        return (cat === "ELECTIVE" || cat === "MATH_EXT") && GRADE_RANK[g] >= GRADE_RANK[minElecLvl];
+      });
+      if (qualifiedElecs.length < 2) {
+        issues.push(`Need 2 electives >= ${minElecLvl}`);
+      }
 
       mandatory.forEach(code => { if (!userGrades[code]) issues.push(`Missing ${code}`); });
       Object.entries(minRules).forEach(([code, req]) => {
@@ -570,6 +581,21 @@
           if (!issues.includes(msg)) issues.push(msg);
         }
       });
+
+      // Compulsory elective group check (e.g. "CHEM:3" or "BIO|CHEM:3" or "CHEM:3;M1|M2:3")
+      if (prog.compulsory_electives && prog.compulsory_electives.trim()) {
+        const groups = prog.compulsory_electives.trim().split(";").map(g => g.trim()).filter(Boolean);
+        groups.forEach(grp => {
+          const [subjPart, minLvlRaw] = grp.split(":");
+          const options = subjPart.split("|").map(s => s.trim()).filter(Boolean);
+          const minLvl = (minLvlRaw || "3").trim();
+          const satisfied = options.some(code => userGrades[code] && GRADE_RANK[userGrades[code]] >= GRADE_RANK[minLvl]);
+          if (!satisfied) {
+            const label = options.length === 1 ? `Need ${options[0]} >= ${minLvl}` : `Need one of ${options.join("/")} >= ${minLvl}`;
+            if (!issues.includes(label)) issues.push(label);
+          }
+        });
+      }
 
       const candidates = {};
       const defaultW = parseFloat(inst.default_subject_weight) || 1.0;
