@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html id="doc-root" lang="en" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -49,6 +49,64 @@
     .slot-row.dragging { opacity: 0.4; }
     .drag-handle { touch-action: none; cursor: grab; }
     .drag-handle:active { cursor: grabbing; }
+
+    /* Light mode palette when 'dark' class is removed from #doc-root */
+    html:not(.dark) body {
+      background-color: #f4f4f6;
+      color: #18181b;
+    }
+    html:not(.dark) header {
+      background-color: rgba(255, 255, 255, 0.94);
+      border-color: #e4e4e7;
+    }
+    html:not(.dark) header .border-t {
+      background-color: #fafafa;
+      border-color: #e4e4e7;
+    }
+    html:not(.dark) .bg-panel {
+      background-color: #ffffff;
+      border-color: #e4e4e7;
+    }
+    html:not(.dark) .bg-raised {
+      background-color: #f4f4f5;
+      border-color: #e4e4e7;
+    }
+    html:not(.dark) .bg-canvas {
+      background-color: #f4f4f6;
+      border-color: #e4e4e7;
+    }
+    html:not(.dark) .hover\:bg-hover:hover {
+      background-color: #e4e4e7;
+    }
+    html:not(.dark) .border-line {
+      border-color: #e4e4e7;
+    }
+    html:not(.dark) .border-line-strong {
+      border-color: #d4d4d8;
+    }
+    html:not(.dark) .divide-line > :not([hidden]) ~ :not([hidden]),
+    html:not(.dark) .divide-line\/60 > :not([hidden]) ~ :not([hidden]) {
+      border-color: #e4e4e7;
+    }
+    html:not(.dark) .text-zinc-100 { color: #18181b; }
+    html:not(.dark) .text-zinc-200 { color: #27272a; }
+    html:not(.dark) .text-zinc-300 { color: #3f3f46; }
+    html:not(.dark) .text-zinc-400 { color: #52525b; }
+    html:not(.dark) .text-zinc-500 { color: #71717a; }
+    html:not(.dark) input,
+    html:not(.dark) select {
+      background-color: #f4f4f5;
+      color: #18181b;
+      border-color: #d4d4d8;
+    }
+    html:not(.dark) .bg-zinc-100 {
+      background-color: #18181b;
+      color: #ffffff;
+      border-color: #18181b;
+    }
+    html:not(.dark) .text-zinc-950 {
+      color: #ffffff;
+    }
   </style>
 </head>
 <body class="min-h-screen antialiased selection:bg-zinc-700 selection:text-zinc-100">
@@ -65,8 +123,19 @@
         </span>
       </div>
       <div class="flex flex-wrap items-center gap-2">
+        <!-- Language Toggle (EN / 中文) -->
+        <div class="inline-flex rounded bg-raised border border-line p-0.5 text-xs">
+          <button id="lang-en-btn" type="button" data-lang="en" class="px-2 py-0.5 rounded font-medium bg-zinc-100 text-zinc-950 transition">EN</button>
+          <button id="lang-zh-btn" type="button" data-lang="zh" class="px-2 py-0.5 rounded font-medium text-zinc-400 hover:text-zinc-200 transition">中文</button>
+        </div>
+
+        <!-- Dark / Light Mode Toggle -->
+        <button id="theme-toggle-btn" type="button" title="Switch Dark / Light mode" class="px-2.5 py-1 rounded bg-raised hover:bg-hover border border-line text-xs font-medium text-zinc-200 transition">
+          Light Mode
+        </button>
+
         <button id="load-demo-btn" type="button" title="Load sample DSE grades and A1–E20 choices to test immediately" class="px-2.5 py-1 rounded bg-raised hover:bg-hover border border-line text-xs font-medium text-zinc-200 transition">Load Sample Demo</button>
-        <button id="copy-share-link-btn" type="button" title="Copy shareable URL encoding your current grades and choices" class="px-2.5 py-1 rounded bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-semibold transition">Copy Share Link</button>
+        <button id="copy-share-link-btn" type="button" title="Copy shareable profile URL encoding your current grades and choices" class="px-2.5 py-1 rounded bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-semibold transition">Share Profile</button>
         <span id="saved-toast" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-raised border border-line text-[11px] text-emerald-400">Auto-saved</span>
         <div id="db-status" class="inline-flex items-center gap-2 text-xs text-zinc-400">
           <span class="w-1.5 h-1.5 rounded-full bg-zinc-500"></span>
@@ -261,6 +330,7 @@
             <p class="text-xs text-zinc-400 mt-0.5">Search in any empty slot to add. Drag the handle or use arrow keys to reorder.</p>
           </div>
           <div class="flex flex-wrap gap-2">
+            <button id="share-profile-choices-btn" type="button" class="px-3 py-1.5 rounded-md bg-raised hover:bg-hover border border-line text-xs font-medium text-zinc-200 transition">Share Profile Link</button>
             <input id="import-choices-input" type="file" accept=".csv,text/csv" class="hidden" />
             <button id="import-choices-btn" class="px-3 py-1.5 rounded-md bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-semibold transition">Import CSV</button>
             <button id="export-choices-btn" class="px-3 py-1.5 rounded-md bg-raised hover:bg-hover border border-line text-xs font-medium text-zinc-200 transition">Export CSV</button>
@@ -332,7 +402,7 @@
         <strong class="text-zinc-300">Disclaimer — Estimates Only:</strong> All calculated admission scores, cut-off comparisons (LQ / Median / UQ), and band risk indicators are unofficial estimates based on historical 2026 JUPAS admission figures and published 2027 scoring formulas. Actual 2027 admission outcomes depend on annual applicant pool competitiveness, interview performance, and institutional discretion. Always verify official JUPAS and university brochures before locking in your choices on <strong class="text-zinc-300">December 2, 2026</strong> (a <strong class="text-zinc-300">HK$100</strong> amendment fee applies afterward).
       </p>
       <div class="pt-1 flex items-center justify-between text-[11px] text-zinc-500">
-        <span>Made by <span class="text-zinc-300 font-medium">@aidan.choi_</span></span>
+        <span>Made by <a href="https://www.instagram.com/aidan.choi_/" target="_blank" rel="noopener noreferrer" class="text-zinc-200 hover:text-white underline decoration-zinc-600 underline-offset-4 hover:decoration-zinc-200 font-medium transition">@aidan.choi_</a></span>
         <span>3NF Relational CSV Engine</span>
       </div>
     </div>
@@ -432,6 +502,231 @@
     let DRAGGED_SLOT = null;
     let SELECTED_INSTS = new Set();
     let SELECTED_FITS = new Set();
+    let LANG = "en"; // 'en' | 'zh'
+    let THEME = "dark"; // 'dark' | 'light'
+
+    const I18N = {
+      en: {
+        appTitle: "JUPAS 2027 Calculator",
+        verifiedBadge: "2027 Formula Verified / Data as of 24 Nov 2026",
+        lightModeBtn: "Light Mode",
+        darkModeBtn: "Dark Mode",
+        loadDemoBtn: "Load Sample Demo",
+        shareProfileBtn: "Share Profile",
+        copiedLinkBtn: "Copied Link!",
+        autoSaved: "Auto-saved",
+        savedJustNow: "Saved just now",
+        gradesHeading: "HKDSE Grades",
+        resetBtn: "Reset",
+        coreLabel: "Core",
+        csdLabel: "CSD",
+        attained: "Attained",
+        unattained: "Unattained",
+        mextLabel: "Math Extended",
+        electivesLabel: "Electives",
+        electivePlaceholder: "Add elective (Phy, Econ, BAFS...)",
+        onboardingTitle: "New here?",
+        onboardingBody: "Load a sample HKDSE profile with pre-filled A1–E20 choices in one click, or share your plan via URL.",
+        loadSampleScores: "Load Sample DSE Scores",
+        dismissBtn: "Dismiss",
+        kpi70: "Best 5 (7.0 scale)",
+        kpi85: "Best 5 (8.5 scale)",
+        kpiEligible: "Eligible",
+        kpiSaved: "Saved Choices",
+        bandATitle: "Band A — Top 3 Choices",
+        clickToInspect: "Click to inspect",
+        tabProgrammes: "Programmes",
+        tabChoices: "My Choices (A1–E20)",
+        tabAnalysis: "Analysis",
+        searchProgPlaceholder: "Filter by JUPAS code, programme, or faculty...",
+        resetFilters: "Reset",
+        filterUniv: "Univ",
+        filterRisk: "Risk",
+        choicesHeading: "JUPAS Band Choices (A1 – E20)",
+        choicesSub: "Search in any empty slot to add. Drag the handle or use arrow keys to reorder.",
+        shareProfileLong: "Share Profile Link",
+        importCsv: "Import CSV",
+        exportCsv: "Export CSV",
+        clearAll: "Clear All",
+        analysisHeading: "Choice List Diagnostics & Safer Backups",
+        analysisSub: "Flags small-quota slots, Band A-only traps, interview requirements, and safer alternatives in the same field.",
+        saferHeading: "Safer Options in the Same Direction",
+        saferSub: "Programmes in the same institution/field where your score is at or above Median/LQ—consider as backups.",
+        reportError: "Report Data Error"
+      },
+      zh: {
+        appTitle: "2027 JUPAS 計分及志願規劃器",
+        verifiedBadge: "已核對 2027 計分公式 · 數據截至 2026年11月24日",
+        lightModeBtn: "淺色模式",
+        darkModeBtn: "深色模式",
+        loadDemoBtn: "載入示範成績",
+        shareProfileBtn: "分享個人檔案",
+        copiedLinkBtn: "已複製連結！",
+        autoSaved: "已自動儲存",
+        savedJustNow: "剛剛已儲存",
+        gradesHeading: "文憑試（HKDSE）成績",
+        resetBtn: "重設",
+        coreLabel: "核心科目",
+        csdLabel: "公社科",
+        attained: "達標",
+        unattained: "未達標",
+        mextLabel: "數學延伸部分",
+        electivesLabel: "選修科目",
+        electivePlaceholder: "搜尋選修科（物理、經濟、企會財...）",
+        onboardingTitle: "初次使用？",
+        onboardingBody: "一鍵載入示範 DSE 成績與 A1–E20 志願組合，或透過網址分享你的志願表。",
+        loadSampleScores: "一鍵載入示範成績",
+        dismissBtn: "關閉",
+        kpi70: "最佳五科（7.0 制）",
+        kpi85: "最佳五科（8.5 制）",
+        kpiEligible: "符合入學要求",
+        kpiSaved: "已儲存志願",
+        bandATitle: "Band A — 首三志願",
+        clickToInspect: "點擊查看詳情",
+        tabProgrammes: "課程一覽",
+        tabChoices: "我的志願（A1–E20）",
+        tabAnalysis: "志願分析",
+        searchProgPlaceholder: "搜尋聯招編號、課程名稱或學院...",
+        resetFilters: "重設",
+        filterUniv: "院校",
+        filterRisk: "風險",
+        choicesHeading: "聯招組別志願表（A1 – E20）",
+        choicesSub: "在空白格搜尋課程即可加入；拖曳手把或按上下箭咀調整次序。",
+        shareProfileLong: "分享檔案連結",
+        importCsv: "匯入 CSV",
+        exportCsv: "匯出 CSV",
+        clearAll: "全部清除",
+        analysisHeading: "志願診斷與較穩陣後備選擇",
+        analysisSub: "提示收生名額較少、僅取錄 Band A、面試要求及同方向較穩陣的課程。",
+        saferHeading: "同方向較穩陣選擇",
+        saferSub: "同一院校或學院中，成績達中位數或下四分位數以上的合資格課程，可作後備參考。",
+        reportError: "回報數據錯誤"
+      }
+    };
+
+    function t(key) {
+      return (I18N[LANG] && I18N[LANG][key]) || I18N.en[key] || key;
+    }
+
+    function applyTheme() {
+      const root = document.getElementById("doc-root");
+      if (!root) return;
+      if (THEME === "light") root.classList.remove("dark");
+      else root.classList.add("dark");
+      const btn = document.getElementById("theme-toggle-btn");
+      if (btn) btn.textContent = THEME === "light" ? t("darkModeBtn") : t("lightModeBtn");
+    }
+
+    function applyLanguage() {
+      const root = document.getElementById("doc-root");
+      if (root) root.lang = LANG === "zh" ? "zh-HK" : "en";
+      document.title = t("appTitle");
+
+      const setText = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+      };
+
+      const h1Span = document.querySelector("header h1");
+      if (h1Span) h1Span.textContent = t("appTitle");
+      const verBadge = document.querySelector("header span.hidden.sm\:inline-flex span:last-child");
+      if (verBadge) verBadge.textContent = t("verifiedBadge");
+
+      setText("load-demo-btn", t("loadDemoBtn"));
+      setText("copy-share-link-btn", t("shareProfileBtn"));
+      setText("saved-toast", t("autoSaved"));
+      setText("gradesHeading", t("gradesHeading"));
+      const asideH2 = document.querySelector("aside h2");
+      if (asideH2) asideH2.textContent = t("gradesHeading");
+      setText("reset-grades-btn", t("resetBtn"));
+
+      const labels = document.querySelectorAll("aside .text-\[11px\].text-zinc-500");
+      if (labels[0]) labels[0].textContent = t("coreLabel");
+      if (labels[1]) labels[1].textContent = t("mextLabel");
+      if (labels[2]) labels[2].textContent = t("electivesLabel");
+
+      const csdSpan = document.querySelector('[data-csd="Attained"]')?.parentElement?.previousElementSibling;
+      if (csdSpan) csdSpan.textContent = t("csdLabel");
+      const attBtn = document.querySelector('[data-csd="Attained"]');
+      const unattBtn = document.querySelector('[data-csd="Unattained"]');
+      if (attBtn) attBtn.textContent = t("attained");
+      if (unattBtn) unattBtn.textContent = t("unattained");
+
+      const elecSearch = document.getElementById("elective-search");
+      if (elecSearch) elecSearch.placeholder = t("electivePlaceholder");
+
+      const obTitle = document.querySelector("#onboarding-banner .font-semibold");
+      if (obTitle) obTitle.textContent = t("onboardingTitle");
+      const obBody = obTitle?.nextSibling;
+      if (obBody) obBody.textContent = " " + t("onboardingBody");
+      const trigDemo = document.querySelector('[data-trigger-demo]');
+      if (trigDemo) trigDemo.textContent = t("loadSampleScores");
+      setText("dismiss-onboarding-btn", t("dismissBtn"));
+
+      const kpiCards = document.querySelectorAll("main > section > div:nth-child(2) > div > div:first-child");
+      if (kpiCards[0]) kpiCards[0].textContent = t("kpi70");
+      if (kpiCards[1]) kpiCards[1].textContent = t("kpi85");
+      if (kpiCards[2]) kpiCards[2].textContent = t("kpiEligible");
+      if (kpiCards[3]) kpiCards[3].textContent = t("kpiSaved");
+
+      const top3Header = document.querySelector("#top3-bar")?.previousElementSibling;
+      if (top3Header) {
+        const spans = top3Header.querySelectorAll("span");
+        if (spans[0]) spans[0].textContent = t("bandATitle");
+        if (spans[1]) spans[1].textContent = t("clickToInspect");
+      }
+
+      const expBtn = document.getElementById("tab-explorer");
+      if (expBtn) expBtn.textContent = t("tabProgrammes");
+      const choSpan = document.querySelector("#tab-choices span:first-child");
+      if (choSpan) choSpan.textContent = t("tabChoices");
+      const anaSpan = document.querySelector("#tab-analysis span:first-child");
+      if (anaSpan) anaSpan.textContent = t("tabAnalysis");
+
+      const filterSearch = document.getElementById("filter-search");
+      if (filterSearch) filterSearch.placeholder = t("searchProgPlaceholder");
+      setText("clear-filters-btn", t("resetFilters"));
+
+      const univLabel = document.getElementById("filter-inst-chips")?.previousElementSibling;
+      if (univLabel) univLabel.textContent = t("filterUniv");
+      const riskLabel = document.getElementById("filter-fit-chips")?.previousElementSibling;
+      if (riskLabel) riskLabel.textContent = t("filterRisk");
+
+      const choHead = document.querySelector("#view-choices h3");
+      if (choHead) choHead.textContent = t("choicesHeading");
+      const choSub = choHead?.nextElementSibling;
+      if (choSub) choSub.textContent = t("choicesSub");
+      setText("share-profile-choices-btn", t("shareProfileLong"));
+      setText("import-choices-btn", t("importCsv"));
+      setText("export-choices-btn", t("exportCsv"));
+      setText("clear-choices-btn", t("clearAll"));
+
+      const anaHead = document.querySelector("#view-analysis h3");
+      if (anaHead) anaHead.textContent = t("analysisHeading");
+      const anaSub = anaHead?.nextElementSibling;
+      if (anaSub) anaSub.textContent = t("analysisSub");
+
+      const saferHead = document.querySelector("#view-analysis h4");
+      if (saferHead) saferHead.textContent = t("saferHeading");
+      const saferSub = saferHead?.nextElementSibling;
+      if (saferSub) saferSub.textContent = t("saferSub");
+
+      const reportLink = document.querySelector('footer a[href*="issues/new"]');
+      if (reportLink) reportLink.textContent = t("reportError");
+
+      const enBtn = document.getElementById("lang-en-btn");
+      const zhBtn = document.getElementById("lang-zh-btn");
+      if (enBtn && zhBtn) {
+        enBtn.className = LANG === "en"
+          ? "px-2 py-0.5 rounded font-medium bg-zinc-100 text-zinc-950 transition"
+          : "px-2 py-0.5 rounded font-medium text-zinc-400 hover:text-zinc-200 transition";
+        zhBtn.className = LANG === "zh"
+          ? "px-2 py-0.5 rounded font-medium bg-zinc-100 text-zinc-950 transition"
+          : "px-2 py-0.5 rounded font-medium text-zinc-400 hover:text-zinc-200 transition";
+      }
+
+      applyTheme();
+    }
     const DANGER_TIERS = ["Safe", "Low Risk", "Moderate Danger", "High Danger"];
     const ALL_FILTER_FITS = ["Safe", "Low Risk", "Moderate Danger", "High Danger", "No Data", "Critical (Ineligible)"];
 
@@ -529,6 +824,10 @@
         }
         const c = localStorage.getItem(STORAGE_CHOICES_KEY);
         if (c) STATE.choices = JSON.parse(c) || {};
+        const savedLang = localStorage.getItem("jupas2027_lang_v1");
+        if (savedLang === "en" || savedLang === "zh") LANG = savedLang;
+        const savedTheme = localStorage.getItem("jupas2027_theme_v1");
+        if (savedTheme === "dark" || savedTheme === "light") THEME = savedTheme;
       } catch (e) {}
     }
 
@@ -1590,22 +1889,53 @@
           if (b) b.classList.add("hidden");
         });
       }
+      async function copyProfileShareUrl(triggerEl) {
+        const hashStr = encodeStateToHash();
+        if (hashStr && window.history && window.history.replaceState) {
+          window.history.replaceState(null, "", hashStr);
+        }
+        const shareUrl = window.location.href;
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+          if (triggerEl) {
+            const orig = triggerEl.textContent;
+            triggerEl.textContent = t("copiedLinkBtn");
+            setTimeout(() => { triggerEl.textContent = orig; }, 1600);
+          }
+        } catch (e) {
+          prompt("Copy this shareable URL:", shareUrl);
+        }
+      }
+
       const shareBtn = document.getElementById("copy-share-link-btn");
-      if (shareBtn) {
-        shareBtn.addEventListener("click", async () => {
-          const hashStr = encodeStateToHash();
-          if (hashStr && window.history && window.history.replaceState) {
-            window.history.replaceState(null, "", hashStr);
-          }
-          const shareUrl = window.location.href;
-          try {
-            await navigator.clipboard.writeText(shareUrl);
-            const orig = shareBtn.textContent;
-            shareBtn.textContent = "Copied Link!";
-            setTimeout(() => { shareBtn.textContent = orig; }, 1600);
-          } catch (e) {
-            prompt("Copy this shareable URL:", shareUrl);
-          }
+      if (shareBtn) shareBtn.addEventListener("click", () => copyProfileShareUrl(shareBtn));
+
+      const shareChoicesBtn = document.getElementById("share-profile-choices-btn");
+      if (shareChoicesBtn) shareChoicesBtn.addEventListener("click", () => copyProfileShareUrl(shareChoicesBtn));
+
+      const langEnBtn = document.getElementById("lang-en-btn");
+      const langZhBtn = document.getElementById("lang-zh-btn");
+      if (langEnBtn) {
+        langEnBtn.addEventListener("click", () => {
+          LANG = "en";
+          try { localStorage.setItem("jupas2027_lang_v1", LANG); } catch (e) {}
+          applyLanguage();
+        });
+      }
+      if (langZhBtn) {
+        langZhBtn.addEventListener("click", () => {
+          LANG = "zh";
+          try { localStorage.setItem("jupas2027_lang_v1", LANG); } catch (e) {}
+          applyLanguage();
+        });
+      }
+
+      const themeBtn = document.getElementById("theme-toggle-btn");
+      if (themeBtn) {
+        themeBtn.addEventListener("click", () => {
+          THEME = THEME === "dark" ? "light" : "dark";
+          try { localStorage.setItem("jupas2027_theme_v1", THEME); } catch (e) {}
+          applyTheme();
         });
       }
       document.querySelectorAll(".csd-btn").forEach(btn => {
@@ -1941,6 +2271,7 @@
         setupElectiveSearch();
         renderSidebarInputs();
         renderAll();
+        applyLanguage();
       } catch (err) {
         document.getElementById("db-status").innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-red-400"></span><span class="text-red-400">Failed to load CSVs</span>`;
         console.error(err);
