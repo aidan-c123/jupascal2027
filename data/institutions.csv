@@ -1,0 +1,9 @@
+institution_id,institution_name,short_name,default_scale_id,min_eng,min_chi,min_math,requires_csd_attained,default_subject_weight
+HKU,The University of Hong Kong,HKU,SCALE_85,3,3,2,TRUE,1.0
+CUHK,The Chinese University of Hong Kong,CUHK,SCALE_85,3,3,2,TRUE,1.0
+HKUST,The Hong Kong University of Science and Technology,HKUST,SCALE_85,3,3,2,TRUE,1.0
+POLYU,The Hong Kong Polytechnic University,PolyU,SCALE_85,3,3,2,TRUE,7.0
+CITYU,City University of Hong Kong,CityU,SCALE_85,3,3,2,TRUE,1.0
+HKBU,Hong Kong Baptist University,HKBU,SCALE_70,3,3,2,TRUE,1.0
+LU,Lingnan University,Lingnan,SCALE_70,3,3,2,TRUE,1.0
+EDUHK,The Education University of Hong Kong,EdUHK,SCALE_70,3,3,2,TRUE,1.0

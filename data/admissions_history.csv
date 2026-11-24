@@ -1,0 +1,313 @@
+jupas_code,admission_year,score_uq,score_median,score_lq,scoring_notes
+JS1000,2026,,28.0,26.5,Best 5 (incl. Eng & Math)
+JS1001,2026,,29.5,28.5,Best 5 (Eng x1.5)
+JS1002,2026,,23.0,23.0,Best 5 (incl. Math)
+JS1005,2026,,22.0,22.0,Best 5 (incl. Eng & Math)
+JS1007,2026,,25.5,25.0,Best 5 (Eng x1.5)
+JS1012,2026,,24.5,24.5,Best 5 (incl. Math)
+JS1013,2026,,23.5,23.0,Best 5 (incl. Math)
+JS1014,2026,,23.5,23.0,Best 5 (incl. Math)
+JS1017,2026,,23.0,23.0,Best 5 (incl. Math)
+JS1018,2026,,24.5,23.5,Best 5 (incl. Eng & Math)
+JS1019,2026,,23.5,23.5,Best 5 (incl. Math)
+JS1026,2026,,23.0,22.5,Best 5 (incl. Math)
+JS1027,2026,,22.0,22.0,Best 5 (incl. Math)
+JS1063,2026,,,,New 2027 programme — No available data
+JS1070,2026,,30.0,29.5,3C+2X (Eng/Math x1.5)
+JS1071,2026,,28.0,27.0,"3C+2X (Math x1.5, Eng x1.25)"
+JS1072,2026,,27.0,26.5,"3C+2X (Math x1.5, Eng x1.25)"
+JS1074,2026,,27.5,27.0,"3C+2X (Math x1.5, Eng x1.25)"
+JS1120,2026,,,,New 2027 programme — No available data
+JS1201,2026,,28.5,27.5,"Best 5 (Eng/Math x1.5, M1/M2/Phy x1.25)"
+JS1204,2026,,35.0,34.0,Best 5 (Eng/Math/STEM x1.5)
+JS1205,2026,,32.5,32.0,Best 5 (Eng/Math/ICT/M1/M2/Phy x1.5)
+JS1207,2026,,31.0,30.5,Best 5 (Eng/Math/Phy x1.5)
+JS1210,2026,,30.0,30.0,"Best 5 (Math/Phy x1.5, Eng/Sci/M1/M2 x1.25)"
+JS1211,2026,,32.5,31.5,Best 5 (Eng/Bio/Chem/Phy/Math x1.5)
+JS1216,2026,,23.0,22.0,Best 5 (incl. Eng & Math)
+JS1218,2026,,33.0,32.5,Best 5 (Eng/Math/STEM x1.5)
+JS1300,2026,,43.0,34.5,3C+2X (Eng/Bio/Chem/Phy/M1/M2 x1.5)
+JS1805,2026,,33.0,32.5,3C+2X (Eng/Bio/Chem x1.5)
+JS1806,2026,,30.0,29.5,3C+2X (Eng/Bio/Chem x1.5)
+JS1807,2026,,34.5,33.5,3C+2X (Eng/Bio/Chem x1.5)
+JS2020,2026,,21.95,,Best 5 (Mean shown in Med col)
+JS2030,2026,,,,"Best 5 (Eng x1.5, Music x1.2); No available data"
+JS2050,2026,,,,"Best 5 (Eng x1.5, Music x1.2); No available data"
+JS2060,2026,,20.68,,Best 5 (Mean shown in Med col)
+JS2110,2026,,22.15,,Best 5 (Eng x1.5; Mean shown in Med col)
+JS2120,2026,,22.07,,Best 5 (Eng x1.5; Mean shown in Med col)
+JS2310,2026,,22.99,,"Best 5 (Chi x1.25, Eng x1.25; Mean shown in Med col)"
+JS2330,2026,,,,"Best 5 (Chi x1.25, Eng x1.25); No available data"
+JS2340,2026,,,,"Best 5 (Chi x1.25, Eng x1.25); No available data"
+JS2370,2026,,,,Best 5; No available data
+JS2410,2026,,,,"Best 5 (Chi x1.5, Eng x1.5, Bio x1.5, Chem x1.25)"
+JS2420,2026,,,,"Best 5 (Eng x1.5, Chem x1.5, Math x1.25, Bio x1.25)"
+JS2610,2026,,,,Best 5
+JS2660,2026,,,,Best 5
+JS2810,2026,,,,"Best 5 (Eng x1.5, VA x1.2)"
+JS2910,2026,,,,"Best 5 (Eng x1.5, Math x1.2)"
+JS2920,2026,,,,Best 5
+JS2930,2026,,,,Best 5 (Math x1.2)
+JS2940,2026,,,,"Best 5 (Eng x2.0, HMSC x1.5)"
+JS2950,2026,,,,Best 5
+JS2960,2026,,,,Best 5
+JS3000,2026,,,,No available data; Best 5 (x10/x7/x5)
+JS3003,2026,,195.5,194.0,"Best 5 (Eng/Math/BAFS/Econ x10, others x7)"
+JS3004,2026,,214.0,211.4,Best 5 + 6th bonus (Eng/Math/Phy/Chem x10)
+JS3005,2026,,235.0,235.0,Best 5 (Eng/Math/M1/M2/Phy/ICT x10)
+JS3006,2026,,247.5,245.0,Best 5 (Eng/Math/M1/M2/ICT/Phy/BAFS x10)
+JS3007,2026,,200.9,198.1,Best 5 + 6th bonus (Chi/Eng x10)
+JS3008,2026,,235.0,235.0,Best 5 (Eng/Math/M1/M2/Bio/Chem/Phy x10)
+JS3011,2026,,224.5,218.5,Best 5 (Eng/Math/Bio/Chem x10)
+JS3030,2026,,240.0,233.8,Best 5 (Eng/Math/M1/M2/Phy x10)
+JS3050,2026,,179.3,175.0,Best 5 + 6th bonus (Eng/VA/DAT x10)
+JS3060,2026,,200.0,195.5,Best 5 (Eng/Math/BAFS/Econ x10)
+JS3070,2026,,195.5,194.0,Best 5 (Eng/Math/BAFS/Econ x10)
+JS3080,2026,,189.5,187.3,Best 5 (Eng/Math/BAFS/Econ x10)
+JS3130,2026,,216.5,213.5,Best 5 (Eng/Math/M1/M2/Geog/ICT/Phy x10)
+JS3140,2026,,241.0,235.0,Best 5 (Eng/Math/M1/M2/Phy x10)
+JS3150,2026,,239.0,233.0,Best 5 (Eng/Math/Bio/Chem/Phy x10)
+JS3160,2026,,226.0,216.5,Best 5 (Eng/Bio/PE/Phy x10)
+JS3170,2026,,245.0,245.0,Best 5 (Eng/Math/M1/M2/Phy/ICT x10)
+JS3180,2026,,233.0,230.0,Best 5 (Eng/Math/M1/M2/Phy/ICT x10)
+JS3211,2026,,201.8,200.0,Best 5 (Eng/Math/M1/M2/Phy x10)
+JS3214,2026,,169.1,164.6,Best 5 + 6th bonus (Eng/Math/VA/DAT x10)
+JS3220,2026,,265.0,245.0,Best 5 (Eng/Math/M1/M2/BAFS/Econ x10)
+JS3223,2026,,245.0,235.0,Best 5 (Eng/Math/M1/M2/ICT/Phy x10)
+JS3236,2026,,220.0,215.0,Best 5 (Eng/Math/Phy/DAT/ICT x10)
+JS3237,2026,,215.0,210.3,Best 5 (Eng/Math/BAFS/Econ/ICT x10)
+JS3240,2026,,184.0,182.0,Chi & Eng + Best 3 + 6th bonus (Eng/ELIT x10)
+JS3242,2026,,259.8,244.8,Best 5 + 6th bonus (Chi/Eng/Bio x10)
+JS3243,2026,,208.6,205.8,Best 5 + 6th bonus (Chi/Eng/Math/ICT x10)
+JS3250,2026,,171.5,164.5,Best 5 (Chi/Eng x10)
+JS3255,2026,,216.5,213.5,Best 5 (Eng/Bio/Chem x10)
+JS3290,2026,,277.9,264.0,Best 5 + 6th bonus (Eng/Math/Bio/Chem/Phy x10)
+JS3310,2026,,161.0,157.5,Best 5 (Eng x10)
+JS3320,2026,,231.0,214.8,Best 5 + 6th bonus (Chi/CHist/Hist/CLit x10)
+JS3337,2026,,211.0,208.0,Best 5 (Eng/Chi/Bio/Chem x10)
+JS3375,2026,,237.5,235.0,Best 5 + 6th bonus (Eng/Math/Bio/Chem/Phy x10)
+JS3478,2026,,308.9,295.1,Best 5 + 6th bonus (Eng/Bio/Chem x10)
+JS3569,2026,,199.3,184.3,Best 5 (Eng/VA/DAT x10)
+JS3612,2026,,339.0,328.5,Best 5 + 6th bonus (Eng/Math/Bio/Chem/Phy x10)
+JS3624,2026,,284.0,275.0,Best 5 (Eng/Bio/Chem/Phy x10)
+JS3636,2026,,320.0,290.0,Best 5 (Eng/Bio/Phy x10)
+JS3648,2026,,218.0,216.5,Best 5 (Eng/Chi/Bio/Chem x10)
+JS3739,2026,,231.3,226.8,Best 5 (Eng/Math/M1/M2/Phy x10)
+JS3741,2026,,235.0,230.0,Best 5 (Eng/Math/M1/M2/Phy x10)
+JS3789,2026,,186.3,180.3,Best 5 + 6th bonus (Eng/Math/Econ/Geog x10)
+JS3791,2026,,207.2,205.3,Best 5 + 6th bonus (Eng/Math/Phy x10)
+JS3868,2026,,245.0,235.0,Best 5 (Eng/Math/M1/M2/ICT/Phy x10)
+JS4006,2026,26.0,25.0,24.5,Best 5
+JS4018,2026,31.9,30.4,29.2,Best 5 (Chi x1.2)
+JS4032,2026,28.75,28.0,27.75,Best 5 (Eng x1.5)
+JS4044,2026,27.5,26.0,24.5,Best 5
+JS4056,2026,29.0,27.5,26.5,Best 5
+JS4068,2026,26.0,24.5,23.5,Best 5
+JS4070,2026,27.1,25.9,25.6,Best 5 (Eng x1.2)
+JS4082,2026,26.0,24.5,21.5,Best 5
+JS4094,2026,24.5,23.5,23.0,Best 5 (Chi & Eng mandatory)
+JS4100,2026,30.5,30.0,29.25,"Best 5 (Chi x1.5, Eng x1.5)"
+JS4109,2026,26.0,25.75,25.5,Best 5 (Eng x1.25)
+JS4123,2026,26.0,24.5,23.0,Best 5
+JS4136,2026,24.75,24.5,24.0,Best 5 (Eng x1.25)
+JS4202,2026,29.0,27.5,27.5,Best 5
+JS4214,2026,39.5,38.0,36.5,Best 5
+JS4226,2026,26.0,26.0,24.5,Best 5
+JS4238,2026,43.75,42.5,41.125,"Best 5 (Math/M1/M2 x1.5, Eng/Chem/Econ/ICT/Phy x1.25)"
+JS4240,2026,29.0,27.5,26.0,Best 5
+JS4252,2026,54.75,53.25,52.5,"Best 5 (Eng x2, Math x2, STEM/Econ x1.5)"
+JS4254,2026,35.0,33.5,33.5,Best 5 (Eng mandatory)
+JS4264,2026,39.0,37.5,36.0,Best 5 (Eng x2; Chi/Eng/Math mandatory)
+JS4276,2026,59.25,57.75,56.25,"Best 5 (Eng x2, Math x2, STEM/Econ x1.5)"
+JS4320,2026,29.0,26.0,25.0,Best 5
+JS4329,2026,29.0,27.5,27.5,Best 5
+JS4331,2026,43.5,42.0,39.0,Best 5 (Chi x2 mandatory)
+JS4343,2026,42.0,42.0,39.0,Best 5 (Eng x2 mandatory)
+JS4361,2026,57.5,57.5,54.5,"Best 5 (Math x2, M1/M2 x2)"
+JS4372,2026,24.5,23.5,22.0,Best 5
+JS4386,2026,36.25,34.0,33.25,Best 5 (Math/M1/M2/STEM x1.5)
+JS4408,2026,37.25,36.625,35.75,Best 5 (Math/M1/M2/Phy x1.5)
+JS4412,2026,45.875,43.25,42.25,"Best 5 (M1/M2 x1.75, Math/STEM x1.5)"
+JS4416,2026,59.0,57.5,55.25,"Best 5 (Math/M1/M2 x2, STEM/Econ x1.5)"
+JS4428,2026,44.25,43.0,41.875,"Best 5 (Math/M1/M2 x1.75, STEM/Econ x1.5)"
+JS4434,2026,37.0,36.25,35.0,Best 5 (Math/M1/M2/Phy x1.5)
+JS4446,2026,52.5,49.75,49.0,"Best 5 (Math x2, M1/M2 x1.75, STEM x1.5)"
+JS4458,2026,35.75,34.25,34.0,Best 5 (Math/M1/M2/STEM x1.5)
+JS4460,2026,45.75,43.5,42.5,Best 5 (Eng/Math/Bio/Chem/Phy x1.5)
+JS4462,2026,38.5,35.5,34.75,Best 5 (Math/M1/M2/STEM x1.5)
+JS4468,2026,56.75,53.125,52.0,"Best 5 (Math/M1/M2 x1.75, STEM x1.5)"
+JS4470,2026,29.875,29.125,28.625,Best 5 (Math/M1/M2/Chem/Phy x1.25)
+JS4472,2026,,,,New 2027 programme — No available data
+JS4501,2026,38.0,37.0,36.0,6 Graded Subjects (7.0 scale)
+JS4502,2026,42.0,41.0,40.0,6 Graded Subjects (7.0 scale)
+JS4513,2026,30.4,28.9,27.6,Best 5 (Best Sci x1.2)
+JS4525,2026,35.0,33.5,33.5,Best 5
+JS4537,2026,35.75,34.25,34.25,Best 5 (Eng/Math/Bio/Chem/Econ/HMSC x1.5)
+JS4542,2026,32.0,32.0,32.0,Best 5
+JS4550,2026,43.25,42.5,41.0,Best 5 (Eng/Bio/Chem x1.5)
+JS4601,2026,43.75,41.5,39.75,"Best 5 (M1/M2/Sci x2, Eng/Math x1.5)"
+JS4648,2026,53.75,49.25,47.0,"Best 5 (Eng/Math/M1/M2/Sci x2, Geog x1.5)"
+JS4682,2026,60.75,57.75,56.25,Best 5 (M1/M2 x3.5)
+JS4690,2026,52.0,46.75,45.25,"Best 5 (Phy x2, Math/M1/M2 x1.5)"
+JS4719,2026,47.5,46.0,44.5,Best 5 (Math/M1/M2 x2)
+JS4725,2026,35.25,35.25,35.0,Best 5 (Best 2 of Eng/Bio/Chem x1.5)
+JS4733,2026,65.5,60.5,59.75,"Best 5 (Math/M1/M2 x2, STEM x1.5)"
+JS4750,2026,47.5,42.75,41.75,"Best 5 (M1/M2/Geog/Phy x2, Math x1.5)"
+JS4760,2026,40.0,38.5,38.0,"Best 5 (M1/M2 x2, Math/Econ/ICT x1.5)"
+JS4801,2026,29.15,28.1,27.65,Best 5 (Eng x1.3)
+JS4812,2026,33.75,32.75,31.5,Best 5 (Eng x1.5)
+JS4824,2026,36.75,33.75,32.25,Best 5 (Math/STEM/Econ x1.5)
+JS4836,2026,29.375,28.25,28.25,"Best 5 (Eng x1.5, Geog x1.5)"
+JS4838,2026,26.5,26.0,26.0,Best 5
+JS4848,2026,31.25,29.75,29.3,"Best 5 (Eng x1.5, Chi x1.25)"
+JS4850,2026,30.5,29.0,27.5,"Best 5 (Eng x1.3, Chi x1.3)"
+JS4862,2026,37.5,34.0,33.0,"Best 5 (Eng x1.5, Math x1.5)"
+JS4874,2026,29.5,28.0,26.5,Best 5
+JS4886,2026,28.0,27.25,26.5,Best 5 (Eng x1.5)
+JS4892,2026,29.5,28.5,27.25,Best 5 (Eng x1.5)
+JS4893,2026,27.5,26.0,25.0,Best 5
+JS4898,2026,32.0,27.5,26.0,Best 5
+JS4903,2026,32.0,29.0,27.5,Best 5 (Eng mandatory)
+JS5101,2026,,38.44,35.25,Eng + Math + Best 2 Sci/M1/M2 + Best 1
+JS5102,2026,,37.5,35.63,1.5x Eng + Math + Phy/M1/M2 x2 + Bio/Chem x1.5
+JS5103,2026,,36.75,34.5,1.5x Eng + Math + Bio/Chem x2 + Phy/M1/M2 x1.5
+JS5118,2026,,45.0,43.88,1.5x Eng + Math + Bio/Chem x2 + Phy/M1/M2 x1.5
+JS5181,2026,,40.13,38.28,1.5x Eng + Math + Phy/M1/M2 x2 + Bio/Chem x1.5
+JS5212,2026,,49.3,48.3,"2x Eng + 2x Math + Phy/M1/M2 x2, ICT x1.5"
+JS5220,2026,,49.0,48.0,"2x Eng + 2x Math + Sci/M1/M2 x2, ICT x1.5"
+JS5230,2026,,46.8,45.88,"2x Eng + 2x Math + Chem/Phy/M1/M2 x2, ICT x1.5"
+JS5240,2026,,55.65,53.94,"2x Eng + 2x Math + Phy/M1/M2 x2, ICT x1.5"
+JS5250,2026,,50.64,48.88,"2x Eng + 2x Math + Phy/M1/M2 x2, ICT x1.5"
+JS5260,2026,,45.0,43.8,"2x Eng + 2x Math + Phy/M1/M2 x2, ICT x1.5"
+JS5270,2026,,49.53,47.35,"2x Eng + 2x Math + Sci x2, M1/M2 x1.5"
+JS5282,2026,,54.24,50.84,"2x Eng + 2x Math + Sci x2, ICT/M1/M2 x1.5"
+JS5300,2026,,37.0,36.9,2x Eng + 2x Math + Best 3
+JS5311,2026,,38.23,36.9,2x Eng + 2x Math + Best 3
+JS5312,2026,,44.16,43.31,2x Eng + 2x Math + Best 3 (Chem/Econ/Phy/M1/M2 x1.5)
+JS5313,2026,,53.23,50.79,2x Eng + 2x Math + Best 3
+JS5314,2026,,38.23,37.04,2x Eng + 2x Math + Best 3
+JS5315,2026,,35.05,35.05,2x Eng + 2x Math + Best 3
+JS5316,2026,,35.5,35.4,2x Eng + 2x Math + Best 3
+JS5317,2026,,35.05,35.05,2x Eng + 2x Math + Best 3
+JS5318,2026,,37.23,35.82,2x Eng + 2x Math + Best 3
+JS5331,2026,,47.25,45.75,2x Eng + 2x Math + Best 3 (Chem/Econ/Phy/M1/M2 x1.5)
+JS5332,2026,,58.5,57.38,2x Eng + 2x Math + Best 3 (Chem/Econ/Phy/M1/M2 x1.5)
+JS5411,2026,,30.99,30.3,2x Eng + 1.5x Chi + Best 3
+JS5412,2026,,36.0,35.5,2x Eng + 2x Math + Best 3 (M1/M2 x1.5)
+JS5711,2026,,36.0,35.28,"2x Eng + 2x Math + Sci/DAT x2, M1/M2 x1.5"
+JS5712,2026,,,,New 2027 programme — No available data; 2x Eng + 2x Math + Best 3
+JS5811,2026,,39.28,37.13,2x Eng + 2x Math + Bio/Chem x1.5 + Best 2
+JS5812,2026,,33.53,32.05,2x Eng + 2x Math + Best 3
+JS5813,2026,,47.05,44.85,"2x Eng + 2x Math + M1/M2 x2, Sci/Econ x1.5"
+JS5814,2026,,47.25,46.69,2x Eng + 2x Math + Best 3 (M1/M2 x1.5)
+JS5822,2026,,41.25,40.03,2x Eng + 2x Math + Best 3 (Chem/Econ/Phy/M1/M2 x1.5)
+JS5901,2026,,59.59,57.77,"2x Eng + 2x Math + Sci x2, M1/M2 x1.5"
+JS6004,2026,31,29,27,Best 5 Subjects
+JS6016,2026,32,31,29,Best 5 Subjects
+JS6028,2026,34,25,25,Best 5 Subjects
+JS6042,2026,31,31,29,Best 5 Subjects
+JS6054,2026,39,37,36,2x Eng + Best 4 (Chi x1.5)
+JS6066,2026,38,36,35,1.5x Eng + Best 4
+JS6078,2026,41,38,36,Eng + Best 5
+JS6080,2026,35,35,35,1.5x Chi + Best 4
+JS6092,2026,29,27,27,1.5x Eng + Best 4
+JS6107,2026,47,46,44,Best of Bio/Chem x1.3 + Best 5
+JS6119,2026,47,45,45,Eng + 1.5x Math + 1.5x Best Sci + Best 2
+JS6133,2026,,,,New 2027 programme — No available data
+JS6157,2026,35,35,34,Best 5 Subjects
+JS6200,2026,37,35,35,Eng + Math + Best 3
+JS6224,2026,34,32,31,Eng + Math + Best 3
+JS6236,2026,,,,No available data (Insufficient Reference Data)
+JS6248,2026,35,34,34,Eng + Math + Best 3
+JS6250,2026,35,31,29,Best 5 Subjects
+JS6274,2026,39,38,37,2x Eng + Best 4 (Chi x1.5)
+JS6286,2026,38,34,32,2x Eng + Best 4 (Chi x1.5)
+JS6298,2026,47,45,44,2x Eng + 1.5x Math + Best 3 (STEM x1.5)
+JS6303,2026,41,40,38,Eng + Math + Best 3
+JS6315,2026,31,31,31,Eng + Math + Best 3
+JS6339,2026,32,31,29,Eng + Math + Best 3
+JS6353,2026,32,29,28,Eng + Math + Best 3
+JS6365,2026,,,,New 2027 programme — No available data
+JS6377,2026,35,35,34,Eng + Math + Best 3
+JS6406,2026,36,35,35,Eng + Best 5
+JS6418,2026,38,37,36,Best 5 + 0.5x 6th Best Subject
+JS6456,2026,45,45,44,Best 6; Chemistry mandatory
+JS6468,2026,28,28,26,Best 5 + 0.5x 6th Best Subject
+JS6482,2026,35,34,33,Best 5 + 0.5x 6th Best Subject
+JS6494,2026,41,41,41,Best 6 Subjects
+JS6602,2026,55,53,52,2x Eng + 2x Math + Best 3 (STEM x2)
+JS6626,2026,51,50,48,Best 6; Chemistry mandatory
+JS6688,2026,46,43,42,Eng + 1.3x Math + 1.3x Best 2 Sci/M1/M2 + Best 1
+JS6705,2026,31,31,29,Best 5 Subjects
+JS6717,2026,31,29,28,Best 5 Subjects
+JS6729,2026,38,36,36,1.2x Eng + 1.2x Math + 1.2x M1/M2 + Best 2
+JS6731,2026,28,27,26,Best 5 Subjects
+JS6743,2026,,,,New 2027 programme — No available data
+JS6755,2026,38,38,37,1.5x Eng + 1.5x Math + Best 3 + 0.2x 6th
+JS6767,2026,42,41,40,1.5x Eng + 1.5x Math + Best 3 + 0.2x 6th
+JS6779,2026,37,36,36,1.5x Math + Best 4
+JS6781,2026,38,37,36,1.5x Eng + 1.5x Math + Best 3 + 0.2x 6th
+JS6793,2026,37,35,35,1.5x Eng + 1.5x Math + Best 3 + 0.2x 6th
+JS6808,2026,48,47,45,1.5x Eng + 1.5x Math + Best 4 + 0.2x 7th
+JS6810,2026,39,38,36,Best 6 Subjects
+JS6822,2026,36,33,31,1.5x Eng + Best 4
+JS6846,2026,35,35,35,1.5x Eng + 1.5x Math + Best 3 + 0.2x 6th
+JS6858,2026,59,56,54,2x Eng + 2x Math/M1/M2 + 2x Best Sci + Best 3
+JS6860,2026,49,48,48,1.5x Eng + 1.5x Math + Best 4 + 0.2x 7th
+JS6884,2026,52,51,50,1.5x Eng + 1.25x Math + 1.25x M1/M2 + Best 3 + 0.2x 7th
+JS6896,2026,55,54,53,1.5x Eng + 1.5x Math + Best 4 + 0.2x 7th
+JS6901,2026,42,41,39,Eng + 1.5x Math + 1.5x Best Sci + Best 2
+JS6925,2026,32,31,29,Eng + Math + Best 3
+JS6937,2026,34,34,32,Eng + Math + Best 3
+JS6949,2026,41,39,38,Best 6 Subjects
+JS6987,2026,32,32,31,Eng + Math + Best 3
+JS6999,2026,34,33,32,Eng + Math + Best 3
+JS7101,2026,,28.77,26.28,"Best 5 (Chi x2, CHist/CLit x1.5)"
+JS7123,2026,,29.0,27.5,"Best 5 (Eng x1.5, Geog/Econ x1.5)"
+JS7133,2026,,27.5,24.5,"Best 5 (Eng x1.5, VA/DAT/ICT x1.5)"
+JS7204,2026,,27.1,25.05,"Best 5 (Eng x1.5, Chi x1.5)"
+JS7211,2026,,33.5,30.05,"Best 5 (Eng x2, Math x1.5, BAFS/Econ x1.5)"
+JS7212,2026,,34.0,31.5,"Best 5 (Eng x2, Math x1.5, ICT/BAFS/Econ x1.5)"
+JS7213,2026,,34.15,31.5,"Best 5 (Eng x2, Math x1.5, BAFS/Econ x1.5)"
+JS7214,2026,,33.0,30.05,"Best 5 (Eng x2, Math x1.5, BAFS/Econ x1.5)"
+JS7215,2026,,32.1,30.05,"Best 5 (Eng x2, Math x1.5, BAFS/Econ x1.5)"
+JS7216,2026,,34.05,30.05,"Best 5 (Eng x2, Math x1.5, BAFS/Econ x1.5)"
+JS7225,2026,,38.0,35.0,"Best 5 (Eng x2, Math x2, M1/M2/ICT x2)"
+JS7301,2026,,30.0,26.5,"Best 5 (Eng x1.5, Math x1.5, Econ x1.5)"
+JS7302,2026,,31.0,30.0,"Best 5 (Eng x1.5, Hist/Geog/Econ x1.5)"
+JS7303,2026,,27.5,27.0,"Best 5 (Eng x1.5, Bio/Math x1.5)"
+JS7304,2026,,27.0,25.4,"Best 5 (Eng x1.5, Chi x1.5)"
+JS7305,2026,,28.5,21.5,"Best 5 (Eng x1.5, HMSC/Bio x1.5)"
+JS7306,2026,,27.0,26.0,"Best 5 (Eng x1.5, Econ/Hist/Geog x1.5)"
+JS7307,2026,,28.5,26.0,"Best 5 (Eng x1.5, Math x1.5, ICT/M1/M2 x1.5)"
+JS7503,2026,,32.15,28.15,"Best 5 (Eng x2, ELIT x1.5)"
+JS7606,2026,,28.2,25.15,"Best 5 (Eng x1.5, Chi x1.5)"
+JS7709,2026,,28.6,26.8,"Best 5 (Eng x1.5, Hist/CHist x1.5)"
+JS7802,2026,,30.5,28.0,"Best 5 (Eng x1.5, Chi x1.5)"
+JS7905,2026,,30.5,27.0,"Best 5 (Eng x1.5, VA x1.5)"
+JS8001,2026,,20.0,20.0,Best 5 (Music x1.5)
+JS8002,2026,,23.0,22.5,Best 5 (Visual Arts x1.5)
+JS8003,2026,,28.0,27.0,Best 5 (Chi/Eng/CLit/ICT x1.5)
+JS8004,2026,,24.5,23.5,Best 5 (Eng/ICT/ELit x1.5)
+JS8005,2026,,27.0,27.0,Best 5 (CHist/Hist x1.5)
+JS8006,2026,,24.5,24.0,Best 5 (Chi/Eng x1.5)
+JS8007,2026,,23.5,23.0,Best 5 (BAFS/Econ x1.5)
+JS8008,2026,,28.0,27.8,Best 5 (Math/M1/M2/ICT/Bio/Chem/Phy x1.5)
+JS8009,2026,,27.3,26.5,Best 5 (Math/M1/M2/Phy x1.5)
+JS8010,2026,,23.0,21.0,Best 5 (PE x1.5)
+JS8011,2026,,24.9,24.7,"Best 5 (Chem/Bio x1.5, Phy x1.2, Math/M1/M2/Geog x1.1)"
+JS8012,2026,,27.5,26.5,"Best 5 (2027 revised: Eng x1.5, Geog x1.75)"
+JS8013,2026,,23.0,22.5,Best 5 (Best 1 of CHist/Econ/Geog/Hist x1.5)
+JS8507,2026,,18.0,17.0,Best 5 (Chi/Eng x1.5)
+JS8651,2026,,21.0,21.0,Best 5 (No subject weighting)
+JS8663,2026,,24.0,23.5,Best 5 (Chi/Eng x1.5)
+JS8674,2026,,25.0,24.5,Best 5 (Chi/CLit/ICT x1.5)
+JS8675,2026,,22.5,22.5,Best 5 (Eng/ICT/ELit x1.5)
+JS8685,2026,,21.5,21.5,Best 5 (Music x1.5)
+JS8686,2026,,22.5,22.4,Best 5 (Visual Arts x1.5)
+JS8687,2026,,28.0,28.0,Best 5 (Chi/Eng/CHist/DAT/Hist/VA x1.5)
+JS8688,2026,,20.0,20.0,Best 5 (No subject weighting)
+JS8702,2026,,26.6,26.4,"Best 5 (2027 revised: Bio/Chem/Phy x1.6, Math/M1/M2 x1.4, Geog x1.2)"
+JS8714,2026,,27.0,26.5,Best 5 (Math/M1/M2/Bio/Chem/Phy/DAT/ICT x1.5)
+JS8726,2026,,29.5,28.5,"Best 5 (Bio/PE x2, Eng/Math/M1/M2/DAT/ICT x1.5)"
+JS8727,2026,,28.0,27.0,Best 5 (Chi/Eng x1.5)

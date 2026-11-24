@@ -1,0 +1,24 @@
+subject_code,subject_name,category
+ENG,English Language,CORE
+CHI,Chinese Language,CORE
+MATH,Mathematics (Compulsory),CORE
+CSD,Citizenship and Social Development,CSD
+M1,Mathematics Extended Part (Module 1),MATH_EXT
+M2,Mathematics Extended Part (Module 2),MATH_EXT
+PHY,Physics,ELECTIVE
+CHEM,Chemistry,ELECTIVE
+BIO,Biology,ELECTIVE
+ECON,Economics,ELECTIVE
+BAFS,Business Accounting and Financial Studies,ELECTIVE
+ICT,Information and Communication Technology,ELECTIVE
+HIST,History,ELECTIVE
+CHIST,Chinese History,ELECTIVE
+GEOG,Geography,ELECTIVE
+DAT,Design and Applied Technology,ELECTIVE
+HMSC,Health Management and Social Care,ELECTIVE
+TL_FST,Technology and Living (Food Science and Technology),ELECTIVE
+CLIT,Chinese Literature,ELECTIVE
+ELIT,Literature in English,ELECTIVE
+MUSIC,Music,ELECTIVE
+VA,Visual Arts,ELECTIVE
+PE,Physical Education,ELECTIVE
