@@ -1,10 +1,12 @@
 # JUPAS 2027 Calculator
 
-An interactive client-side JUPAS 2027 admissions score calculator, A1–E20 band choice planner, and risk diagnostic dashboard hosted on GitHub Pages, backed by normalized 3NF CSV data tables.
+**Live Site:** [https://jupascal.pages.dev](https://jupascal.pages.dev)
+
+An interactive client-side JUPAS 2027 admissions score calculator, A1–E20 band choice planner, and risk diagnostic dashboard, backed by normalized 3NF CSV data tables.
 
 ## Key Features
 
-* **HKDSE Score & Eligibility Engine:** Calculates programme-specific scores (`BEST_5`, `BEST_6`, `3C2X`, `4C2X`, subject weightings, and extra elective bonuses), checks core/elective/language/CSD/compulsory-elective eligibility rules, and provides an interactive formula breakdown (`Base + Weightings + Extra Bonus = Total`).
+* **HKDSE Score & Eligibility Engine:** Calculates programme-specific scores (`BEST_5`, `BEST_6`, `3C2X`, `4C2X`, subject weightings, and extra elective bonuses), checks core/elective/language/CSD/compulsory-elective eligibility rules across all Category A and Category C subjects, and provides an interactive formula breakdown (`Base + Weightings + Extra Bonus = Total`).
 * **A1–E20 Choice Planner & Risk Diagnostics:** Supports adding, dragging/reordering, moving up/down, and importing/exporting choices across Bands A–E, with band-adjusted risk tiers (`Safe`, `Low Risk`, `Moderate Danger`, `High Danger`, `Ineligible`, `No Data`), an **Analysis** tab for diagnostics and safer same-direction backups, a sticky **Quick Tweak** bar, and one-click sample demo loading.
 * **Persistence, Sharing & Theme Controls:** Automatically saves grades and choices to `localStorage`, encodes state into shareable `#s=...` URL hashes, includes a responsive mobile card view (`< 768px`) alongside the desktop table, supports Dark and Light mode toggling, and provides CSV integrity validation via `validate_csv.py`.
 
@@ -18,7 +20,7 @@ An interactive client-side JUPAS 2027 admissions score calculator, A1–E20 band
 * `data/admissions_history.csv` — Historical admission score benchmarks (`score_uq`, `score_median`, `score_lq`, and notes), including 2026 reference figures.
 * `data/institutions.csv` — 8 UGC institutions (`HKU`, `CUHK`, `HKUST`, `PolyU`, `CityUHK`, `HKBU`, `Lingnan University`, and `EdUHK`) and default baseline requirements.
 * `data/grade_scales.csv` — Point mappings across grade scales (including 7.0 and 8.5 scales).
-* `data/subjects.csv` — Core, Math Extended (`M1`/`M2`), and elective subject metadata.
+* `data/subjects.csv` — All HKDSE Category A (Core, Math Extended `M1`/`M2`, and Electives) and Category C (Other Languages) subjects.
 
 ## Data Provenance & Disclaimer
 
