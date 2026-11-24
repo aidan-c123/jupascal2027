@@ -1,0 +1,25 @@
+name: Validate JUPAS CSV Integrity
+
+on:
+  push:
+    paths:
+      - 'data/*.csv'
+      - 'validate_csv.py'
+  pull_request:
+    paths:
+      - 'data/*.csv'
+      - 'validate_csv.py'
+
+jobs:
+  validate-csv:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pandas
+        run: pip install pandas
+      - name: Run 3NF CSV Integrity Validator
+        run: python validate_csv.py
