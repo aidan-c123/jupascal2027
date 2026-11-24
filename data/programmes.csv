@@ -1,313 +1,313 @@
-jupas_code,institution_id,faculty,programme_name,formula_type,scale_override_id,bonus_extra_elective_weight,min_eng_override,min_chi_override,min_math_override
-JS1000,CITYU,Business,BSc Computational Finance and Financial Technology,BEST_5,,0.0,,,4
-JS1001,CITYU,Business,BBA Global Business,BEST_5,,0.0,,,3
-JS1002,CITYU,Business,BBA Accountancy,BEST_5,,0.0,,,3
-JS1005,CITYU,Business,BBA Management,BEST_5,,0.0,,,3
-JS1007,CITYU,Business,BBA Marketing,BEST_5,,0.0,,,3
-JS1012,CITYU,Business,Economics and Finance,BEST_5,,0.0,,,3
-JS1013,CITYU,Business,BBA Business Economics,BEST_5,,0.0,,,3
-JS1014,CITYU,Business,BBA Finance,BEST_5,,0.0,,,3
-JS1017,CITYU,Business,Intelligent Information Systems,BEST_5,,0.0,,,3
-JS1018,CITYU,Business,BBA Global Business Systems Management,BEST_5,,0.0,,,3
-JS1019,CITYU,Business,BBA Artificial Intelligence in Business,BEST_5,,0.0,,,3
-JS1026,CITYU,Business,BBA Business Decision Analytics,BEST_5,,0.0,,,3
-JS1027,CITYU,Business,BBA Global Operations Management,BEST_5,,0.0,,,3
-JS1063,CITYU,Law & Computing,LLB and BSc Computer Science (AI) (Double Degree),BEST_5,,0.0,5,,3
-JS1070,CITYU,Computing,"AI, Computing and Transformation (ACT)",3C2X,,0.0,,,3
-JS1071,CITYU,Computing,Data Science,3C2X,,0.0,,,3
-JS1072,CITYU,Computing,BSc Data Science,3C2X,,0.0,,,3
-JS1074,CITYU,Computing,BSc Data and Systems Engineering,3C2X,,0.0,,,3
-JS1120,CITYU,Liberal Arts & Social Sci,Social and Arts Global Excellence (SAGE),BEST_5,,0.0,,,
-JS1201,CITYU,Engineering,Architecture and Civil Engineering,BEST_5,,0.0,,,3
-JS1204,CITYU,Computing,BSc Computer Science,BEST_5,,0.0,,,3
-JS1205,CITYU,Engineering,Electrical Engineering,BEST_5,,0.0,,,3
-JS1207,CITYU,Engineering,Mechanical Engineering,BEST_5,,0.0,,,
-JS1210,CITYU,Engineering,BEng Materials Science and Engineering,BEST_5,,0.0,,,
-JS1211,CITYU,Biomedicine,BEng Biomedical Engineering,BEST_5,,0.0,,,
-JS1216,CITYU,Engineering,BEng Intelligent Manufacturing Engineering,BEST_5,,0.0,,,
-JS1218,CITYU,Computing,BSc Cybersecurity,BEST_5,,0.0,,,3
-JS1300,CITYU,Biomedicine,Integrative Bioscience & Bioengineering (Bio3),3C2X,,0.0,,,3
-JS1805,CITYU,Biomedicine,Biomedical Sciences,3C2X,,0.0,,,3
-JS1806,CITYU,Biomedicine,BSc Biological Sciences,3C2X,,0.0,,,3
-JS1807,CITYU,Biomedicine,BSc Biomedical Sciences,3C2X,,0.0,,,3
-JS2020,HKBU,Arts,Bachelor of Arts (Hons),BEST_5,,0.0,,,
-JS2030,HKBU,Creative Arts,BA (Hons) in Music,BEST_5,,0.0,,,
-JS2050,HKBU,Creative Arts,BMus (Hons) in Creative Industries,BEST_5,,0.0,,,
-JS2060,HKBU,Creative Arts,BA / BMus (Hons) (Music / Creative Industries),BEST_5,,0.0,,,
-JS2110,HKBU,Business,BBA (Hons) - Accounting Concentration,BEST_5,,0.0,,,
-JS2120,HKBU,Business,Bachelor of Business Administration (Hons),BEST_5,,0.0,,,
-JS2310,HKBU,Communication,BComm (Hons) (Journalism & Digital Media / PR & Adv),BEST_5,,0.0,,,
-JS2330,HKBU,Creative Arts,BA (Hons) in Film and Television,BEST_5,,0.0,,,
-JS2340,HKBU,Creative Arts,BFA (Hons) in Acting for Global Screen,BEST_5,,0.0,,,
-JS2370,HKBU,Communication,BComm (Hons) in Game Design and Animation,BEST_5,,0.0,,,
-JS2410,HKBU,Chinese Medicine,Bachelor of Chinese Medicine & BSc (Hons) in Biomedical Sci,BEST_5,,0.0,,,
-JS2420,HKBU,Chinese Medicine,BPharm (Hons) in Chinese Medicine and Pharmaceutical Sci,BEST_5,,0.0,,,
-JS2610,HKBU,Social Sciences,BA / BSocSc (Hons) (Social Sciences Broad-based),BEST_5,,0.0,,,
-JS2660,HKBU,Social Sciences,Bachelor of Social Work (Hons),BEST_5,,0.0,,,
-JS2810,HKBU,Creative Arts,BA (Hons) in Visual Arts,BEST_5,,0.0,,,
-JS2910,HKBU,Interdisciplinary,BSc (Hons) in Business Analytics and AI,BEST_5,,0.0,,,
-JS2920,HKBU,Interdisciplinary,BASc (Hons) in Arts and Technology,BEST_5,,0.0,,,
-JS2930,HKBU,Interdisciplinary,BA (Hons) in Business Administration (Global Entertainment),BEST_5,,0.0,,,
-JS2940,HKBU,Interdisciplinary,BSocSc / BSc (Hons) in Innovation in Health & Social Well-Being,BEST_5,,0.0,,,
-JS2950,HKBU,Interdisciplinary,BAST (Hons) in Individualised Major,BEST_5,,0.0,,,
-JS2960,HKBU,Interdisciplinary,BASc (Hons) in Digital Futures and Humanities,BEST_5,,0.0,,,
-JS3000,POLYU,Interdisciplinary,Interdisciplinary Studies - Bachelor's Degree Scheme,BEST_5,,0.0,,,
-JS3003,POLYU,Business,Business Administration - Bachelor's Degree Scheme,BEST_5,,0.0,,,
-JS3004,POLYU,Construction & Env,Construction and Environment - Bachelor's Degree Scheme,BEST_5,,0.0,,,
-JS3005,POLYU,Engineering,Engineering - Bachelor's Degree Scheme,BEST_5,,0.0,,,
-JS3006,POLYU,Computer & Math Sci,Computer and Mathematical Sciences - Bachelor's Degree Scheme,BEST_5,,0.0,,,
-JS3007,POLYU,Humanities,Humanities - Bachelor's Degree Scheme,BEST_5,,0.0,,,
-JS3008,POLYU,Science,Science - Bachelor's Degree Scheme,BEST_5,,0.0,,,
-JS3011,POLYU,Science,Biotechnology and Chemical Technology - BSc (Hons) Scheme,BEST_5,,0.0,,,
-JS3030,POLYU,Science,Physics with Secondary Major in AIDA / IE - BSc (Hons),BEST_5,,0.0,,,
-JS3050,POLYU,Fashion & Textiles,Fashion - BA (Hons) Scheme,BEST_5,,0.0,,,
-JS3060,POLYU,Business,Accounting and Finance - BBA (Hons) Scheme,BEST_5,,0.0,,,
-JS3070,POLYU,Business,"Global Business & Logistics, Aviation, Maritime & SCM - BBA",BEST_5,,0.0,,,
-JS3080,POLYU,Business,Management and Marketing - BBA (Hons) Scheme,BEST_5,,0.0,,,
-JS3130,POLYU,Construction & Env,Spatial Data Science and Smart Cities - BSc (Hons) Scheme,BEST_5,,0.0,,,
-JS3140,POLYU,Engineering,Aviation Engineering - BEng (Hons) Scheme,BEST_5,,0.0,,,
-JS3150,POLYU,Engineering,Biomedical Engineering - BSc (Hons),BEST_5,,0.0,,,
-JS3160,POLYU,Health & Social Sci,Sports Science and Technology - BSc (Hons),BEST_5,,0.0,,,
-JS3170,POLYU,Engineering,Electrical Engineering - BEng (Hons) Scheme,BEST_5,,0.0,,,
-JS3180,POLYU,Engineering,Information and AI Engineering - BEng/BSc (Hons) Scheme,BEST_5,,0.0,,,
-JS3211,POLYU,Construction & Env,Building Sciences and Engineering - BEng (Hons),BEST_5,,0.0,,,
-JS3214,POLYU,Construction & Env,Architectural Studies - BSc (Hons),BEST_5,,0.0,,,
-JS3220,POLYU,Computer & Math Sci,Applied Mathematics and Finance Analytics - BSc (Hons) Scheme,BEST_5,,0.0,,,
-JS3223,POLYU,Computer & Math Sci,Data Science and Artificial Intelligence - BSc (Hons) Scheme,BEST_5,,0.0,,,
-JS3236,POLYU,Engineering,Product Innovation and Smart Manufacturing - BEng Scheme,BEST_5,,0.0,,,
-JS3237,POLYU,Engineering,Intelligent Supply Chain and Engineering Mgmt - BSc Scheme,BEST_5,,0.0,,,
-JS3240,POLYU,Humanities,English and Applied Linguistics - BA (Hons),BEST_5,,0.0,,,
-JS3242,POLYU,Humanities,Speech Therapy - BSc (Hons),BEST_5,,0.0,,,
-JS3243,POLYU,Humanities,Language Science and Technology - BSc (Hons),BEST_5,,0.0,,,
-JS3250,POLYU,Health & Social Sci,Applied Social Sciences - BA (Hons) Scheme,BEST_5,,0.0,,,
-JS3255,POLYU,Science,Food Science and Nutrition - BSc (Hons) Scheme,BEST_5,,0.0,,,
-JS3290,POLYU,Health & Social Sci,Optometry - BSc (Hons),BEST_5,,0.0,,,
-JS3310,POLYU,Hotel & Tourism,Hotel and Tourism Management - BSc (Hons) Scheme,BEST_5,,0.0,,,
-JS3320,POLYU,Humanities,Chinese History and Culture - BA (Hons),BEST_5,,0.0,,,
-JS3337,POLYU,Health & Social Sci,Mental Health Nursing - BSc (Hons),BEST_5,,0.0,,,
-JS3375,POLYU,Construction & Env,Environmental Engineering & Sustainable Dev - BEng (Hons),BEST_5,,0.0,,,
-JS3478,POLYU,Health & Social Sci,Medical Laboratory Science - BSc (Hons),BEST_5,,0.0,,,
-JS3569,POLYU,Design,Design - BA (Hons) Scheme,BEST_5,,0.0,,,
-JS3612,POLYU,Health & Social Sci,Radiography - BSc (Hons),BEST_5,,0.0,,,
-JS3624,POLYU,Health & Social Sci,Occupational Therapy - BSc (Hons),BEST_5,,0.0,,,
-JS3636,POLYU,Health & Social Sci,Physiotherapy - BSc (Hons),BEST_5,,0.0,,,
-JS3648,POLYU,Health & Social Sci,Nursing - BSc (Hons),BEST_5,,0.0,,,
-JS3739,POLYU,Construction & Env,Civil Engineering - BEng (Hons),BEST_5,,0.0,,,
-JS3741,POLYU,Engineering,Mechanical Engineering - BEng (Hons) Scheme,BEST_5,,0.0,,,
-JS3789,POLYU,Construction & Env,Surveying - BSc (Hons),BEST_5,,0.0,,,
-JS3791,POLYU,Construction & Env,Building Engineering and Management - BSc (Hons),BEST_5,,0.0,,,
-JS3868,POLYU,Computer & Math Sci,Computing and AI - BSc (Hons) Scheme,BEST_5,,0.0,,,
-JS4006,CUHK,Arts,Anthropology,BEST_5,,0.0,,,
-JS4018,CUHK,Arts,Chinese Language and Literature,BEST_5,,0.0,,,
-JS4032,CUHK,Arts,English,BEST_5,,0.0,,,
-JS4044,CUHK,Arts,Fine Arts,BEST_5,,0.0,,,
-JS4056,CUHK,Arts,History,BEST_5,,0.0,,,
-JS4068,CUHK,Arts,Japanese Studies,BEST_5,,0.0,,,
-JS4070,CUHK,Arts,Linguistics,BEST_5,,0.0,,,
-JS4082,CUHK,Arts,Music,BEST_5,,0.0,,,
-JS4094,CUHK,Arts,Philosophy,BEST_5,,0.0,,,
-JS4100,CUHK,Arts,Public Humanities,BEST_5,,0.0,,,
-JS4109,CUHK,Arts,Religious Studies,BEST_5,,0.0,,,
-JS4123,CUHK,Arts,Translation,BEST_5,,0.0,,,
-JS4136,CUHK,Arts,Chinese Studies,BEST_5,,0.0,,,
-JS4202,CUHK,Business,Integrated BBA (IBBA),BEST_5,,0.0,,,
-JS4214,CUHK,Business,Global Business Studies,BEST_5,,0.0,,,
-JS4226,CUHK,Business,Hospitality and Real Estate,BEST_5,,0.0,,,
-JS4238,CUHK,Business,"Insurance, Financial and Actuarial Analysis",BEST_5,,0.0,,,
-JS4240,CUHK,Business,Professional Accountancy,BEST_5,,0.0,,,
-JS4252,CUHK,Business,Quantitative Finance,BEST_5,,0.0,,,
-JS4254,CUHK,Business,Global Economics and Finance,BEST_5,,0.0,,,
-JS4264,CUHK,Business,BBA(IBBA) - JD Double Degree,BEST_5,,0.0,,,
-JS4276,CUHK,Business,Quantitative Finance and Risk Management Science,BEST_5,,0.0,,,
-JS4320,CUHK,Education,Human Movement Science and Health Studies,BEST_5,,0.0,,,
-JS4329,CUHK,Education,"Physical Education, Exercise Science and Health",BEST_5,,0.0,,,
-JS4331,CUHK,Education,BA (Chinese) & BEd (Chinese Education),BEST_5,,0.0,,,
-JS4343,CUHK,Education,BA (English) & BEd (English Education),BEST_5,,0.0,,,
-JS4361,CUHK,Education,BEd in Mathematics and Mathematics Education,BEST_5,,0.0,,,
-JS4372,CUHK,Education,BEd in Early Childhood Education,BEST_5,,0.0,,,
-JS4386,CUHK,Education,BSc in Learning Design and Technology,BEST_5,,0.0,,,
-JS4408,CUHK,Engineering,Mechanical and Automation Engineering,BEST_5,,0.0,,,
-JS4412,CUHK,Engineering,Computer Science and Engineering,BEST_5,,0.0,,,
-JS4416,CUHK,Engineering,Computational Data Science,BEST_5,,0.0,,,
-JS4428,CUHK,Engineering,Financial Technology,BEST_5,,0.0,,,
-JS4434,CUHK,Engineering,Electronic Engineering,BEST_5,,0.0,,,
-JS4446,CUHK,Engineering,Information Engineering,BEST_5,,0.0,,,
-JS4458,CUHK,Engineering,Systems Engineering and Engineering Management,BEST_5,,0.0,,,
-JS4460,CUHK,Engineering,Biomedical Engineering,BEST_5,,0.0,,,
-JS4462,CUHK,Engineering,Energy and Environmental Engineering,BEST_5,,0.0,,,
-JS4468,CUHK,Engineering,Artificial Intelligence: Systems and Technologies,BEST_5,,0.0,,,
-JS4470,CUHK,Engineering,Materials Science and Engineering,BEST_5,,0.0,,,
-JS4472,CUHK,Engineering,BEng in Robotics,BEST_5,,0.0,,,
-JS4501,CUHK,Medicine,MBChB (Medicine),BEST_6,SCALE_70,0.0,,,
-JS4502,CUHK,Medicine,MBChB - Global Physician-Leadership Stream (GPS),BEST_6,SCALE_70,0.0,,,
-JS4513,CUHK,Medicine,Nursing,BEST_5,,0.0,,,
-JS4525,CUHK,Medicine,Pharmacy,BEST_5,,0.0,,,
-JS4537,CUHK,Medicine,Public Health,BEST_5,,0.0,,,
-JS4542,CUHK,Medicine,Chinese Medicine,BEST_5,,0.0,,,
-JS4550,CUHK,Medicine,Biomedical Sciences,BEST_5,,0.0,,,
-JS4601,CUHK,Science,Science (Broad-based),BEST_5,,0.0,,,
-JS4648,CUHK,Science,Earth and Environmental Sciences,BEST_5,,0.0,,,
-JS4682,CUHK,Science,Enrichment Mathematics,BEST_5,,0.0,,,
-JS4690,CUHK,Science,Enrichment Stream in Theoretical Physics,BEST_5,,0.0,,,
-JS4719,CUHK,Science,Risk Management Science,BEST_5,,0.0,,,
-JS4725,CUHK,Interdisciplinary,"Biotechnology, Entrepreneurship & Healthcare Mgmt",BEST_5,,0.0,,,
-JS4733,CUHK,Interdisciplinary,Mathematics and Information Engineering,BEST_5,,0.0,,,
-JS4750,CUHK,Interdisciplinary,Aerospace Science & Earth Informatics + X,BEST_5,,0.0,,,
-JS4760,CUHK,Interdisciplinary,Interdisciplinary Data Analytics + X,BEST_5,,0.0,,,
-JS4801,CUHK,Social Science,Social Science (Broad-based),BEST_5,,0.0,,,
-JS4812,CUHK,Social Science,Architectural Studies,BEST_5,,0.0,,,
-JS4824,CUHK,Social Science,Economics,BEST_5,,0.0,,,
-JS4836,CUHK,Social Science,Geography and Resource Management,BEST_5,,0.0,,,
-JS4838,CUHK,Social Science,Urban Studies,BEST_5,,0.0,,,
-JS4848,CUHK,Social Science,Government and Public Administration,BEST_5,,0.0,,,
-JS4850,CUHK,Social Science,Journalism and Communication,BEST_5,,0.0,,,
-JS4862,CUHK,Social Science,Psychology,BEST_5,,0.0,,,
-JS4874,CUHK,Social Science,Social Work,BEST_5,,0.0,,,
-JS4886,CUHK,Social Science,Sociology,BEST_5,,0.0,,,
-JS4892,CUHK,Social Science,Global Studies,BEST_5,,0.0,,,
-JS4893,CUHK,Social Science,Data Science and Policy Studies,BEST_5,,0.0,,,
-JS4898,CUHK,Social Science,Diplomacy and International Studies,BEST_5,,0.0,,,
-JS4903,CUHK,Law,Bachelor of Laws (LLB),BEST_5,,0.0,5,4,
-JS5101,HKUST,Science,International Research Enrichment,BEST_5,,0.0,,,
-JS5102,HKUST,Science,Science (Group A),BEST_5,,0.0,,,
-JS5103,HKUST,Science,Science (Group B),BEST_5,,0.0,,,
-JS5118,HKUST,Science,BSc in Biomedical and Health Sciences,BEST_5,,0.0,,,
-JS5181,HKUST,Science,Science (Group A) with Extended Major in AI,BEST_5,,0.0,,,3
-JS5212,HKUST,Engineering,BEng in Computer Engineering,BEST_5,,0.0,,,3
-JS5220,HKUST,Engineering,Dept of Chemical & Biological Engineering,BEST_5,,0.0,,,3
-JS5230,HKUST,Engineering,Dept of Civil & Environmental Engineering,BEST_5,,0.0,,,3
-JS5240,HKUST,Engineering,Dept of Computer Science & Engineering,BEST_5,,0.0,,,3
-JS5250,HKUST,Engineering,Dept of Electronic & Computer Engineering,BEST_5,,0.0,,,3
-JS5260,HKUST,Engineering,Dept of Industrial Eng & Decision Analytics,BEST_5,,0.0,,,3
-JS5270,HKUST,Engineering,Dept of Mechanical & Aerospace Engineering,BEST_5,,0.0,,,3
-JS5282,HKUST,Engineering,Engineering with Extended Major in AI,BEST_5,,0.0,,,3
-JS5300,HKUST,Business,Business and Management,BEST_5,,0.0,4,,3
-JS5311,HKUST,Business,BBA in Economics,BEST_5,,0.0,4,,3
-JS5312,HKUST,Business,BBA in Finance,BEST_5,,0.0,4,,3
-JS5313,HKUST,Business,BBA in Global Business,BEST_5,,0.0,4,,3
-JS5314,HKUST,Business,BBA in Information Systems,BEST_5,,0.0,4,,3
-JS5315,HKUST,Business,BBA in Management,BEST_5,,0.0,4,,3
-JS5316,HKUST,Business,BBA in Marketing,BEST_5,,0.0,4,,3
-JS5317,HKUST,Business,BBA in Operations Management,BEST_5,,0.0,4,,3
-JS5318,HKUST,Business,BBA in Professional Accounting,BEST_5,,0.0,4,,3
-JS5331,HKUST,Business,BSc in Economics and Finance,BEST_5,,0.0,4,,3
-JS5332,HKUST,Business,BSc in Quantitative Finance,BEST_5,,0.0,4,,3
-JS5411,HKUST,Humanities & Social Science,BSc in Global China Studies,BEST_5,,0.0,,,
-JS5412,HKUST,Humanities & Social Science,BSc in Quantitative Social Analysis,BEST_5,,0.0,,,3
-JS5711,HKUST,Interdisciplinary,"BSc in Innovation, Design and Technology",BEST_5,,0.0,,,3
-JS5712,HKUST,Interdisciplinary,BSc in Individualized Interdisciplinary Major,BEST_5,,0.0,4,,3
-JS5811,HKUST,Joint Programs,BSc in Biotechnology and Business,BEST_5,,0.0,4,,3
-JS5812,HKUST,Interdisciplinary,BSc in Environmental Management and Technology,BEST_5,,0.0,4,,3
-JS5813,HKUST,Joint Programs,BSc in Mathematics and Economics,BEST_5,,0.0,4,,3
-JS5814,HKUST,Joint Programs,BSc in Risk Management and Business Intelligence,BEST_5,,0.0,4,,3
-JS5822,HKUST,Joint Programs,BSc in Sustainable and Green Finance,BEST_5,,0.0,4,,3
-JS5901,HKUST,Interdisciplinary,Dual Degree in Technology and Management (T&M-DDP),BEST_5,,0.0,4,,3
-JS6004,HKU,Architecture,BA in Architectural Studies,BEST_5,,0.0,,,
-JS6016,HKU,Architecture,BSc in Surveying,BEST_5,,0.0,,,
-JS6028,HKU,Architecture,BA in Landscape Studies,BEST_5,,0.0,,,
-JS6042,HKU,Architecture,BA in Urban Studies,BEST_5,,0.0,,,
-JS6054,HKU,Arts,Bachelor of Arts,BEST_5,,0.0,,,
-JS6066,HKU,Education,BA & BEd in Language Education - English,BEST_5,,0.0,,,
-JS6078,HKU,Law,BA and Bachelor of Laws (BA&LLB),BEST_6,,0.0,5,4,
-JS6080,HKU,Education,BA & BEd in Language Education - Chinese,BEST_5,,0.0,,,
-JS6092,HKU,Education,BEd in Early Childhood & Special Education,BEST_5,,0.0,,,
-JS6107,HKU,Dentistry,Bachelor of Dental Surgery (BDS),BEST_6,,0.0,,,
-JS6119,HKU,Education,BEd and BSc,BEST_5,,0.0,,,
-JS6133,HKU,Arts,Bachelor of Arts Elite Programme,BEST_5,,0.0,,,
-JS6157,HKU,Education,BSc in Speech-Language Pathology,BEST_5,,0.0,,,
-JS6200,HKU,Computing & Data Science,Computing and Data Science (Delta+),BEST_5,,0.0,,,
-JS6224,HKU,Computing & Data Science,BASc in Applied Artificial Intelligence,BEST_5,,0.0,,,
-JS6236,HKU,Architecture,BASc in Design+,BEST_5,,0.0,,,
-JS6248,HKU,Computing & Data Science,BASc in Financial Technology,BEST_5,,0.0,,,
-JS6250,HKU,Medicine,BASc in Global Health and Development,BEST_5,,0.0,,,
-JS6274,HKU,Future Media,BA in Global Creative Industries,BEST_5,,0.0,,,
-JS6286,HKU,Arts,BA in Humanities and Digital Technologies,BEST_5,,0.0,,,
-JS6298,HKU,Arts,BA & BEng in Artificial Intelligence and Data Science,BEST_5,,0.0,,,
-JS6303,HKU,Engineering,BEng Elite Programme,BEST_5,,0.0,,,
-JS6315,HKU,Engineering,BEng in Data and Systems Engineering,BEST_5,,0.0,,,
-JS6339,HKU,Engineering,BEng in Mechanical Engineering,BEST_5,,0.0,,,
-JS6353,HKU,Engineering,BEng in Civil Engineering,BEST_5,,0.0,,,
-JS6365,HKU,Engineering,BEng in Robotics Engineering,BEST_5,,0.0,,,
-JS6377,HKU,Engineering,BEng & MSc(Eng) in AI in Engineering,BEST_5,,0.0,,,
-JS6406,HKU,Law,Bachelor of Laws (LLB),BEST_6,,0.0,5,4,
-JS6418,HKU,Medicine,Bachelor of Nursing (Advanced Leadership Track),BEST_5,,0.5,,,
-JS6456,HKU,Medicine,Bachelor of Medicine and Bachelor of Surgery (MBBS),BEST_6,,0.0,4,3,
-JS6468,HKU,Medicine,Bachelor of Nursing,BEST_5,,0.5,,,
-JS6482,HKU,Medicine,Bachelor of Chinese Medicine,BEST_5,,0.5,,,
-JS6494,HKU,Medicine,Bachelor of Pharmacy,BEST_6,,0.0,,,
-JS6602,HKU,Innovation,BSc in Innovation and Technology,BEST_5,,0.0,,,
-JS6626,HKU,Medicine,MBBS (Distinguished MedScholar),BEST_6,,0.0,4,3,
-JS6688,HKU,Science,Science Master Class,BEST_5,,0.0,,,
-JS6705,HKU,Social Sciences,Bachelor of Psychology,BEST_5,,0.0,,,
-JS6717,HKU,Social Sciences,Bachelor of Social Sciences,BEST_5,,0.0,,,
-JS6729,HKU,Computing & Data Science,BSc in Actuarial Science,BEST_5,,0.0,,,
-JS6731,HKU,Social Sciences,Bachelor of Social Work,BEST_5,,0.0,,,
-JS6743,HKU,Social Sciences,Bachelor of Social Sciences (Elite),BEST_5,,0.0,,,
-JS6755,HKU,Business,Bachelor of Business Administration (BBA),BEST_5,,0.2,4,,
-JS6767,HKU,Business,BEcon / BEcon&Fin,BEST_5,,0.2,4,,
-JS6779,HKU,Computing & Data Science,Statistical Decision Sciences,BEST_5,,0.0,,,
-JS6781,HKU,Business,BBA(Acc&Fin) / BBA(Accounting Data Analytics),BEST_5,,0.2,4,,
-JS6793,HKU,Business,BBA (Business Analytics),BEST_5,,0.2,4,,
-JS6808,HKU,Business,BBA (Law) and LLB,BEST_6,,0.2,4,,
-JS6810,HKU,Social Sciences,BSocSc (Government and Laws) and LLB,BEST_6,,0.0,,,
-JS6822,HKU,Future Media,"Bachelor of Journalism, Media and AI",BEST_5,,0.0,,,
-JS6846,HKU,Business,BSc in Marketing Analytics and Technology,BEST_5,,0.2,4,,
-JS6858,HKU,Science,BSc and Bachelor of Laws (BSc&LLB),BEST_6,,0.0,,,
-JS6860,HKU,Business,BFin (Asset Management and Private Banking),BEST_6,,0.2,4,,
-JS6884,HKU,Business,BSc in Quantitative Finance,BEST_6,,0.2,4,,
-JS6896,HKU,Business,BBA (International Business and Global Management),BEST_6,,0.2,4,,
-JS6901,HKU,Science,Bachelor of Science,BEST_5,,0.0,,,
-JS6925,HKU,Biomedical Engineering,BEng in Biomedical Engineering,BEST_5,,0.0,,,
-JS6937,HKU,Engineering,Global Engineering and Business Programme,BEST_5,,0.0,,,
-JS6949,HKU,Medicine,Bachelor of Biomedical Sciences,BEST_6,,0.0,,,
-JS6987,HKU,Engineering,BEng in Computer / Electrical / Electronic Eng,BEST_5,,0.0,,,
-JS6999,HKU,Computing & Data Science,Computing and Data Science,BEST_5,,0.0,,,
-JS7101,LU,Arts,BA (Hons) in Chinese,BEST_5,,0.0,,,
-JS7123,LU,Interdisciplinary,BLA (Hons) in Global Development and Sustainability,BEST_5,,0.0,,,
-JS7133,LU,Arts,BA (Hons) in Animation and Digital Arts,BEST_5,,0.0,,,
-JS7204,LU,Arts,BA (Hons) in Translation,BEST_5,,0.0,,,
-JS7211,LU,Business,BBA (Hons) - Accounting and Corporate Governance,BEST_5,,0.0,,,
-JS7212,LU,Business,BBA (Hons) - Business Analytics and Innovation,BEST_5,,0.0,,,
-JS7213,LU,Business,BBA (Hons) - Finance,BEST_5,,0.0,,,
-JS7214,LU,Business,BBA (Hons) - Management and Analytics,BEST_5,,0.0,,,
-JS7215,LU,Business,BBA (Hons) - Marketing and Social Media,BEST_5,,0.0,,,
-JS7216,LU,Business,BBA (Hons) in Risk and Insurance Management,BEST_5,,0.0,,,
-JS7225,LU,Data Science,BSc (Hons) in Data Science,BEST_5,,0.0,,,
-JS7301,LU,Social Sciences,BSocSc (Hons) in Economics,BEST_5,,0.0,,,
-JS7302,LU,Social Sciences,BSocSc (Hons) in Government and International Affairs,BEST_5,,0.0,,,
-JS7303,LU,Social Sciences,BSocSc (Hons) in Psychology,BEST_5,,0.0,,,
-JS7304,LU,Social Sciences,BSocSc (Hons) in Sociology,BEST_5,,0.0,,,
-JS7305,LU,Social Sciences,BSocSc (Hons) in Health and Social Services Management,BEST_5,,0.0,,,
-JS7306,LU,Social Sciences,BSocSc (Hons) in Social and Public Policy Studies,BEST_5,,0.0,,,
-JS7307,LU,Social Sciences,BSocSc (Hons) in Social Data Science,BEST_5,,0.0,,,
-JS7503,LU,Arts,BA (Hons) in English Studies,BEST_5,,0.0,,,
-JS7606,LU,Arts,BA (Hons) in Cultural Studies,BEST_5,,0.0,,,
-JS7709,LU,Arts,BA (Hons) in History,BEST_5,,0.0,,,
-JS7802,LU,Arts,BA (Hons) in Philosophy,BEST_5,,0.0,,,
-JS7905,LU,Arts,BA (Hons) in Film and Visual Arts,BEST_5,,0.0,,,
-JS8001,EDUHK,Education,BA in Creative & Digital Arts and BEd (Music),BEST_5,,0.0,,,
-JS8002,EDUHK,Education,BA in Creative & Digital Arts and BEd (Visual Arts),BEST_5,,0.0,,,
-JS8003,EDUHK,Education,BA in Digital Chinese Culture & Comm and BEd (Chinese),BEST_5,,0.0,,,
-JS8004,EDUHK,Education,BA in English Studies & Digital Comm and BEd (English),BEST_5,,0.0,,,
-JS8005,EDUHK,Education,BA in Heritage Ed & Arts Mgmt and BEd (Chinese History),BEST_5,,0.0,,,
-JS8006,EDUHK,Education,BSocSc in Psychology and BEd (Early Childhood Education),BEST_5,,0.0,,,
-JS8007,EDUHK,Education,BA in Personal Finance and BEd (BAFS),BEST_5,,0.0,,,
-JS8008,EDUHK,Education,BSc in AI & Ed Tech and BEd (ICT and Primary Science),BEST_5,,0.0,,,
-JS8009,EDUHK,Education,BSc in AI & Ed Tech and BEd (Primary Mathematics),BEST_5,,0.0,,,
-JS8010,EDUHK,Education,BSc in Sports Science & Coaching and BEd (PE),BEST_5,,0.0,,,
-JS8011,EDUHK,Education,BSc in Integrated Environmental Mgmt and BEd (Science),BEST_5,,0.0,,,
-JS8012,EDUHK,Education,BSocSc in Sociology & Comm Studies and BEd (Geography),BEST_5,,0.0,,,
-JS8013,EDUHK,Education,BSocSc in Sociology & Comm Studies and BEd (Primary Humanities),BEST_5,,0.0,,,
-JS8507,EDUHK,Education,HD in Early Childhood Education,BEST_5,,0.0,,,
-JS8651,EDUHK,Social Sciences,BSocSc in Psychology,BEST_5,,0.0,,,
-JS8663,EDUHK,Education,BA in Special Education,BEST_5,,0.0,,,
-JS8674,EDUHK,Humanities,BA in Digital Chinese Culture and Communication,BEST_5,,0.0,,,
-JS8675,EDUHK,Humanities,BA in English Studies and Digital Communication,BEST_5,,0.0,,,
-JS8685,EDUHK,Humanities,BA in Creative and Digital Arts (Music),BEST_5,,0.0,,,
-JS8686,EDUHK,Humanities,BA in Creative and Digital Arts (Visual Arts),BEST_5,,0.0,,,
-JS8687,EDUHK,Humanities,BA in Heritage Education and Arts Management,BEST_5,,0.0,,,
-JS8688,EDUHK,Social Sciences,BA in Personal Finance,BEST_5,,0.0,,,
-JS8702,EDUHK,Science,BSc in Integrated Environmental Management,BEST_5,,0.0,,,
-JS8714,EDUHK,Science,BSc in Artificial Intelligence and Educational Technology,BEST_5,,0.0,,,
-JS8726,EDUHK,Health & Sports,BSc in Sports Science and Coaching,BEST_5,,0.0,,,
-JS8727,EDUHK,Health & Sports,BSc in Speech Pathology and Rehabilitation,BEST_5,,0.0,,,
+jupas_code,institution_id,faculty,programme_name,formula_type,scale_override_id,bonus_extra_elective_weight,min_eng_override,min_chi_override,min_math_override,compulsory_electives
+JS1000,CITYU,Business,BSc Computational Finance and Financial Technology,BEST_5,,0.0,,,4,
+JS1001,CITYU,Business,BBA Global Business,BEST_5,,0.0,,,3,
+JS1002,CITYU,Business,BBA Accountancy,BEST_5,,0.0,,,3,
+JS1005,CITYU,Business,BBA Management,BEST_5,,0.0,,,3,
+JS1007,CITYU,Business,BBA Marketing,BEST_5,,0.0,,,3,
+JS1012,CITYU,Business,Economics and Finance,BEST_5,,0.0,,,3,
+JS1013,CITYU,Business,BBA Business Economics,BEST_5,,0.0,,,3,
+JS1014,CITYU,Business,BBA Finance,BEST_5,,0.0,,,3,
+JS1017,CITYU,Business,Intelligent Information Systems,BEST_5,,0.0,,,3,
+JS1018,CITYU,Business,BBA Global Business Systems Management,BEST_5,,0.0,,,3,
+JS1019,CITYU,Business,BBA Artificial Intelligence in Business,BEST_5,,0.0,,,3,
+JS1026,CITYU,Business,BBA Business Decision Analytics,BEST_5,,0.0,,,3,
+JS1027,CITYU,Business,BBA Global Operations Management,BEST_5,,0.0,,,3,
+JS1063,CITYU,Law & Computing,LLB and BSc Computer Science (AI) (Double Degree),BEST_5,,0.0,5,4,3,
+JS1070,CITYU,Computing,"AI, Computing and Transformation (ACT)",3C2X,,0.0,,,3,
+JS1071,CITYU,Computing,Data Science,3C2X,,0.0,,,3,
+JS1072,CITYU,Computing,BSc Data Science,3C2X,,0.0,,,3,
+JS1074,CITYU,Computing,BSc Data and Systems Engineering,3C2X,,0.0,,,3,
+JS1120,CITYU,Liberal Arts & Social Sci,Social and Arts Global Excellence (SAGE),BEST_5,,0.0,,,,
+JS1201,CITYU,Engineering,Architecture and Civil Engineering,BEST_5,,0.0,,,3,BIO|CHEM|DAT|ICT|M1|M2|PHY:3
+JS1204,CITYU,Computing,BSc Computer Science,BEST_5,,0.0,,,3,BIO|CHEM|ICT|M1|M2|PHY:3
+JS1205,CITYU,Engineering,Electrical Engineering,BEST_5,,0.0,,,3,BIO|CHEM|ICT|M1|M2|PHY:3
+JS1207,CITYU,Engineering,Mechanical Engineering,BEST_5,,0.0,,,,CHEM|DAT|M1|M2|PHY:3
+JS1210,CITYU,Engineering,BEng Materials Science and Engineering,BEST_5,,0.0,,,,CHEM|DAT|PHY:3
+JS1211,CITYU,Biomedicine,BEng Biomedical Engineering,BEST_5,,0.0,,,,BIO|CHEM|PHY:3
+JS1216,CITYU,Engineering,BEng Intelligent Manufacturing Engineering,BEST_5,,0.0,,,,BIO|CHEM|DAT|ECON|ICT|M1|M2|PHY:3
+JS1218,CITYU,Computing,BSc Cybersecurity,BEST_5,,0.0,,,3,BIO|CHEM|ICT|M1|M2|PHY:3
+JS1300,CITYU,Biomedicine,Integrative Bioscience & Bioengineering (Bio3),3C2X,,0.0,,,3,BIO|CHEM|PHY:3
+JS1805,CITYU,Biomedicine,Biomedical Sciences,3C2X,,0.0,,,3,BIO|CHEM:3
+JS1806,CITYU,Biomedicine,BSc Biological Sciences,3C2X,,0.0,,,3,BIO|CHEM:3
+JS1807,CITYU,Biomedicine,BSc Biomedical Sciences,3C2X,,0.0,,,3,BIO|CHEM:3
+JS2020,HKBU,Arts,Bachelor of Arts (Hons),BEST_5,,0.0,,,,
+JS2030,HKBU,Creative Arts,BA (Hons) in Music,BEST_5,,0.0,,,,
+JS2050,HKBU,Creative Arts,BMus (Hons) in Creative Industries,BEST_5,,0.0,,,,
+JS2060,HKBU,Creative Arts,BA / BMus (Hons) (Music / Creative Industries),BEST_5,,0.0,,,,
+JS2110,HKBU,Business,BBA (Hons) - Accounting Concentration,BEST_5,,0.0,,,,
+JS2120,HKBU,Business,Bachelor of Business Administration (Hons),BEST_5,,0.0,,,,
+JS2310,HKBU,Communication,BComm (Hons) (Journalism & Digital Media / PR & Adv),BEST_5,,0.0,,,,
+JS2330,HKBU,Creative Arts,BA (Hons) in Film and Television,BEST_5,,0.0,,,,
+JS2340,HKBU,Creative Arts,BFA (Hons) in Acting for Global Screen,BEST_5,,0.0,,,,
+JS2370,HKBU,Communication,BComm (Hons) in Game Design and Animation,BEST_5,,0.0,,,,
+JS2410,HKBU,Chinese Medicine,Bachelor of Chinese Medicine & BSc (Hons) in Biomedical Sci,BEST_5,,0.0,,,,
+JS2420,HKBU,Chinese Medicine,BPharm (Hons) in Chinese Medicine and Pharmaceutical Sci,BEST_5,,0.0,,,,
+JS2610,HKBU,Social Sciences,BA / BSocSc (Hons) (Social Sciences Broad-based),BEST_5,,0.0,,,,
+JS2660,HKBU,Social Sciences,Bachelor of Social Work (Hons),BEST_5,,0.0,,,,
+JS2810,HKBU,Creative Arts,BA (Hons) in Visual Arts,BEST_5,,0.0,,,,
+JS2910,HKBU,Interdisciplinary,BSc (Hons) in Business Analytics and AI,BEST_5,,0.0,,,,
+JS2920,HKBU,Interdisciplinary,BASc (Hons) in Arts and Technology,BEST_5,,0.0,,,,
+JS2930,HKBU,Interdisciplinary,BA (Hons) in Business Administration (Global Entertainment),BEST_5,,0.0,,,,
+JS2940,HKBU,Interdisciplinary,BSocSc / BSc (Hons) in Innovation in Health & Social Well-Being,BEST_5,,0.0,,,,
+JS2950,HKBU,Interdisciplinary,BAST (Hons) in Individualised Major,BEST_5,,0.0,,,,
+JS2960,HKBU,Interdisciplinary,BASc (Hons) in Digital Futures and Humanities,BEST_5,,0.0,,,,
+JS3000,POLYU,Interdisciplinary,Interdisciplinary Studies - Bachelor's Degree Scheme,BEST_5,,0.0,,,,
+JS3003,POLYU,Business,Business Administration - Bachelor's Degree Scheme,BEST_5,,0.0,,,,
+JS3004,POLYU,Construction & Env,Construction and Environment - Bachelor's Degree Scheme,BEST_5,,0.0,,,,
+JS3005,POLYU,Engineering,Engineering - Bachelor's Degree Scheme,BEST_5,,0.0,,,,
+JS3006,POLYU,Computer & Math Sci,Computer and Mathematical Sciences - Bachelor's Degree Scheme,BEST_5,,0.0,,,,
+JS3007,POLYU,Humanities,Humanities - Bachelor's Degree Scheme,BEST_5,,0.0,,,,
+JS3008,POLYU,Science,Science - Bachelor's Degree Scheme,BEST_5,,0.0,,,,
+JS3011,POLYU,Science,Biotechnology and Chemical Technology - BSc (Hons) Scheme,BEST_5,,0.0,,,,BIO|CHEM:3
+JS3030,POLYU,Science,Physics with Secondary Major in AIDA / IE - BSc (Hons),BEST_5,,0.0,,,,PHY:3
+JS3050,POLYU,Fashion & Textiles,Fashion - BA (Hons) Scheme,BEST_5,,0.0,,,,
+JS3060,POLYU,Business,Accounting and Finance - BBA (Hons) Scheme,BEST_5,,0.0,,,,
+JS3070,POLYU,Business,"Global Business & Logistics, Aviation, Maritime & SCM - BBA",BEST_5,,0.0,,,,
+JS3080,POLYU,Business,Management and Marketing - BBA (Hons) Scheme,BEST_5,,0.0,,,,
+JS3130,POLYU,Construction & Env,Spatial Data Science and Smart Cities - BSc (Hons) Scheme,BEST_5,,0.0,,,,
+JS3140,POLYU,Engineering,Aviation Engineering - BEng (Hons) Scheme,BEST_5,,0.0,,,,
+JS3150,POLYU,Engineering,Biomedical Engineering - BSc (Hons),BEST_5,,0.0,,,,
+JS3160,POLYU,Health & Social Sci,Sports Science and Technology - BSc (Hons),BEST_5,,0.0,,,,
+JS3170,POLYU,Engineering,Electrical Engineering - BEng (Hons) Scheme,BEST_5,,0.0,,,,
+JS3180,POLYU,Engineering,Information and AI Engineering - BEng/BSc (Hons) Scheme,BEST_5,,0.0,,,,
+JS3211,POLYU,Construction & Env,Building Sciences and Engineering - BEng (Hons),BEST_5,,0.0,,,,
+JS3214,POLYU,Construction & Env,Architectural Studies - BSc (Hons),BEST_5,,0.0,,,,
+JS3220,POLYU,Computer & Math Sci,Applied Mathematics and Finance Analytics - BSc (Hons) Scheme,BEST_5,,0.0,,,,
+JS3223,POLYU,Computer & Math Sci,Data Science and Artificial Intelligence - BSc (Hons) Scheme,BEST_5,,0.0,,,,
+JS3236,POLYU,Engineering,Product Innovation and Smart Manufacturing - BEng Scheme,BEST_5,,0.0,,,,
+JS3237,POLYU,Engineering,Intelligent Supply Chain and Engineering Mgmt - BSc Scheme,BEST_5,,0.0,,,,
+JS3240,POLYU,Humanities,English and Applied Linguistics - BA (Hons),BEST_5,,0.0,,,,
+JS3242,POLYU,Humanities,Speech Therapy - BSc (Hons),BEST_5,,0.0,,,,
+JS3243,POLYU,Humanities,Language Science and Technology - BSc (Hons),BEST_5,,0.0,,,,
+JS3250,POLYU,Health & Social Sci,Applied Social Sciences - BA (Hons) Scheme,BEST_5,,0.0,,,,
+JS3255,POLYU,Science,Food Science and Nutrition - BSc (Hons) Scheme,BEST_5,,0.0,,,,
+JS3290,POLYU,Health & Social Sci,Optometry - BSc (Hons),BEST_5,,0.0,,,,BIO|CHEM|PHY:3
+JS3310,POLYU,Hotel & Tourism,Hotel and Tourism Management - BSc (Hons) Scheme,BEST_5,,0.0,,,,
+JS3320,POLYU,Humanities,Chinese History and Culture - BA (Hons),BEST_5,,0.0,,,,
+JS3337,POLYU,Health & Social Sci,Mental Health Nursing - BSc (Hons),BEST_5,,0.0,,,,
+JS3375,POLYU,Construction & Env,Environmental Engineering & Sustainable Dev - BEng (Hons),BEST_5,,0.0,,,,
+JS3478,POLYU,Health & Social Sci,Medical Laboratory Science - BSc (Hons),BEST_5,,0.0,,,,BIO|CHEM:3
+JS3569,POLYU,Design,Design - BA (Hons) Scheme,BEST_5,,0.0,,,,
+JS3612,POLYU,Health & Social Sci,Radiography - BSc (Hons),BEST_5,,0.0,,,,BIO|CHEM|PHY:3
+JS3624,POLYU,Health & Social Sci,Occupational Therapy - BSc (Hons),BEST_5,,0.0,,,,
+JS3636,POLYU,Health & Social Sci,Physiotherapy - BSc (Hons),BEST_5,,0.0,,,,BIO|PHY:3
+JS3648,POLYU,Health & Social Sci,Nursing - BSc (Hons),BEST_5,,0.0,,,,
+JS3739,POLYU,Construction & Env,Civil Engineering - BEng (Hons),BEST_5,,0.0,,,,
+JS3741,POLYU,Engineering,Mechanical Engineering - BEng (Hons) Scheme,BEST_5,,0.0,,,,
+JS3789,POLYU,Construction & Env,Surveying - BSc (Hons),BEST_5,,0.0,,,,
+JS3791,POLYU,Construction & Env,Building Engineering and Management - BSc (Hons),BEST_5,,0.0,,,,
+JS3868,POLYU,Computer & Math Sci,Computing and AI - BSc (Hons) Scheme,BEST_5,,0.0,,,,
+JS4006,CUHK,Arts,Anthropology,BEST_5,,0.0,,,,
+JS4018,CUHK,Arts,Chinese Language and Literature,BEST_5,,0.0,,,,
+JS4032,CUHK,Arts,English,BEST_5,,0.0,,,,
+JS4044,CUHK,Arts,Fine Arts,BEST_5,,0.0,,,,
+JS4056,CUHK,Arts,History,BEST_5,,0.0,,,,
+JS4068,CUHK,Arts,Japanese Studies,BEST_5,,0.0,,,,
+JS4070,CUHK,Arts,Linguistics,BEST_5,,0.0,,,,
+JS4082,CUHK,Arts,Music,BEST_5,,0.0,,,,
+JS4094,CUHK,Arts,Philosophy,BEST_5,,0.0,,,,
+JS4100,CUHK,Arts,Public Humanities,BEST_5,,0.0,,,,
+JS4109,CUHK,Arts,Religious Studies,BEST_5,,0.0,,,,
+JS4123,CUHK,Arts,Translation,BEST_5,,0.0,,,,
+JS4136,CUHK,Arts,Chinese Studies,BEST_5,,0.0,,,,
+JS4202,CUHK,Business,Integrated BBA (IBBA),BEST_5,,0.0,,,,
+JS4214,CUHK,Business,Global Business Studies,BEST_5,,0.0,,,,
+JS4226,CUHK,Business,Hospitality and Real Estate,BEST_5,,0.0,,,,
+JS4238,CUHK,Business,"Insurance, Financial and Actuarial Analysis",BEST_5,,0.0,,,,
+JS4240,CUHK,Business,Professional Accountancy,BEST_5,,0.0,,,,
+JS4252,CUHK,Business,Quantitative Finance,BEST_5,,0.0,,,,
+JS4254,CUHK,Business,Global Economics and Finance,BEST_5,,0.0,,,,
+JS4264,CUHK,Business,BBA(IBBA) - JD Double Degree,BEST_5,,0.0,5,4,,
+JS4276,CUHK,Business,Quantitative Finance and Risk Management Science,BEST_5,,0.0,,,,
+JS4320,CUHK,Education,Human Movement Science and Health Studies,BEST_5,,0.0,,,,
+JS4329,CUHK,Education,"Physical Education, Exercise Science and Health",BEST_5,,0.0,,,,
+JS4331,CUHK,Education,BA (Chinese) & BEd (Chinese Education),BEST_5,,0.0,,4,,
+JS4343,CUHK,Education,BA (English) & BEd (English Education),BEST_5,,0.0,4,,,
+JS4361,CUHK,Education,BEd in Mathematics and Mathematics Education,BEST_5,,0.0,,,,M1|M2:3
+JS4372,CUHK,Education,BEd in Early Childhood Education,BEST_5,,0.0,,,,
+JS4386,CUHK,Education,BSc in Learning Design and Technology,BEST_5,,0.0,,,,
+JS4408,CUHK,Engineering,Mechanical and Automation Engineering,BEST_5,,0.0,,,,BIO|CHEM|PHY|ICT|M1|M2:3
+JS4412,CUHK,Engineering,Computer Science and Engineering,BEST_5,,0.0,,,,BIO|CHEM|PHY|ICT|M1|M2:3
+JS4416,CUHK,Engineering,Computational Data Science,BEST_5,,0.0,,,,BIO|CHEM|PHY|ICT|M1|M2:3
+JS4428,CUHK,Engineering,Financial Technology,BEST_5,,0.0,,,,BIO|CHEM|PHY|ICT|M1|M2:3
+JS4434,CUHK,Engineering,Electronic Engineering,BEST_5,,0.0,,,,BIO|CHEM|PHY|ICT|M1|M2:3
+JS4446,CUHK,Engineering,Information Engineering,BEST_5,,0.0,,,,BIO|CHEM|PHY|ICT|M1|M2:3
+JS4458,CUHK,Engineering,Systems Engineering and Engineering Management,BEST_5,,0.0,,,,BIO|CHEM|PHY|ICT|M1|M2:3
+JS4460,CUHK,Engineering,Biomedical Engineering,BEST_5,,0.0,,,,BIO|CHEM|PHY|M1|M2:3
+JS4462,CUHK,Engineering,Energy and Environmental Engineering,BEST_5,,0.0,,,,BIO|CHEM|PHY|ICT|M1|M2:3
+JS4468,CUHK,Engineering,Artificial Intelligence: Systems and Technologies,BEST_5,,0.0,,,,BIO|CHEM|PHY|ICT|M1|M2:3
+JS4470,CUHK,Engineering,Materials Science and Engineering,BEST_5,,0.0,,,,BIO|CHEM|PHY|M1|M2:3
+JS4472,CUHK,Engineering,BEng in Robotics,BEST_5,,0.0,,,,BIO|CHEM|PHY|ICT|M1|M2:3
+JS4501,CUHK,Medicine,MBChB (Medicine),BEST_6,SCALE_70,0.0,4,3,3,BIO|CHEM:3
+JS4502,CUHK,Medicine,MBChB - Global Physician-Leadership Stream (GPS),BEST_6,SCALE_70,0.0,4,3,3,BIO|CHEM:3
+JS4513,CUHK,Medicine,Nursing,BEST_5,,0.0,,,,
+JS4525,CUHK,Medicine,Pharmacy,BEST_5,,0.0,,,,CHEM:3
+JS4537,CUHK,Medicine,Public Health,BEST_5,,0.0,,,,
+JS4542,CUHK,Medicine,Chinese Medicine,BEST_5,,0.0,,,,
+JS4550,CUHK,Medicine,Biomedical Sciences,BEST_5,,0.0,,,,BIO|CHEM:3
+JS4601,CUHK,Science,Science (Broad-based),BEST_5,,0.0,,,,BIO|CHEM|PHY|M1|M2:3
+JS4648,CUHK,Science,Earth and Environmental Sciences,BEST_5,,0.0,,,,BIO|CHEM|PHY|GEOG|M1|M2:3
+JS4682,CUHK,Science,Enrichment Mathematics,BEST_5,,0.0,,,,M1|M2:3
+JS4690,CUHK,Science,Enrichment Stream in Theoretical Physics,BEST_5,,0.0,,,,PHY:3
+JS4719,CUHK,Science,Risk Management Science,BEST_5,,0.0,,,,M1|M2:3
+JS4725,CUHK,Interdisciplinary,"Biotechnology, Entrepreneurship & Healthcare Mgmt",BEST_5,,0.0,,,,BIO|CHEM:3
+JS4733,CUHK,Interdisciplinary,Mathematics and Information Engineering,BEST_5,,0.0,,,,
+JS4750,CUHK,Interdisciplinary,Aerospace Science & Earth Informatics + X,BEST_5,,0.0,,,,
+JS4760,CUHK,Interdisciplinary,Interdisciplinary Data Analytics + X,BEST_5,,0.0,,,,
+JS4801,CUHK,Social Science,Social Science (Broad-based),BEST_5,,0.0,,,,
+JS4812,CUHK,Social Science,Architectural Studies,BEST_5,,0.0,,,,
+JS4824,CUHK,Social Science,Economics,BEST_5,,0.0,,,,
+JS4836,CUHK,Social Science,Geography and Resource Management,BEST_5,,0.0,,,,
+JS4838,CUHK,Social Science,Urban Studies,BEST_5,,0.0,,,,
+JS4848,CUHK,Social Science,Government and Public Administration,BEST_5,,0.0,,,,
+JS4850,CUHK,Social Science,Journalism and Communication,BEST_5,,0.0,,,,
+JS4862,CUHK,Social Science,Psychology,BEST_5,,0.0,,,,
+JS4874,CUHK,Social Science,Social Work,BEST_5,,0.0,,,,
+JS4886,CUHK,Social Science,Sociology,BEST_5,,0.0,,,,
+JS4892,CUHK,Social Science,Global Studies,BEST_5,,0.0,,,,
+JS4893,CUHK,Social Science,Data Science and Policy Studies,BEST_5,,0.0,,,,
+JS4898,CUHK,Social Science,Diplomacy and International Studies,BEST_5,,0.0,,,,
+JS4903,CUHK,Law,Bachelor of Laws (LLB),BEST_5,,0.0,5,4,,
+JS5101,HKUST,Science,International Research Enrichment,BEST_5,,0.0,,,,BIO|CHEM|PHY|M1|M2:3
+JS5102,HKUST,Science,Science (Group A),BEST_5,,0.0,,,,BIO|CHEM|PHY|M1|M2:3
+JS5103,HKUST,Science,Science (Group B),BEST_5,,0.0,,,,BIO|CHEM|PHY|M1|M2:3
+JS5118,HKUST,Science,BSc in Biomedical and Health Sciences,BEST_5,,0.0,,,,BIO|CHEM|PHY|M1|M2:3
+JS5181,HKUST,Science,Science (Group A) with Extended Major in AI,BEST_5,,0.0,,,3,BIO|CHEM|PHY|M1|M2:3
+JS5212,HKUST,Engineering,BEng in Computer Engineering,BEST_5,,0.0,,,3,BIO|CHEM|PHY|ICT:3
+JS5220,HKUST,Engineering,Dept of Chemical & Biological Engineering,BEST_5,,0.0,,,3,BIO|CHEM|PHY|ICT:3
+JS5230,HKUST,Engineering,Dept of Civil & Environmental Engineering,BEST_5,,0.0,,,3,BIO|CHEM|PHY|ICT:3
+JS5240,HKUST,Engineering,Dept of Computer Science & Engineering,BEST_5,,0.0,,,3,BIO|CHEM|PHY|ICT:3
+JS5250,HKUST,Engineering,Dept of Electronic & Computer Engineering,BEST_5,,0.0,,,3,BIO|CHEM|PHY|ICT:3
+JS5260,HKUST,Engineering,Dept of Industrial Eng & Decision Analytics,BEST_5,,0.0,,,3,BIO|CHEM|PHY|ICT:3
+JS5270,HKUST,Engineering,Dept of Mechanical & Aerospace Engineering,BEST_5,,0.0,,,3,BIO|CHEM|PHY|ICT:3
+JS5282,HKUST,Engineering,Engineering with Extended Major in AI,BEST_5,,0.0,,,3,BIO|CHEM|PHY|ICT:3
+JS5300,HKUST,Business,Business and Management,BEST_5,,0.0,4,,3,
+JS5311,HKUST,Business,BBA in Economics,BEST_5,,0.0,4,,3,
+JS5312,HKUST,Business,BBA in Finance,BEST_5,,0.0,4,,3,
+JS5313,HKUST,Business,BBA in Global Business,BEST_5,,0.0,4,,3,
+JS5314,HKUST,Business,BBA in Information Systems,BEST_5,,0.0,4,,3,
+JS5315,HKUST,Business,BBA in Management,BEST_5,,0.0,4,,3,
+JS5316,HKUST,Business,BBA in Marketing,BEST_5,,0.0,4,,3,
+JS5317,HKUST,Business,BBA in Operations Management,BEST_5,,0.0,4,,3,
+JS5318,HKUST,Business,BBA in Professional Accounting,BEST_5,,0.0,4,,3,
+JS5331,HKUST,Business,BSc in Economics and Finance,BEST_5,,0.0,4,,3,
+JS5332,HKUST,Business,BSc in Quantitative Finance,BEST_5,,0.0,4,,3,
+JS5411,HKUST,Humanities & Social Science,BSc in Global China Studies,BEST_5,,0.0,,,,
+JS5412,HKUST,Humanities & Social Science,BSc in Quantitative Social Analysis,BEST_5,,0.0,,,3,
+JS5711,HKUST,Interdisciplinary,"BSc in Innovation, Design and Technology",BEST_5,,0.0,,,3,BIO|CHEM|PHY|DAT|ICT:3
+JS5712,HKUST,Interdisciplinary,BSc in Individualized Interdisciplinary Major,BEST_5,,0.0,4,,3,
+JS5811,HKUST,Joint Programs,BSc in Biotechnology and Business,BEST_5,,0.0,4,,3,BIO|CHEM:3
+JS5812,HKUST,Interdisciplinary,BSc in Environmental Management and Technology,BEST_5,,0.0,4,,3,
+JS5813,HKUST,Joint Programs,BSc in Mathematics and Economics,BEST_5,,0.0,4,,3,BIO|CHEM|PHY|ECON|M1|M2:3
+JS5814,HKUST,Joint Programs,BSc in Risk Management and Business Intelligence,BEST_5,,0.0,4,,3,
+JS5822,HKUST,Joint Programs,BSc in Sustainable and Green Finance,BEST_5,,0.0,4,,3,
+JS5901,HKUST,Interdisciplinary,Dual Degree in Technology and Management (T&M-DDP),BEST_5,,0.0,4,,3,BIO|CHEM|PHY|ICT:3
+JS6004,HKU,Architecture,BA in Architectural Studies,BEST_5,,0.0,,,,
+JS6016,HKU,Architecture,BSc in Surveying,BEST_5,,0.0,,,,
+JS6028,HKU,Architecture,BA in Landscape Studies,BEST_5,,0.0,,,,
+JS6042,HKU,Architecture,BA in Urban Studies,BEST_5,,0.0,,,,
+JS6054,HKU,Arts,Bachelor of Arts,BEST_5,,0.0,,,,
+JS6066,HKU,Education,BA & BEd in Language Education - English,BEST_5,,0.0,4,,,
+JS6078,HKU,Law,BA and Bachelor of Laws (BA&LLB),BEST_6,,0.0,5,4,,
+JS6080,HKU,Education,BA & BEd in Language Education - Chinese,BEST_5,,0.0,,4,,
+JS6092,HKU,Education,BEd in Early Childhood & Special Education,BEST_5,,0.0,,,,
+JS6107,HKU,Dentistry,Bachelor of Dental Surgery (BDS),BEST_6,,0.0,4,3,2,BIO|CHEM:3
+JS6119,HKU,Education,BEd and BSc,BEST_5,,0.0,,,,BIO|CHEM|PHY:3
+JS6133,HKU,Arts,Bachelor of Arts Elite Programme,BEST_5,,0.0,,,,
+JS6157,HKU,Education,BSc in Speech-Language Pathology,BEST_5,,0.0,,,,
+JS6200,HKU,Computing & Data Science,Computing and Data Science (Delta+),BEST_5,,0.0,,,,
+JS6224,HKU,Computing & Data Science,BASc in Applied Artificial Intelligence,BEST_5,,0.0,,,,
+JS6236,HKU,Architecture,BASc in Design+,BEST_5,,0.0,,,,
+JS6248,HKU,Computing & Data Science,BASc in Financial Technology,BEST_5,,0.0,,,,
+JS6250,HKU,Medicine,BASc in Global Health and Development,BEST_5,,0.0,,,,
+JS6274,HKU,Future Media,BA in Global Creative Industries,BEST_5,,0.0,,,,
+JS6286,HKU,Arts,BA in Humanities and Digital Technologies,BEST_5,,0.0,,,,
+JS6298,HKU,Arts,BA & BEng in Artificial Intelligence and Data Science,BEST_5,,0.0,,,,
+JS6303,HKU,Engineering,BEng Elite Programme,BEST_5,,0.0,,,,PHY:3
+JS6315,HKU,Engineering,BEng in Data and Systems Engineering,BEST_5,,0.0,,,,PHY:3
+JS6339,HKU,Engineering,BEng in Mechanical Engineering,BEST_5,,0.0,,,,PHY:3
+JS6353,HKU,Engineering,BEng in Civil Engineering,BEST_5,,0.0,,,,PHY:3
+JS6365,HKU,Engineering,BEng in Robotics Engineering,BEST_5,,0.0,,,,PHY:3
+JS6377,HKU,Engineering,BEng & MSc(Eng) in AI in Engineering,BEST_5,,0.0,,,,PHY:3
+JS6406,HKU,Law,Bachelor of Laws (LLB),BEST_6,,0.0,5,4,,
+JS6418,HKU,Medicine,Bachelor of Nursing (Advanced Leadership Track),BEST_5,,0.5,,,,
+JS6456,HKU,Medicine,Bachelor of Medicine and Bachelor of Surgery (MBBS),BEST_6,,0.0,4,3,2,CHEM:3
+JS6468,HKU,Medicine,Bachelor of Nursing,BEST_5,,0.5,,,,
+JS6482,HKU,Medicine,Bachelor of Chinese Medicine,BEST_5,,0.5,,,,
+JS6494,HKU,Medicine,Bachelor of Pharmacy,BEST_6,,0.0,,,,CHEM:3
+JS6602,HKU,Innovation,BSc in Innovation and Technology,BEST_5,,0.0,,,,
+JS6626,HKU,Medicine,MBBS (Distinguished MedScholar),BEST_6,,0.0,4,3,2,CHEM:3
+JS6688,HKU,Science,Science Master Class,BEST_5,,0.0,,,,BIO|CHEM|PHY:3
+JS6705,HKU,Social Sciences,Bachelor of Psychology,BEST_5,,0.0,,,,
+JS6717,HKU,Social Sciences,Bachelor of Social Sciences,BEST_5,,0.0,,,,
+JS6729,HKU,Computing & Data Science,BSc in Actuarial Science,BEST_5,,0.0,,,,M1|M2:3
+JS6731,HKU,Social Sciences,Bachelor of Social Work,BEST_5,,0.0,,,,
+JS6743,HKU,Social Sciences,Bachelor of Social Sciences (Elite),BEST_5,,0.0,,,,
+JS6755,HKU,Business,Bachelor of Business Administration (BBA),BEST_5,,0.2,4,,,
+JS6767,HKU,Business,BEcon / BEcon&Fin,BEST_5,,0.2,4,,,
+JS6779,HKU,Computing & Data Science,Statistical Decision Sciences,BEST_5,,0.0,,,,
+JS6781,HKU,Business,BBA(Acc&Fin) / BBA(Accounting Data Analytics),BEST_5,,0.2,4,,,
+JS6793,HKU,Business,BBA (Business Analytics),BEST_5,,0.2,4,,,
+JS6808,HKU,Business,BBA (Law) and LLB,BEST_6,,0.2,5,4,2,
+JS6810,HKU,Social Sciences,BSocSc (Government and Laws) and LLB,BEST_6,,0.0,5,4,3,
+JS6822,HKU,Future Media,"Bachelor of Journalism, Media and AI",BEST_5,,0.0,,,,
+JS6846,HKU,Business,BSc in Marketing Analytics and Technology,BEST_5,,0.2,4,,,
+JS6858,HKU,Science,BSc and Bachelor of Laws (BSc&LLB),BEST_6,,0.0,5,4,2,BIO|CHEM|PHY:3
+JS6860,HKU,Business,BFin (Asset Management and Private Banking),BEST_6,,0.2,4,,,
+JS6884,HKU,Business,BSc in Quantitative Finance,BEST_6,,0.2,4,,,M1|M2:3
+JS6896,HKU,Business,BBA (International Business and Global Management),BEST_6,,0.2,4,,,
+JS6901,HKU,Science,Bachelor of Science,BEST_5,,0.0,,,,BIO|CHEM|PHY:3
+JS6925,HKU,Biomedical Engineering,BEng in Biomedical Engineering,BEST_5,,0.0,,,,PHY:3
+JS6937,HKU,Engineering,Global Engineering and Business Programme,BEST_5,,0.0,,,,PHY:3
+JS6949,HKU,Medicine,Bachelor of Biomedical Sciences,BEST_6,,0.0,,,,BIO|CHEM:3
+JS6987,HKU,Engineering,BEng in Computer / Electrical / Electronic Eng,BEST_5,,0.0,,,,PHY:3
+JS6999,HKU,Computing & Data Science,Computing and Data Science,BEST_5,,0.0,,,,
+JS7101,LU,Arts,BA (Hons) in Chinese,BEST_5,,0.0,,,,
+JS7123,LU,Interdisciplinary,BLA (Hons) in Global Development and Sustainability,BEST_5,,0.0,,,,
+JS7133,LU,Arts,BA (Hons) in Animation and Digital Arts,BEST_5,,0.0,,,,
+JS7204,LU,Arts,BA (Hons) in Translation,BEST_5,,0.0,,,,
+JS7211,LU,Business,BBA (Hons) - Accounting and Corporate Governance,BEST_5,,0.0,,,,
+JS7212,LU,Business,BBA (Hons) - Business Analytics and Innovation,BEST_5,,0.0,,,,
+JS7213,LU,Business,BBA (Hons) - Finance,BEST_5,,0.0,,,,
+JS7214,LU,Business,BBA (Hons) - Management and Analytics,BEST_5,,0.0,,,,
+JS7215,LU,Business,BBA (Hons) - Marketing and Social Media,BEST_5,,0.0,,,,
+JS7216,LU,Business,BBA (Hons) in Risk and Insurance Management,BEST_5,,0.0,,,,
+JS7225,LU,Data Science,BSc (Hons) in Data Science,BEST_5,,0.0,,,,
+JS7301,LU,Social Sciences,BSocSc (Hons) in Economics,BEST_5,,0.0,,,,
+JS7302,LU,Social Sciences,BSocSc (Hons) in Government and International Affairs,BEST_5,,0.0,,,,
+JS7303,LU,Social Sciences,BSocSc (Hons) in Psychology,BEST_5,,0.0,,,,
+JS7304,LU,Social Sciences,BSocSc (Hons) in Sociology,BEST_5,,0.0,,,,
+JS7305,LU,Social Sciences,BSocSc (Hons) in Health and Social Services Management,BEST_5,,0.0,,,,
+JS7306,LU,Social Sciences,BSocSc (Hons) in Social and Public Policy Studies,BEST_5,,0.0,,,,
+JS7307,LU,Social Sciences,BSocSc (Hons) in Social Data Science,BEST_5,,0.0,,,,
+JS7503,LU,Arts,BA (Hons) in English Studies,BEST_5,,0.0,,,,
+JS7606,LU,Arts,BA (Hons) in Cultural Studies,BEST_5,,0.0,,,,
+JS7709,LU,Arts,BA (Hons) in History,BEST_5,,0.0,,,,
+JS7802,LU,Arts,BA (Hons) in Philosophy,BEST_5,,0.0,,,,
+JS7905,LU,Arts,BA (Hons) in Film and Visual Arts,BEST_5,,0.0,,,,
+JS8001,EDUHK,Education,BA in Creative & Digital Arts and BEd (Music),BEST_5,,0.0,,,,
+JS8002,EDUHK,Education,BA in Creative & Digital Arts and BEd (Visual Arts),BEST_5,,0.0,,,,
+JS8003,EDUHK,Education,BA in Digital Chinese Culture & Comm and BEd (Chinese),BEST_5,,0.0,,,,
+JS8004,EDUHK,Education,BA in English Studies & Digital Comm and BEd (English),BEST_5,,0.0,,,,
+JS8005,EDUHK,Education,BA in Heritage Ed & Arts Mgmt and BEd (Chinese History),BEST_5,,0.0,,,,
+JS8006,EDUHK,Education,BSocSc in Psychology and BEd (Early Childhood Education),BEST_5,,0.0,,,,
+JS8007,EDUHK,Education,BA in Personal Finance and BEd (BAFS),BEST_5,,0.0,,,,
+JS8008,EDUHK,Education,BSc in AI & Ed Tech and BEd (ICT and Primary Science),BEST_5,,0.0,,,,
+JS8009,EDUHK,Education,BSc in AI & Ed Tech and BEd (Primary Mathematics),BEST_5,,0.0,,,,
+JS8010,EDUHK,Education,BSc in Sports Science & Coaching and BEd (PE),BEST_5,,0.0,,,,
+JS8011,EDUHK,Education,BSc in Integrated Environmental Mgmt and BEd (Science),BEST_5,,0.0,,,,
+JS8012,EDUHK,Education,BSocSc in Sociology & Comm Studies and BEd (Geography),BEST_5,,0.0,,,,
+JS8013,EDUHK,Education,BSocSc in Sociology & Comm Studies and BEd (Primary Humanities),BEST_5,,0.0,,,,
+JS8507,EDUHK,Education,HD in Early Childhood Education,BEST_5,,0.0,,,,
+JS8651,EDUHK,Social Sciences,BSocSc in Psychology,BEST_5,,0.0,,,,
+JS8663,EDUHK,Education,BA in Special Education,BEST_5,,0.0,,,,
+JS8674,EDUHK,Humanities,BA in Digital Chinese Culture and Communication,BEST_5,,0.0,,,,
+JS8675,EDUHK,Humanities,BA in English Studies and Digital Communication,BEST_5,,0.0,,,,
+JS8685,EDUHK,Humanities,BA in Creative and Digital Arts (Music),BEST_5,,0.0,,,,
+JS8686,EDUHK,Humanities,BA in Creative and Digital Arts (Visual Arts),BEST_5,,0.0,,,,
+JS8687,EDUHK,Humanities,BA in Heritage Education and Arts Management,BEST_5,,0.0,,,,
+JS8688,EDUHK,Social Sciences,BA in Personal Finance,BEST_5,,0.0,,,,
+JS8702,EDUHK,Science,BSc in Integrated Environmental Management,BEST_5,,0.0,,,,
+JS8714,EDUHK,Science,BSc in Artificial Intelligence and Educational Technology,BEST_5,,0.0,,,,
+JS8726,EDUHK,Health & Sports,BSc in Sports Science and Coaching,BEST_5,,0.0,,,,
+JS8727,EDUHK,Health & Sports,BSc in Speech Pathology and Rehabilitation,BEST_5,,0.0,,,,
