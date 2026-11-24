@@ -1,156 +1,236 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JUPAS 2027 Score Calculator (CSV-Backed)</title>
+  <title>JUPAS 2027 Score Calculator & Band Planner</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            surface: {
+              950: '#141517',
+              900: '#1b1c1f',
+              850: '#222428',
+              800: '#2a2c31',
+              700: '#373a40',
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    /* Subtle dark scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #1b1c1f; }
+    ::-webkit-scrollbar-thumb { background: #373a40; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #4b4f58; }
+  </style>
 </head>
-<body class="bg-slate-50 text-slate-900 min-h-screen">
-  <header class="bg-slate-900 text-white py-5 px-6 shadow">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+<body class="bg-surface-950 text-zinc-200 min-h-screen antialiased selection:bg-indigo-500/30">
+  <!-- Header -->
+  <header class="bg-surface-900 border-b border-surface-700/70 py-4 px-5 sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
       <div>
-        <h1 class="text-2xl font-bold tracking-tight">🎓 JUPAS 2027 Score Calculator</h1>
-        <p class="text-slate-300 text-sm">Dynamically powered by normalized 3NF CSV files in <code class="bg-slate-800 px-1.5 py-0.5 rounded">./data/</code></p>
+        <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-100">🎓 JUPAS 2027 Score Calculator</h1>
+        <p class="text-zinc-400 text-xs sm:text-sm">3NF CSV-backed calculator with searchable electives &amp; A1–E20 Band Planner</p>
       </div>
-      <div id="db-status" class="text-xs bg-slate-800 px-3 py-1.5 rounded-full text-emerald-300 font-medium">
-        Loading CSV tables...
+      <div class="flex items-center gap-2">
+        <div id="db-status" class="text-xs bg-surface-800 border border-surface-700 px-3 py-1.5 rounded-full text-emerald-400 font-medium">
+          Loading CSV tables...
+        </div>
       </div>
     </div>
   </header>
 
   <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
-    <!-- Sidebar: Grade Inputs -->
-    <aside class="lg:col-span-3 bg-white rounded-xl shadow-sm border border-slate-200 p-5 h-fit">
-      <h2 class="text-lg font-semibold mb-4">📝 Your HKDSE Grades</h2>
-
-      <div class="space-y-3 mb-5">
-        <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Core Subjects</div>
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="block text-xs font-medium text-slate-600 mb-1">English (ENG)</label>
-            <select id="grade-ENG" class="grade-select w-full rounded-lg border-slate-300 border px-2 py-1.5 text-sm"></select>
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-slate-600 mb-1">Chinese (CHI)</label>
-            <select id="grade-CHI" class="grade-select w-full rounded-lg border-slate-300 border px-2 py-1.5 text-sm"></select>
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-slate-600 mb-1">Math (MATH)</label>
-            <select id="grade-MATH" class="grade-select w-full rounded-lg border-slate-300 border px-2 py-1.5 text-sm"></select>
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-slate-600 mb-1">CSD</label>
-            <select id="csd-status" class="w-full rounded-lg border-slate-300 border px-2 py-1.5 text-sm">
-              <option value="Attained" selected>Attained</option>
-              <option value="Unattained">Unattained</option>
-            </select>
-          </div>
-        </div>
+    <!-- Sidebar: HKDSE Grade Inputs -->
+    <aside class="lg:col-span-4 xl:col-span-3 bg-surface-900 rounded-2xl border border-surface-700/70 p-4 sm:p-5 h-fit space-y-5">
+      <div class="flex items-center justify-between">
+        <h2 class="text-base font-semibold text-zinc-100">📝 Your HKDSE Grades</h2>
+        <button id="reset-grades-btn" class="text-xs text-zinc-400 hover:text-zinc-200 underline">Reset</button>
       </div>
 
-      <div class="space-y-3 mb-5">
-        <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Math Extended (Optional)</div>
-        <div class="grid grid-cols-2 gap-2">
-          <select id="math-ext-mod" class="w-full rounded-lg border-slate-300 border px-2 py-1.5 text-sm">
-            <option value="None">None</option>
-            <option value="M1">M1</option>
-            <option value="M2" selected>M2</option>
-          </select>
-          <select id="math-ext-grade" class="grade-select w-full rounded-lg border-slate-300 border px-2 py-1.5 text-sm"></select>
-        </div>
-      </div>
-
+      <!-- Core Subjects -->
       <div class="space-y-3">
-        <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Electives (Up to 4)</div>
-        <div id="electives-container" class="space-y-2"></div>
+        <div class="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">Core Subjects</div>
+        <div id="core-inputs" class="space-y-2.5"></div>
+        <!-- CSD -->
+        <div class="flex items-center justify-between bg-surface-850 border border-surface-700/70 rounded-xl px-3 py-2">
+          <span class="text-xs font-medium text-zinc-300">CSD</span>
+          <div class="flex gap-1">
+            <button type="button" data-csd="Attained" class="csd-btn px-2.5 py-1 rounded-lg text-xs font-medium transition">Attained</button>
+            <button type="button" data-csd="Unattained" class="csd-btn px-2.5 py-1 rounded-lg text-xs font-medium transition">Unattained</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Math Extended -->
+      <div class="space-y-2.5 pt-1 border-t border-surface-700/60">
+        <div class="flex items-center justify-between">
+          <div class="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">Math Extended</div>
+          <div class="flex gap-1 bg-surface-850 p-0.5 rounded-lg border border-surface-700/70">
+            <button type="button" data-mext="None" class="mext-btn px-2 py-0.5 rounded text-xs font-medium transition">None</button>
+            <button type="button" data-mext="M1" class="mext-btn px-2 py-0.5 rounded text-xs font-medium transition">M1</button>
+            <button type="button" data-mext="M2" class="mext-btn px-2 py-0.5 rounded text-xs font-medium transition">M2</button>
+          </div>
+        </div>
+        <div id="mext-grade-wrap" class="bg-surface-850 border border-surface-700/70 rounded-xl p-2.5"></div>
+      </div>
+
+      <!-- Searchable Electives -->
+      <div class="space-y-2.5 pt-1 border-t border-surface-700/60">
+        <div class="flex items-center justify-between">
+          <div class="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">Electives (Search &amp; Add)</div>
+          <span id="elec-count" class="text-[11px] text-zinc-400">0 / 4</span>
+        </div>
+
+        <!-- Searchable Elective Bar -->
+        <div class="relative">
+          <input
+            id="elective-search"
+            type="text"
+            autocomplete="off"
+            placeholder="🔍 Search elective (e.g. Phy, Econ, BAFS, Bio)..."
+            class="w-full rounded-xl bg-surface-850 border border-surface-700 text-zinc-100 placeholder-zinc-500 px-3 py-2 text-xs focus:outline-none focus:border-indigo-500"
+          />
+          <div id="elective-dropdown" class="hidden absolute left-0 right-0 mt-1 max-h-52 overflow-y-auto bg-surface-800 border border-surface-700 rounded-xl shadow-xl z-20 divide-y divide-surface-700/60"></div>
+        </div>
+
+        <!-- Selected Electives with 1-tap Grade Pills -->
+        <div id="selected-electives" class="space-y-2"></div>
       </div>
     </aside>
 
     <!-- Main Panel -->
-    <section class="lg:col-span-9 space-y-5">
+    <section class="lg:col-span-8 xl:col-span-9 space-y-5">
       <!-- KPI Cards -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-          <div class="text-xs text-slate-500">Raw Best 5 (7.0 Scale)</div>
-          <div id="kpi-best5-70" class="text-2xl font-bold text-slate-800 mt-1">—</div>
+        <div class="bg-surface-900 p-4 rounded-2xl border border-surface-700/70">
+          <div class="text-xs text-zinc-400">Raw Best 5 (7.0 Scale)</div>
+          <div id="kpi-best5-70" class="text-2xl font-bold text-zinc-100 mt-1">—</div>
         </div>
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-          <div class="text-xs text-slate-500">Raw Best 5 (8.5 Scale)</div>
-          <div id="kpi-best5-85" class="text-2xl font-bold text-indigo-600 mt-1">—</div>
+        <div class="bg-surface-900 p-4 rounded-2xl border border-surface-700/70">
+          <div class="text-xs text-zinc-400">Raw Best 5 (8.5 Scale)</div>
+          <div id="kpi-best5-85" class="text-2xl font-bold text-indigo-400 mt-1">—</div>
         </div>
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-          <div class="text-xs text-slate-500">Eligible Programmes</div>
-          <div id="kpi-eligible" class="text-2xl font-bold text-slate-800 mt-1">—</div>
+        <div class="bg-surface-900 p-4 rounded-2xl border border-surface-700/70">
+          <div class="text-xs text-zinc-400">Eligible Programmes</div>
+          <div id="kpi-eligible" class="text-2xl font-bold text-zinc-100 mt-1">—</div>
         </div>
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-          <div class="text-xs text-slate-500">Safe / Competitive</div>
-          <div id="kpi-matches" class="text-2xl font-bold text-emerald-600 mt-1">—</div>
+        <div class="bg-surface-900 p-4 rounded-2xl border border-surface-700/70">
+          <div class="text-xs text-zinc-400">Saved Choices (A1–E20)</div>
+          <div id="kpi-saved" class="text-2xl font-bold text-emerald-400 mt-1">0 / 20</div>
         </div>
       </div>
 
-      <!-- Filters -->
-      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <input id="filter-search" type="text" placeholder="Search JUPAS code or programme..." class="rounded-lg border border-slate-300 px-3 py-2 text-sm" />
-        <select id="filter-inst" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
-          <option value="ALL">All Institutions</option>
-        </select>
-        <select id="filter-fit" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
-          <option value="ALL">All Band Fits</option>
-          <option value="Safe (>= UQ)">Safe (>= UQ)</option>
-          <option value="Competitive (>= Med)">Competitive (>= Med)</option>
-          <option value="Borderline (>= LQ)">Borderline (>= LQ)</option>
-          <option value="Reach (< LQ)">Reach (< LQ)</option>
-          <option value="No Available Data">No Available Data</option>
-          <option value="Ineligible">Ineligible</option>
-        </select>
+      <!-- View Tabs -->
+      <div class="flex items-center gap-2 border-b border-surface-700/70 pb-2">
+        <button id="tab-explorer" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-indigo-600 text-white">
+          📊 Programme Explorer
+        </button>
+        <button id="tab-choices" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-surface-900 text-zinc-300 hover:bg-surface-800 border border-surface-700/70">
+          🎯 My Choices (A1–E20) <span id="tab-choices-badge" class="ml-1 px-1.5 py-0.5 text-[11px] rounded-full bg-surface-800 text-zinc-300">0</span>
+        </button>
       </div>
 
-      <!-- Results Table -->
-      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse text-sm">
-            <thead class="bg-slate-100 text-slate-600 text-xs uppercase">
-              <tr>
-                <th class="py-3 px-4">Code</th>
-                <th class="py-3 px-3">Univ</th>
-                <th class="py-3 px-4">Programme</th>
-                <th class="py-3 px-3 text-right">Your Score</th>
-                <th class="py-3 px-3 text-right">2026 LQ</th>
-                <th class="py-3 px-3 text-right">2026 Med</th>
-                <th class="py-3 px-3 text-right">2026 UQ</th>
-                <th class="py-3 px-3 text-right">Δ Med</th>
-                <th class="py-3 px-4">Band Fit</th>
-              </tr>
-            </thead>
-            <tbody id="results-tbody" class="divide-y divide-slate-100"></tbody>
-          </table>
+      <!-- TAB 1: Programme Explorer -->
+      <div id="view-explorer" class="space-y-4">
+        <!-- Filters -->
+        <div class="bg-surface-900 p-4 rounded-2xl border border-surface-700/70 grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <input id="filter-search" type="text" placeholder="🔍 Search JUPAS code, programme, faculty..." class="rounded-xl bg-surface-850 border border-surface-700 text-zinc-100 placeholder-zinc-500 px-3 py-2 text-sm focus:outline-none focus:border-indigo-500" />
+          <select id="filter-inst" class="rounded-xl bg-surface-850 border border-surface-700 text-zinc-100 px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+            <option value="ALL">All Institutions</option>
+          </select>
+          <select id="filter-fit" class="rounded-xl bg-surface-850 border border-surface-700 text-zinc-100 px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+            <option value="ALL">All Danger / Fit Levels</option>
+            <option value="Safe">🟢 Safe (>= UQ)</option>
+            <option value="Low Risk">🔵 Low Risk (>= Med)</option>
+            <option value="Moderate Danger">🟡 Moderate Danger (>= LQ)</option>
+            <option value="High Danger">🔴 High Danger (< LQ)</option>
+            <option value="No Data">⚪ No Available Data</option>
+            <option value="Critical (Ineligible)">⛔ Critical (Ineligible)</option>
+          </select>
         </div>
+
+        <!-- Results Table -->
+        <div class="bg-surface-900 rounded-2xl border border-surface-700/70 overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-sm">
+              <thead class="bg-surface-850 text-zinc-400 text-xs uppercase border-b border-surface-700/70">
+                <tr>
+                  <th class="py-3 px-3">Band</th>
+                  <th class="py-3 px-3">Code</th>
+                  <th class="py-3 px-2.5">Univ</th>
+                  <th class="py-3 px-3">Programme</th>
+                  <th class="py-3 px-2.5 text-right">Score</th>
+                  <th class="py-3 px-2.5 text-right">LQ</th>
+                  <th class="py-3 px-2.5 text-right">Med</th>
+                  <th class="py-3 px-2.5 text-right">UQ</th>
+                  <th class="py-3 px-2.5 text-right">Δ Med</th>
+                  <th class="py-3 px-3">Danger Level</th>
+                </tr>
+              </thead>
+              <tbody id="results-tbody" class="divide-y divide-surface-700/50"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: My Choices (A1–E20) -->
+      <div id="view-choices" class="hidden space-y-4">
+        <div class="bg-surface-900 p-4 rounded-2xl border border-surface-700/70 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div>
+            <h3 class="text-sm font-semibold text-zinc-100">Saved JUPAS Band Choices (A1 – E20)</h3>
+            <p class="text-xs text-zinc-400">Auto-saved in your browser. Assign programmes from the Explorer tab or use the quick dropdowns below.</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button id="export-choices-btn" class="px-3 py-1.5 rounded-lg bg-surface-800 hover:bg-surface-700 border border-surface-700 text-xs font-medium text-zinc-200">Export CSV</button>
+            <button id="clear-choices-btn" class="px-3 py-1.5 rounded-lg bg-rose-950/60 hover:bg-rose-900/60 border border-rose-800/60 text-xs font-medium text-rose-300">Clear All</button>
+          </div>
+        </div>
+
+        <!-- Band A Risk Alert -->
+        <div id="band-a-summary" class="bg-surface-900 p-4 rounded-2xl border border-surface-700/70 text-xs text-zinc-300"></div>
+
+        <!-- A1-E20 Bands Container -->
+        <div id="choices-bands-container" class="space-y-4"></div>
       </div>
     </section>
   </main>
 
   <!-- Breakdown Modal -->
-  <div id="detail-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-xl space-y-4">
-      <div class="flex justify-between items-start">
+  <div id="detail-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-surface-900 border border-surface-700 rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4">
+      <div class="flex justify-between items-start gap-4">
         <div>
-          <span id="modal-code" class="text-xs font-bold uppercase tracking-wider text-indigo-600"></span>
-          <h3 id="modal-title" class="text-lg font-bold text-slate-900"></h3>
+          <span id="modal-code" class="text-xs font-bold uppercase tracking-wider text-indigo-400"></span>
+          <h3 id="modal-title" class="text-lg font-bold text-zinc-100 mt-0.5"></h3>
         </div>
-        <button id="modal-close" class="text-slate-400 hover:text-slate-700 text-xl font-bold">&times;</button>
+        <button id="modal-close" class="text-zinc-400 hover:text-zinc-100 text-2xl leading-none">&times;</button>
       </div>
-      <div class="grid grid-cols-3 gap-3 bg-slate-50 p-3 rounded-xl text-center">
-        <div><div class="text-xs text-slate-500">Your Score</div><div id="modal-score" class="text-xl font-bold text-indigo-600"></div></div>
-        <div><div class="text-xs text-slate-500">2026 Median</div><div id="modal-med" class="text-xl font-bold text-slate-800"></div></div>
-        <div><div class="text-xs text-slate-500">Status</div><div id="modal-fit" class="text-sm font-semibold mt-1"></div></div>
+      <div class="grid grid-cols-3 gap-3 bg-surface-850 border border-surface-700/60 p-3 rounded-xl text-center">
+        <div><div class="text-xs text-zinc-400">Your Score</div><div id="modal-score" class="text-xl font-bold text-indigo-400"></div></div>
+        <div><div class="text-xs text-zinc-400">2026 Median</div><div id="modal-med" class="text-xl font-bold text-zinc-100"></div></div>
+        <div><div class="text-xs text-zinc-400">Danger Level</div><div id="modal-fit" class="text-xs font-semibold mt-1.5"></div></div>
       </div>
-      <div class="text-sm space-y-2">
-        <div><span class="font-semibold">Subjects Counted:</span> <code id="modal-breakdown" class="bg-slate-100 px-2 py-0.5 rounded text-xs"></code></div>
-        <div><span class="font-semibold">Formula & Scale:</span> <span id="modal-formula"></span></div>
-        <div><span class="font-semibold">Eligibility:</span> <span id="modal-elig"></span></div>
-        <div><span class="font-semibold">Official Notes:</span> <span id="modal-notes" class="text-slate-600"></span></div>
+      <div class="text-sm space-y-2 text-zinc-300">
+        <div><span class="font-semibold text-zinc-100">Subjects Counted:</span> <code id="modal-breakdown" class="bg-surface-850 border border-surface-700 px-2 py-0.5 rounded text-xs text-indigo-300"></code></div>
+        <div><span class="font-semibold text-zinc-100">Formula &amp; Scale:</span> <span id="modal-formula"></span></div>
+        <div><span class="font-semibold text-zinc-100">Eligibility:</span> <span id="modal-elig"></span></div>
+        <div><span class="font-semibold text-zinc-100">Official Notes:</span> <span id="modal-notes" class="text-zinc-400"></span></div>
+      </div>
+      <div class="pt-3 border-t border-surface-700/70 flex items-center justify-between gap-3">
+        <label class="text-xs font-medium text-zinc-300">Save to Band Slot:</label>
+        <div class="flex items-center gap-2">
+          <select id="modal-slot-select" class="rounded-lg bg-surface-850 border border-surface-700 text-zinc-100 px-2.5 py-1.5 text-xs"></select>
+          <button id="modal-save-slot" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold">Save</button>
+        </div>
       </div>
     </div>
   </div>
@@ -158,6 +238,18 @@
   <script>
     const GRADES = ["5**", "5*", "5", "4", "3", "2", "1", "U"];
     const GRADE_RANK = { "U": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "5*": 6, "5**": 7 };
+
+    const BAND_GROUPS = [
+      { band: "Band A", slots: ["A1", "A2", "A3"], desc: "Top 3 Priority Choices (Most Important)" },
+      { band: "Band B", slots: ["B4", "B5", "B6"], desc: "Secondary Choices" },
+      { band: "Band C", slots: ["C7", "C8", "C9", "C10"], desc: "Mid-Tier Choices" },
+      { band: "Band D", slots: ["D11", "D12", "D13", "D14", "D15"], desc: "Backup Choices" },
+      { band: "Band E", slots: ["E16", "E17", "E18", "E19", "E20"], desc: "Safety Net Choices" }
+    ];
+    const ALL_SLOTS = BAND_GROUPS.flatMap(g => g.slots);
+
+    const STORAGE_GRADES_KEY = "jupas2027_grades_v3";
+    const STORAGE_CHOICES_KEY = "jupas2027_choices_v3";
 
     let DB = {
       institutions: {},
@@ -168,6 +260,53 @@
       historyByCode: {}
     };
 
+    let STATE = {
+      core: { ENG: "5", CHI: "4", MATH: "5*" },
+      csd: "Attained",
+      mextMod: "M2",
+      mextGrade: "5",
+      electives: [
+        { code: "PHY", grade: "5*" },
+        { code: "CHEM", grade: "5" },
+        { code: "ECON", grade: "5" }
+      ],
+      choices: {} // { "A1": "JS6456", ... }
+    };
+
+    let LAST_EVAL_MAP = {};
+    let ACTIVE_MODAL_CODE = null;
+
+    function loadSavedState() {
+      try {
+        const g = localStorage.getItem(STORAGE_GRADES_KEY);
+        if (g) {
+          const parsed = JSON.parse(g);
+          STATE.core = parsed.core || STATE.core;
+          STATE.csd = parsed.csd || STATE.csd;
+          STATE.mextMod = parsed.mextMod ?? STATE.mextMod;
+          STATE.mextGrade = parsed.mextGrade || STATE.mextGrade;
+          if (Array.isArray(parsed.electives)) STATE.electives = parsed.electives;
+        }
+        const c = localStorage.getItem(STORAGE_CHOICES_KEY);
+        if (c) STATE.choices = JSON.parse(c) || {};
+      } catch (e) {
+        console.warn("Could not restore localStorage state:", e);
+      }
+    }
+
+    function persistState() {
+      try {
+        localStorage.setItem(STORAGE_GRADES_KEY, JSON.stringify({
+          core: STATE.core,
+          csd: STATE.csd,
+          mextMod: STATE.mextMod,
+          mextGrade: STATE.mextGrade,
+          electives: STATE.electives
+        }));
+        localStorage.setItem(STORAGE_CHOICES_KEY, JSON.stringify(STATE.choices));
+      } catch (e) {}
+    }
+
     async function fetchCSV(path) {
       const res = await fetch(path);
       if (!res.ok) throw new Error(`Failed to fetch ${path} (HTTP ${res.status})`);
@@ -175,72 +314,171 @@
       return Papa.parse(text.trim(), { header: true, skipEmptyLines: true }).data;
     }
 
-    function populateGradeSelect(el, defaultGrade) {
-      el.innerHTML = GRADES.map(g => `<option value="${g}" ${g === defaultGrade ? "selected" : ""}>${g}</option>`).join("");
+    function gradePillBarHTML(selectedGrade, attrName, attrVal) {
+      return `<div class="grid grid-cols-8 gap-1 mt-1.5">` + GRADES.map(g => {
+        const active = g === selectedGrade;
+        const cls = active
+          ? "bg-indigo-600 text-white border-indigo-500 font-bold"
+          : "bg-surface-900 text-zinc-400 border-surface-700 hover:bg-surface-800 hover:text-zinc-200";
+        return `<button type="button" ${attrName}="${attrVal}" data-grade="${g}" class="grade-pill py-1 rounded-md border text-[11px] text-center transition ${cls}">${g}</button>`;
+      }).join("") + `</div>`;
     }
 
-    function initInputs() {
-      populateGradeSelect(document.getElementById("grade-ENG"), "5");
-      populateGradeSelect(document.getElementById("grade-CHI"), "4");
-      populateGradeSelect(document.getElementById("grade-MATH"), "5*");
-      populateGradeSelect(document.getElementById("math-ext-grade"), "5");
+    function renderSidebarInputs() {
+      // Core subjects
+      const coreContainer = document.getElementById("core-inputs");
+      const coreLabels = { ENG: "English Language", CHI: "Chinese Language", MATH: "Mathematics (Comp.)" };
+      coreContainer.innerHTML = ["ENG", "CHI", "MATH"].map(code => `
+        <div class="bg-surface-850 border border-surface-700/70 rounded-xl p-2.5">
+          <div class="flex justify-between items-center">
+            <span class="text-xs font-medium text-zinc-200">${coreLabels[code]}</span>
+            <span class="text-xs font-bold text-indigo-400">${STATE.core[code]}</span>
+          </div>
+          ${gradePillBarHTML(STATE.core[code], "data-core", code)}
+        </div>
+      `).join("");
 
-      const electives = Object.values(DB.subjects).filter(s => s.category === "ELECTIVE");
-      const defaults = [
-        { code: "PHY", grade: "5*" },
-        { code: "CHEM", grade: "5" },
-        { code: "ECON", grade: "5" },
-        { code: "NONE", grade: "4" }
-      ];
-      const container = document.getElementById("electives-container");
-      container.innerHTML = "";
-
-      defaults.forEach((def, idx) => {
-        const row = document.createElement("div");
-        row.className = "grid grid-cols-3 gap-2";
-        const subjSel = document.createElement("select");
-        subjSel.id = `elec-code-${idx}`;
-        subjSel.className = "col-span-2 rounded-lg border border-slate-300 px-2 py-1.5 text-xs";
-        subjSel.innerHTML = `<option value="NONE">-- None --</option>` +
-          electives.map(e => `<option value="${e.subject_code}" ${e.subject_code === def.code ? "selected" : ""}>${e.subject_code} - ${e.subject_name}</option>`).join("");
-
-        const gradeSel = document.createElement("select");
-        gradeSel.id = `elec-grade-${idx}`;
-        gradeSel.className = "rounded-lg border border-slate-300 px-2 py-1.5 text-xs";
-        populateGradeSelect(gradeSel, def.grade);
-
-        row.appendChild(subjSel);
-        row.appendChild(gradeSel);
-        container.appendChild(row);
+      coreContainer.querySelectorAll(".grade-pill").forEach(btn => {
+        btn.addEventListener("click", () => {
+          STATE.core[btn.dataset.core] = btn.dataset.grade;
+          persistState();
+          renderSidebarInputs();
+          renderAll();
+        });
       });
 
-      const instSel = document.getElementById("filter-inst");
-      Object.values(DB.institutions).forEach(inst => {
-        const opt = document.createElement("option");
-        opt.value = inst.short_name;
-        opt.textContent = `${inst.short_name} — ${inst.institution_name}`;
-        instSel.appendChild(opt);
+      // CSD buttons
+      document.querySelectorAll(".csd-btn").forEach(btn => {
+        const active = btn.dataset.csd === STATE.csd;
+        btn.className = `csd-btn px-2.5 py-1 rounded-lg text-xs font-medium transition ${
+          active ? "bg-indigo-600 text-white" : "bg-surface-900 text-zinc-400 hover:text-zinc-200"
+        }`;
       });
 
-      document.querySelectorAll("select, input").forEach(el => {
-        el.addEventListener("change", render);
-        el.addEventListener("input", render);
+      // Math Extended module buttons
+      document.querySelectorAll(".mext-btn").forEach(btn => {
+        const active = btn.dataset.mext === STATE.mextMod;
+        btn.className = `mext-btn px-2 py-0.5 rounded text-xs font-medium transition ${
+          active ? "bg-indigo-600 text-white" : "text-zinc-400 hover:text-zinc-200"
+        }`;
+      });
+
+      const mextWrap = document.getElementById("mext-grade-wrap");
+      if (STATE.mextMod === "None") {
+        mextWrap.classList.add("hidden");
+      } else {
+        mextWrap.classList.remove("hidden");
+        mextWrap.innerHTML = `
+          <div class="flex justify-between items-center">
+            <span class="text-xs font-medium text-zinc-200">Math Extended (${STATE.mextMod})</span>
+            <span class="text-xs font-bold text-indigo-400">${STATE.mextGrade}</span>
+          </div>
+          ${gradePillBarHTML(STATE.mextGrade, "data-mext-grade", STATE.mextMod)}
+        `;
+        mextWrap.querySelectorAll(".grade-pill").forEach(btn => {
+          btn.addEventListener("click", () => {
+            STATE.mextGrade = btn.dataset.grade;
+            persistState();
+            renderSidebarInputs();
+            renderAll();
+          });
+        });
+      }
+
+      // Selected Electives
+      document.getElementById("elec-count").textContent = `${STATE.electives.length} / 4`;
+      const selContainer = document.getElementById("selected-electives");
+      if (STATE.electives.length === 0) {
+        selContainer.innerHTML = `<div class="text-xs text-zinc-500 text-center py-3 bg-surface-850/60 rounded-xl border border-dashed border-surface-700">Search above to add up to 4 electives</div>`;
+      } else {
+        selContainer.innerHTML = STATE.electives.map((el, idx) => {
+          const sName = DB.subjects[el.code]?.subject_name || el.code;
+          return `
+            <div class="bg-surface-850 border border-surface-700/70 rounded-xl p-2.5">
+              <div class="flex justify-between items-center gap-2">
+                <div class="truncate">
+                  <span class="text-xs font-semibold text-indigo-300">${el.code}</span>
+                  <span class="text-xs text-zinc-300 ml-1">${sName}</span>
+                </div>
+                <button type="button" data-remove-elec="${idx}" class="text-zinc-500 hover:text-rose-400 text-sm font-bold px-1" title="Remove">&times;</button>
+              </div>
+              ${gradePillBarHTML(el.grade, "data-elec-idx", idx)}
+            </div>
+          `;
+        }).join("");
+
+        selContainer.querySelectorAll(".grade-pill").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const idx = parseInt(btn.dataset.elecIdx, 10);
+            STATE.electives[idx].grade = btn.dataset.grade;
+            persistState();
+            renderSidebarInputs();
+            renderAll();
+          });
+        });
+        selContainer.querySelectorAll("[data-remove-elec]").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const idx = parseInt(btn.dataset.removeElec, 10);
+            STATE.electives.splice(idx, 1);
+            persistState();
+            renderSidebarInputs();
+            renderAll();
+          });
+        });
+      }
+    }
+
+    function setupElectiveSearch() {
+      const input = document.getElementById("elective-search");
+      const dropdown = document.getElementById("elective-dropdown");
+
+      function updateDropdown() {
+        const q = input.value.trim().toLowerCase();
+        const chosenCodes = new Set(STATE.electives.map(e => e.code));
+        const matches = Object.values(DB.subjects)
+          .filter(s => s.category === "ELECTIVE" && !chosenCodes.has(s.subject_code))
+          .filter(s => !q || s.subject_code.toLowerCase().includes(q) || s.subject_name.toLowerCase().includes(q));
+
+        if (STATE.electives.length >= 4) {
+          dropdown.innerHTML = `<div class="px-3 py-2 text-xs text-amber-400">Maximum 4 electives reached. Remove one to add another.</div>`;
+        } else if (matches.length === 0) {
+          dropdown.innerHTML = `<div class="px-3 py-2 text-xs text-zinc-500">No matching electives found.</div>`;
+        } else {
+          dropdown.innerHTML = matches.map(s => `
+            <button type="button" data-add-elec="${s.subject_code}" class="w-full text-left px-3 py-2 text-xs hover:bg-surface-700 flex items-center justify-between transition">
+              <span><strong class="text-indigo-300">${s.subject_code}</strong> <span class="text-zinc-200 ml-1">${s.subject_name}</span></span>
+              <span class="text-[11px] text-emerald-400 font-semibold">+ Add</span>
+            </button>
+          `).join("");
+          dropdown.querySelectorAll("[data-add-elec]").forEach(btn => {
+            btn.addEventListener("click", () => {
+              if (STATE.electives.length < 4) {
+                STATE.electives.push({ code: btn.dataset.addElec, grade: "5" });
+                input.value = "";
+                dropdown.classList.add("hidden");
+                persistState();
+                renderSidebarInputs();
+                renderAll();
+              }
+            });
+          });
+        }
+        dropdown.classList.remove("hidden");
+      }
+
+      input.addEventListener("focus", updateDropdown);
+      input.addEventListener("input", updateDropdown);
+      document.addEventListener("click", (e) => {
+        if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+          dropdown.classList.add("hidden");
+        }
       });
     }
 
     function getUserGrades() {
-      const grades = {
-        ENG: document.getElementById("grade-ENG").value,
-        CHI: document.getElementById("grade-CHI").value,
-        MATH: document.getElementById("grade-MATH").value
-      };
-      const mMod = document.getElementById("math-ext-mod").value;
-      if (mMod !== "None") grades[mMod] = document.getElementById("math-ext-grade").value;
-
-      for (let i = 0; i < 4; i++) {
-        const code = document.getElementById(`elec-code-${i}`).value;
-        if (code !== "NONE") grades[code] = document.getElementById(`elec-grade-${i}`).value;
-      }
+      const grades = { ...STATE.core };
+      if (STATE.mextMod !== "None") grades[STATE.mextMod] = STATE.mextGrade;
+      STATE.electives.forEach(e => { grades[e.code] = e.grade; });
       return grades;
     }
 
@@ -279,9 +517,9 @@
       });
 
       const candidates = {};
+      const defaultW = parseFloat(inst.default_subject_weight) || 1.0;
       Object.entries(userGrades).forEach(([code, grade]) => {
         const raw = scaleMap[grade] ?? 0;
-        const defaultW = parseFloat(inst.default_subject_weight) || 1.0;
         const mult = weightMap[code] ?? defaultW;
         candidates[code] = { code, grade, raw, mult, weighted: raw * mult };
       });
@@ -334,13 +572,15 @@
       const lq = hist.score_lq ? parseFloat(hist.score_lq) : null;
       const deltaMed = med !== null ? Math.round((total - med) * 100) / 100 : null;
 
-      let bandFit = "No Available Data";
-      if (!eligible) bandFit = "Ineligible";
+      let dangerLevel = "No Data";
+      if (!eligible) dangerLevel = "Critical (Ineligible)";
       else if (med !== null && lq !== null) {
-        if (uq !== null && total >= uq) bandFit = "Safe (>= UQ)";
-        else if (total >= med) bandFit = "Competitive (>= Med)";
-        else if (total >= lq) bandFit = "Borderline (>= LQ)";
-        else bandFit = "Reach (< LQ)";
+        if (uq !== null && total >= uq) dangerLevel = "Safe";
+        else if (total >= med) dangerLevel = "Low Risk";
+        else if (total >= lq) dangerLevel = "Moderate Danger";
+        else dangerLevel = "High Danger";
+      } else if (med !== null) {
+        dangerLevel = total >= med ? "Low Risk" : "High Danger";
       }
 
       return {
@@ -349,7 +589,7 @@
         scaleId,
         userScore: total,
         uq, med, lq, deltaMed,
-        bandFit,
+        dangerLevel,
         eligible,
         eligNotes: eligible ? "Eligible" : issues.join("; "),
         breakdown: parts.join(" + "),
@@ -357,21 +597,163 @@
       };
     }
 
-    function fitBadge(fit) {
+    function dangerBadge(level) {
       const map = {
-        "Safe (>= UQ)": "bg-emerald-100 text-emerald-800",
-        "Competitive (>= Med)": "bg-sky-100 text-sky-800",
-        "Borderline (>= LQ)": "bg-amber-100 text-amber-800",
-        "Reach (< LQ)": "bg-rose-100 text-rose-800",
-        "No Available Data": "bg-slate-100 text-slate-600",
-        "Ineligible": "bg-slate-200 text-slate-600"
+        "Safe": "bg-emerald-950/80 text-emerald-300 border-emerald-700/60",
+        "Low Risk": "bg-sky-950/80 text-sky-300 border-sky-700/60",
+        "Moderate Danger": "bg-amber-950/80 text-amber-300 border-amber-700/60",
+        "High Danger": "bg-rose-950/80 text-rose-300 border-rose-700/60",
+        "No Data": "bg-surface-800 text-zinc-400 border-surface-700",
+        "Critical (Ineligible)": "bg-zinc-800 text-zinc-400 border-zinc-700 line-through"
       };
-      return `<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold ${map[fit] || ""}">${fit}</span>`;
+      const icons = {
+        "Safe": "🟢", "Low Risk": "🔵", "Moderate Danger": "🟡",
+        "High Danger": "🔴", "No Data": "⚪", "Critical (Ineligible)": "⛔"
+      };
+      return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold border whitespace-nowrap ${map[level] || ""}">${icons[level] || ""} ${level}</span>`;
     }
 
-    function render() {
+    function getAssignedSlot(jupasCode) {
+      for (const slot of ALL_SLOTS) {
+        if (STATE.choices[slot] === jupasCode) return slot;
+      }
+      return "";
+    }
+
+    function assignProgrammeToSlot(jupasCode, newSlot) {
+      // Remove from any previous slot to prevent duplicates
+      for (const s of ALL_SLOTS) {
+        if (STATE.choices[s] === jupasCode) delete STATE.choices[s];
+      }
+      if (newSlot) STATE.choices[newSlot] = jupasCode;
+      persistState();
+      renderAll();
+    }
+
+    function openDetailModal(code) {
+      const r = LAST_EVAL_MAP[code];
+      if (!r) return;
+      ACTIVE_MODAL_CODE = code;
+      document.getElementById("modal-code").textContent = `${r.jupas_code} • ${r.institution} (${r.faculty})`;
+      document.getElementById("modal-title").textContent = r.programme_name;
+      document.getElementById("modal-score").textContent = r.userScore.toFixed(2);
+      document.getElementById("modal-med").textContent = r.med !== null ? r.med.toFixed(1) : "N/A";
+      document.getElementById("modal-fit").innerHTML = dangerBadge(r.dangerLevel);
+      document.getElementById("modal-breakdown").textContent = r.breakdown;
+      document.getElementById("modal-formula").textContent = `${r.formula_type} (${r.scaleId})`;
+      document.getElementById("modal-elig").textContent = r.eligNotes;
+      document.getElementById("modal-notes").textContent = r.scoringNotes || "—";
+
+      const curSlot = getAssignedSlot(code);
+      const sel = document.getElementById("modal-slot-select");
+      sel.innerHTML = `<option value="">-- Remove / Unassigned --</option>` +
+        ALL_SLOTS.map(s => {
+          const occ = STATE.choices[s];
+          const label = occ && occ !== code ? `${s} (replaces ${occ})` : s;
+          return `<option value="${s}" ${s === curSlot ? "selected" : ""}>${label}</option>`;
+        }).join("");
+
+      const modal = document.getElementById("detail-modal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    }
+
+    function renderChoicesTab() {
+      const savedCount = Object.keys(STATE.choices).filter(s => STATE.choices[s]).length;
+      document.getElementById("kpi-saved").textContent = `${savedCount} / 20`;
+      document.getElementById("tab-choices-badge").textContent = savedCount;
+
+      // Band A Risk Summary
+      const bandACodes = ["A1", "A2", "A3"].map(s => STATE.choices[s]).filter(Boolean);
+      const bandAEvals = bandACodes.map(c => LAST_EVAL_MAP[c]).filter(Boolean);
+      const summaryEl = document.getElementById("band-a-summary");
+      if (bandAEvals.length === 0) {
+        summaryEl.innerHTML = `💡 <strong>Band A Strategy:</strong> Assign your top 3 choices (A1, A2, A3) to see a real-time danger assessment.`;
+      } else {
+        const safeCount = bandAEvals.filter(e => e.dangerLevel === "Safe" || e.dangerLevel === "Low Risk").length;
+        const highDangerCount = bandAEvals.filter(e => e.dangerLevel === "High Danger" || e.dangerLevel === "Critical (Ineligible)").length;
+        if (highDangerCount === bandAEvals.length) {
+          summaryEl.innerHTML = `🔴 <strong>High-Risk Band A Warning:</strong> All ${bandAEvals.length} of your Band A choices are High Danger or Ineligible. Consider placing at least one Safe/Low Risk programme in A3.`;
+        } else if (safeCount >= 1) {
+          summaryEl.innerHTML = `🟢 <strong>Balanced Band A:</strong> You have ${safeCount} Safe/Low Risk anchor(s) in Band A (${bandAEvals.length}/3 filled).`;
+        } else {
+          summaryEl.innerHTML = `🟡 <strong>Moderate-Risk Band A:</strong> Your Band A choices are mostly Borderline/Moderate Danger. Make sure your Band B choices include a Safe backup.`;
+        }
+      }
+
+      const container = document.getElementById("choices-bands-container");
+      const allProgOptions = DB.programmes
+        .slice()
+        .sort((a, b) => a.jupas_code.localeCompare(b.jupas_code))
+        .map(p => `<option value="${p.jupas_code}">${p.jupas_code} — ${DB.institutions[p.institution_id]?.short_name || p.institution_id} ${p.programme_name}</option>`)
+        .join("");
+
+      container.innerHTML = BAND_GROUPS.map(group => `
+        <div class="bg-surface-900 rounded-2xl border border-surface-700/70 overflow-hidden">
+          <div class="bg-surface-850 px-4 py-2.5 border-b border-surface-700/70 flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-indigo-300">${group.band}</span>
+            <span class="text-[11px] text-zinc-400">${group.desc}</span>
+          </div>
+          <div class="divide-y divide-surface-700/50">
+            ${group.slots.map(slot => {
+              const code = STATE.choices[slot] || "";
+              const r = code ? LAST_EVAL_MAP[code] : null;
+              return `
+                <div class="p-3 flex flex-col md:flex-row md:items-center justify-between gap-2.5 hover:bg-surface-850/50">
+                  <div class="flex items-center gap-3 flex-1 min-w-0">
+                    <span class="w-9 text-center py-1 rounded-lg bg-surface-800 border border-surface-700 text-xs font-bold text-zinc-200 shrink-0">${slot}</span>
+                    ${r ? `
+                      <div class="min-w-0 flex-1 cursor-pointer" data-inspect="${r.jupas_code}">
+                        <div class="flex items-center gap-2">
+                          <span class="font-mono text-xs font-bold text-indigo-400">${r.jupas_code}</span>
+                          <span class="text-xs text-zinc-400">${r.institution}</span>
+                          <span class="text-sm font-medium text-zinc-100 truncate">${r.programme_name}</span>
+                        </div>
+                        <div class="text-[11px] text-zinc-400 mt-0.5">
+                          Score: <strong class="text-zinc-200">${r.userScore.toFixed(2)}</strong>
+                          • 2026 LQ/Med/UQ: ${r.lq !== null ? r.lq.toFixed(1) : "—"} / ${r.med !== null ? r.med.toFixed(1) : "—"} / ${r.uq !== null ? r.uq.toFixed(1) : "—"}
+                        </div>
+                      </div>
+                    ` : `
+                      <select data-quick-slot="${slot}" class="flex-1 rounded-lg bg-surface-850 border border-surface-700 text-zinc-300 px-2.5 py-1.5 text-xs focus:outline-none focus:border-indigo-500">
+                        <option value="">+ Select a programme for ${slot}...</option>
+                        ${allProgOptions}
+                      </select>
+                    `}
+                  </div>
+                  ${r ? `
+                    <div class="flex items-center gap-2.5 shrink-0 pl-12 md:pl-0">
+                      ${dangerBadge(r.dangerLevel)}
+                      <button type="button" data-clear-slot="${slot}" class="text-xs text-zinc-500 hover:text-rose-400 px-1.5 py-1 rounded hover:bg-surface-800" title="Remove from ${slot}">✕</button>
+                    </div>
+                  ` : ""}
+                </div>
+              `;
+            }).join("")}
+          </div>
+        </div>
+      `).join("");
+
+      container.querySelectorAll("[data-quick-slot]").forEach(sel => {
+        sel.addEventListener("change", () => {
+          if (sel.value) assignProgrammeToSlot(sel.value, sel.dataset.quickSlot);
+        });
+      });
+      container.querySelectorAll("[data-clear-slot]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          delete STATE.choices[btn.dataset.clearSlot];
+          persistState();
+          renderAll();
+        });
+      });
+      container.querySelectorAll("[data-inspect]").forEach(el => {
+        el.addEventListener("click", () => openDetailModal(el.dataset.inspect));
+      });
+    }
+
+    function renderAll() {
       const userGrades = getUserGrades();
-      const csdAttained = document.getElementById("csd-status").value === "Attained";
+      const csdAttained = STATE.csd === "Attained";
 
       const pts70 = Object.values(userGrades).map(g => DB.scales["SCALE_70"][g] || 0).sort((a, b) => b - a);
       const pts85 = Object.values(userGrades).map(g => DB.scales["SCALE_85"][g] || 0).sort((a, b) => b - a);
@@ -380,9 +762,9 @@
 
       const evaluated = DB.programmes.map(p => evaluateProgramme(p, userGrades, csdAttained));
       evaluated.sort((a, b) => (b.eligible - a.eligible) || ((b.deltaMed ?? -999) - (a.deltaMed ?? -999)));
+      LAST_EVAL_MAP = Object.fromEntries(evaluated.map(r => [r.jupas_code, r]));
 
       document.getElementById("kpi-eligible").textContent = `${evaluated.filter(e => e.eligible).length} / ${evaluated.length}`;
-      document.getElementById("kpi-matches").textContent = evaluated.filter(e => e.bandFit === "Safe (>= UQ)" || e.bandFit === "Competitive (>= Med)").length;
 
       const q = document.getElementById("filter-search").value.trim().toLowerCase();
       const instF = document.getElementById("filter-inst").value;
@@ -390,53 +772,151 @@
 
       const filtered = evaluated.filter(r =>
         (instF === "ALL" || r.institution === instF) &&
-        (fitF === "ALL" || r.bandFit === fitF) &&
-        (!q || r.jupas_code.toLowerCase().includes(q) || r.programme_name.toLowerCase().includes(q))
+        (fitF === "ALL" || r.dangerLevel === fitF) &&
+        (!q || r.jupas_code.toLowerCase().includes(q) || r.programme_name.toLowerCase().includes(q) || r.faculty.toLowerCase().includes(q))
       );
 
       const tbody = document.getElementById("results-tbody");
-      tbody.innerHTML = filtered.map(r => `
-        <tr class="hover:bg-indigo-50/50 cursor-pointer transition" data-code="${r.jupas_code}">
-          <td class="py-3 px-4 font-mono font-semibold text-indigo-700">${r.jupas_code}</td>
-          <td class="py-3 px-3 font-medium">${r.institution}</td>
-          <td class="py-3 px-4">${r.programme_name}</td>
-          <td class="py-3 px-3 text-right font-bold">${r.userScore.toFixed(2)}</td>
-          <td class="py-3 px-3 text-right text-slate-600">${r.lq !== null ? r.lq.toFixed(1) : "—"}</td>
-          <td class="py-3 px-3 text-right text-slate-600">${r.med !== null ? r.med.toFixed(1) : "—"}</td>
-          <td class="py-3 px-3 text-right text-slate-600">${r.uq !== null ? r.uq.toFixed(1) : "—"}</td>
-          <td class="py-3 px-3 text-right font-semibold ${r.deltaMed === null ? "text-slate-400" : r.deltaMed >= 0 ? "text-emerald-600" : "text-rose-600"}">
-            ${r.deltaMed !== null ? (r.deltaMed >= 0 ? "+" : "") + r.deltaMed.toFixed(2) : "—"}
-          </td>
-          <td class="py-3 px-4">${fitBadge(r.bandFit)}</td>
-        </tr>
-      `).join("");
+      tbody.innerHTML = filtered.map(r => {
+        const curSlot = getAssignedSlot(r.jupas_code);
+        return `
+          <tr class="hover:bg-surface-850/80 transition" data-row-code="${r.jupas_code}">
+            <td class="py-2.5 px-3" onclick="event.stopPropagation()">
+              <select data-row-slot="${r.jupas_code}" class="rounded-lg bg-surface-850 border ${curSlot ? "border-indigo-500 text-indigo-300 font-bold" : "border-surface-700 text-zinc-400"} px-1.5 py-1 text-xs focus:outline-none">
+                <option value="">—</option>
+                ${ALL_SLOTS.map(s => `<option value="${s}" ${s === curSlot ? "selected" : ""}>${s}</option>`).join("")}
+              </select>
+            </td>
+            <td class="py-2.5 px-3 font-mono font-semibold text-indigo-400 cursor-pointer">${r.jupas_code}</td>
+            <td class="py-2.5 px-2.5 font-medium text-zinc-300 cursor-pointer">${r.institution}</td>
+            <td class="py-2.5 px-3 text-zinc-200 cursor-pointer">${r.programme_name}</td>
+            <td class="py-2.5 px-2.5 text-right font-bold text-zinc-100 cursor-pointer">${r.userScore.toFixed(2)}</td>
+            <td class="py-2.5 px-2.5 text-right text-zinc-400 cursor-pointer">${r.lq !== null ? r.lq.toFixed(1) : "—"}</td>
+            <td class="py-2.5 px-2.5 text-right text-zinc-300 cursor-pointer">${r.med !== null ? r.med.toFixed(1) : "—"}</td>
+            <td class="py-2.5 px-2.5 text-right text-zinc-400 cursor-pointer">${r.uq !== null ? r.uq.toFixed(1) : "—"}</td>
+            <td class="py-2.5 px-2.5 text-right font-semibold cursor-pointer ${r.deltaMed === null ? "text-zinc-500" : r.deltaMed >= 0 ? "text-emerald-400" : "text-rose-400"}">
+              ${r.deltaMed !== null ? (r.deltaMed >= 0 ? "+" : "") + r.deltaMed.toFixed(2) : "—"}
+            </td>
+            <td class="py-2.5 px-3 cursor-pointer">${dangerBadge(r.dangerLevel)}</td>
+          </tr>
+        `;
+      }).join("");
 
-      const byCode = Object.fromEntries(filtered.map(r => [r.jupas_code, r]));
+      tbody.querySelectorAll("[data-row-slot]").forEach(sel => {
+        sel.addEventListener("change", () => assignProgrammeToSlot(sel.dataset.rowSlot, sel.value));
+      });
       tbody.querySelectorAll("tr").forEach(tr => {
-        tr.addEventListener("click", () => {
-          const r = byCode[tr.dataset.code];
-          document.getElementById("modal-code").textContent = `${r.jupas_code} • ${r.institution} (${r.faculty})`;
-          document.getElementById("modal-title").textContent = r.programme_name;
-          document.getElementById("modal-score").textContent = r.userScore.toFixed(2);
-          document.getElementById("modal-med").textContent = r.med !== null ? r.med.toFixed(1) : "N/A";
-          document.getElementById("modal-fit").innerHTML = fitBadge(r.bandFit);
-          document.getElementById("modal-breakdown").textContent = r.breakdown;
-          document.getElementById("modal-formula").textContent = `${r.formula_type} (${r.scaleId})`;
-          document.getElementById("modal-elig").textContent = r.eligNotes;
-          document.getElementById("modal-notes").textContent = r.scoringNotes || "—";
-          const modal = document.getElementById("detail-modal");
-          modal.classList.remove("hidden");
-          modal.classList.add("flex");
+        tr.addEventListener("click", () => openDetailModal(tr.dataset.rowCode));
+      });
+
+      renderChoicesTab();
+    }
+
+    function wireGlobalEvents() {
+      // CSD buttons
+      document.querySelectorAll(".csd-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          STATE.csd = btn.dataset.csd;
+          persistState();
+          renderSidebarInputs();
+          renderAll();
         });
+      });
+
+      // M1/M2 buttons
+      document.querySelectorAll(".mext-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          STATE.mextMod = btn.dataset.mext;
+          persistState();
+          renderSidebarInputs();
+          renderAll();
+        });
+      });
+
+      // Reset grades
+      document.getElementById("reset-grades-btn").addEventListener("click", () => {
+        STATE.core = { ENG: "5", CHI: "4", MATH: "5*" };
+        STATE.csd = "Attained";
+        STATE.mextMod = "M2";
+        STATE.mextGrade = "5";
+        STATE.electives = [
+          { code: "PHY", grade: "5*" },
+          { code: "CHEM", grade: "5" },
+          { code: "ECON", grade: "5" }
+        ];
+        persistState();
+        renderSidebarInputs();
+        renderAll();
+      });
+
+      // Filters
+      ["filter-search", "filter-inst", "filter-fit"].forEach(id => {
+        const el = document.getElementById(id);
+        el.addEventListener("input", renderAll);
+        el.addEventListener("change", renderAll);
+      });
+
+      // Tabs
+      const tabExp = document.getElementById("tab-explorer");
+      const tabCho = document.getElementById("tab-choices");
+      const viewExp = document.getElementById("view-explorer");
+      const viewCho = document.getElementById("view-choices");
+
+      tabExp.addEventListener("click", () => {
+        viewExp.classList.remove("hidden");
+        viewCho.classList.add("hidden");
+        tabExp.className = "tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-indigo-600 text-white";
+        tabCho.className = "tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-surface-900 text-zinc-300 hover:bg-surface-800 border border-surface-700/70";
+      });
+      tabCho.addEventListener("click", () => {
+        viewCho.classList.remove("hidden");
+        viewExp.classList.add("hidden");
+        tabCho.className = "tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-indigo-600 text-white";
+        tabExp.className = "tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-surface-900 text-zinc-300 hover:bg-surface-800 border border-surface-700/70";
+      });
+
+      // Clear & Export Choices
+      document.getElementById("clear-choices-btn").addEventListener("click", () => {
+        if (confirm("Clear all saved A1–E20 choices?")) {
+          STATE.choices = {};
+          persistState();
+          renderAll();
+        }
+      });
+
+      document.getElementById("export-choices-btn").addEventListener("click", () => {
+        const rows = [["Slot", "JUPAS Code", "Institution", "Programme", "Your Score", "2026 LQ", "2026 Med", "2026 UQ", "Danger Level"]];
+        ALL_SLOTS.forEach(slot => {
+          const code = STATE.choices[slot];
+          if (code && LAST_EVAL_MAP[code]) {
+            const r = LAST_EVAL_MAP[code];
+            rows.push([slot, r.jupas_code, r.institution, `"${r.programme_name.replace(/"/g, '""')}"`, r.userScore.toFixed(2), r.lq ?? "", r.med ?? "", r.uq ?? "", r.dangerLevel]);
+          }
+        });
+        const csv = rows.map(r => r.join(",")).join("\n");
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "my_jupas_2027_choices.csv";
+        a.click();
+      });
+
+      // Modal events
+      document.getElementById("modal-close").addEventListener("click", () => {
+        document.getElementById("detail-modal").classList.add("hidden");
+        document.getElementById("detail-modal").classList.remove("flex");
+      });
+      document.getElementById("modal-save-slot").addEventListener("click", () => {
+        if (ACTIVE_MODAL_CODE) {
+          assignProgrammeToSlot(ACTIVE_MODAL_CODE, document.getElementById("modal-slot-select").value);
+          document.getElementById("detail-modal").classList.add("hidden");
+          document.getElementById("detail-modal").classList.remove("flex");
+        }
       });
     }
 
-    document.getElementById("modal-close").addEventListener("click", () => {
-      document.getElementById("detail-modal").classList.add("hidden");
-      document.getElementById("detail-modal").classList.remove("flex");
-    });
-
     async function boot() {
+      loadSavedState();
       try {
         const [insts, scales, subjs, progs, weights, hist] = await Promise.all([
           fetchCSV("./data/institutions.csv"),
@@ -462,12 +942,22 @@
           if (String(h.admission_year) === "2026") DB.historyByCode[h.jupas_code] = h;
         });
 
-        document.getElementById("db-status").textContent = `Loaded ${progs.length} programmes from ./data/*.csv`;
-        initInputs();
-        render();
+        const instSel = document.getElementById("filter-inst");
+        Object.values(DB.institutions).forEach(inst => {
+          const opt = document.createElement("option");
+          opt.value = inst.short_name;
+          opt.textContent = `${inst.short_name} — ${inst.institution_name}`;
+          instSel.appendChild(opt);
+        });
+
+        document.getElementById("db-status").textContent = `Loaded ${progs.length} programmes`;
+        wireGlobalEvents();
+        setupElectiveSearch();
+        renderSidebarInputs();
+        renderAll();
       } catch (err) {
-        document.getElementById("db-status").textContent = "Error loading CSVs (use GitHub Pages or local HTTP server)";
-        document.getElementById("db-status").className = "text-xs bg-rose-900 px-3 py-1.5 rounded-full text-rose-200 font-medium";
+        document.getElementById("db-status").textContent = "Error loading CSVs (use GitHub Pages / HTTP server)";
+        document.getElementById("db-status").className = "text-xs bg-rose-950 border border-rose-800 px-3 py-1.5 rounded-full text-rose-300 font-medium";
         console.error(err);
       }
     }
