@@ -308,7 +308,7 @@
         <div class="grid grid-cols-2 gap-3">
           <div><span class="text-zinc-500 block">Formula &amp; Scale</span><span id="modal-formula" class="text-zinc-200"></span></div>
           <div><span class="text-zinc-500 block">Eligibility</span><span id="modal-elig" class="text-zinc-200"></span></div>
-          <div><span class="text-zinc-500 block">Intake Quota (Slots)</span><span id="modal-quota" class="text-zinc-200"></span></div>
+          <div><span class="text-zinc-500 block">2026 Intake</span><span id="modal-quota" class="text-zinc-200"></span></div>
           <div><span class="text-zinc-500 block">Interview</span><span id="modal-interview" class="text-zinc-200"></span></div>
         </div>
         <div><span class="text-zinc-500 block">Notes</span><span id="modal-notes" class="text-zinc-400"></span></div>
@@ -924,11 +924,11 @@
       document.getElementById("modal-uq").textContent = r.uq !== null ? r.uq.toFixed(1) : "—";
       document.getElementById("modal-fit").innerHTML = dangerBadge(adj.level);
       document.getElementById("modal-slot-pill").textContent = curSlot ? `Slot ${curSlot}` : "Unassigned";
-      document.getElementById("modal-quota-pill").textContent = `Quota: ${r.intake_quota || "—"}`;
+      document.getElementById("modal-quota-pill").textContent = `2026 Intake: ${r.intake_2026 || "—"}`;
       document.getElementById("modal-breakdown").textContent = r.breakdown;
       document.getElementById("modal-formula").textContent = `${r.formula_type} (${r.scaleId})`;
       document.getElementById("modal-elig").textContent = r.eligNotes;
-      document.getElementById("modal-quota").textContent = r.intake_quota || "—";
+      document.getElementById("modal-quota").textContent = r.intake_2026 || "—";
       document.getElementById("modal-interview").textContent = r.interview_req || "—";
       document.getElementById("modal-notes").textContent = r.scoringNotes || "—";
 
@@ -1229,7 +1229,7 @@
             <td class="py-2.5 px-3 text-xs font-medium text-zinc-100 cursor-pointer">${r.jupas_code}</td>
             <td class="py-2.5 px-2.5 text-xs text-zinc-400 cursor-pointer">${r.institution}</td>
             <td class="py-2.5 px-3 text-zinc-200 cursor-pointer">${r.programme_name}</td>
-            <td class="py-2.5 px-2 text-right text-xs text-zinc-400 cursor-pointer">${r.intake_quota || "—"}</td>
+            <td class="py-2.5 px-2 text-right text-xs text-zinc-400 cursor-pointer">${r.intake_2026 || "—"}</td>
             <td class="py-2.5 px-2.5 text-[11px] cursor-pointer whitespace-nowrap ${
               (r.interview_req || "").startsWith("Compulsory") ? "text-amber-300 font-medium" :
               (r.interview_req || "").startsWith("Not Required") ? "text-zinc-500" : "text-zinc-400"
@@ -1421,21 +1421,21 @@
 
       // 1. Very few places (quota <= 35)
       const smallQuota = assignedEntries.filter(({ r }) => {
-        const q = parseQuotaNumber(r.intake_quota);
+        const q = parseQuotaNumber(r.intake_2026);
         return q !== null && q <= 35;
       });
       if (smallQuota.length > 0) {
         notes.push({
           title: "Small intake quotas",
           body: "These programmes have small intake numbers, so cut-off scores can fluctuate more year to year.",
-          items: smallQuota.map(({ slot, r }) => `${slot} · ${r.jupas_code} (${parseQuotaNumber(r.intake_quota)})`)
+          items: smallQuota.map(({ slot, r }) => `${slot} · ${r.jupas_code} (${parseQuotaNumber(r.intake_2026)})`)
         });
       }
 
       // 2. Band A priority warning for choices placed below Band A
       const belowBandA = assignedEntries.filter(({ slot, r }) => {
         if (slot[0] === "A") return false;
-        const q = parseQuotaNumber(r.intake_quota);
+        const q = parseQuotaNumber(r.intake_2026);
         const isCompIv = (r.interview_req || "").startsWith("Compulsory");
         return (q !== null && q <= 45) || isCompIv || r.dangerLevel === "High Danger";
       });
