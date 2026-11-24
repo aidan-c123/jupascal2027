@@ -6,7 +6,7 @@
   <title>JUPAS 2027 Calculator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script>
@@ -16,7 +16,7 @@
         extend: {
           fontFamily: {
             sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+            mono: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
           },
           colors: {
             canvas: '#111113',
@@ -36,7 +36,7 @@
       color: #e4e4e7;
       font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     }
-    .tabular { font-variant-numeric: tabular-nums; }
+    code { font-family: inherit; }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #111113; }
     ::-webkit-scrollbar-thumb { background: #2c2c32; border-radius: 3px; }
@@ -57,10 +57,10 @@
   <header class="bg-canvas/95 backdrop-blur border-b border-line sticky top-0 z-30">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
       <div class="flex items-center gap-2.5">
-        <span class="w-6 h-6 rounded bg-zinc-100 text-zinc-950 font-mono font-bold text-xs flex items-center justify-center tracking-tighter">J</span>
+        <span class="w-6 h-6 rounded bg-zinc-100 text-zinc-950 font-bold text-xs flex items-center justify-center tracking-tighter">J</span>
         <h1 class="text-sm sm:text-base font-semibold tracking-tight text-zinc-100">JUPAS 2027 Calculator</h1>
       </div>
-      <div id="db-status" class="inline-flex items-center gap-2 text-xs text-zinc-400 font-mono">
+      <div id="db-status" class="inline-flex items-center gap-2 text-xs text-zinc-400">
         <span class="w-1.5 h-1.5 rounded-full bg-zinc-500"></span>
         <span>Loading...</span>
       </div>
@@ -108,7 +108,7 @@
       <div class="space-y-2.5 pt-4 border-t border-line">
         <div class="flex items-center justify-between">
           <div class="text-[11px] font-medium text-zinc-500">Electives</div>
-          <span id="elec-count" class="text-[11px] font-mono text-zinc-500">0/4</span>
+          <span id="elec-count" class="text-[11px] text-zinc-500">0/4</span>
         </div>
 
         <div class="relative">
@@ -134,19 +134,19 @@
       <div class="bg-panel rounded-lg border border-line grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-line">
         <div class="px-4 py-3">
           <div class="text-[11px] text-zinc-500">Best 5 (7.0 scale)</div>
-          <div id="kpi-best5-70" class="text-xl font-semibold font-mono tabular text-zinc-100 mt-0.5">—</div>
+          <div id="kpi-best5-70" class="text-xl font-semibold text-zinc-100 mt-0.5">—</div>
         </div>
         <div class="px-4 py-3">
           <div class="text-[11px] text-zinc-500">Best 5 (8.5 scale)</div>
-          <div id="kpi-best5-85" class="text-xl font-semibold font-mono tabular text-zinc-100 mt-0.5">—</div>
+          <div id="kpi-best5-85" class="text-xl font-semibold text-zinc-100 mt-0.5">—</div>
         </div>
         <div class="px-4 py-3">
           <div class="text-[11px] text-zinc-500">Eligible</div>
-          <div id="kpi-eligible" class="text-xl font-semibold font-mono tabular text-zinc-100 mt-0.5">—</div>
+          <div id="kpi-eligible" class="text-xl font-semibold text-zinc-100 mt-0.5">—</div>
         </div>
         <div class="px-4 py-3">
           <div class="text-[11px] text-zinc-500">Saved Choices</div>
-          <div id="kpi-saved" class="text-xl font-semibold font-mono tabular text-zinc-100 mt-0.5">0 / 20</div>
+          <div id="kpi-saved" class="text-xl font-semibold text-zinc-100 mt-0.5">0 / 20</div>
         </div>
       </div>
 
@@ -166,7 +166,7 @@
         </button>
         <button id="tab-choices" class="pb-2.5 text-sm font-medium border-b-2 border-transparent text-zinc-500 hover:text-zinc-200 transition inline-flex items-center gap-1.5">
           <span>My Choices (A1–E20)</span>
-          <span id="tab-choices-badge" class="px-1.5 py-0.5 text-[11px] font-mono rounded bg-raised text-zinc-400">0</span>
+          <span id="tab-choices-badge" class="px-1.5 py-0.5 text-[11px] rounded bg-raised text-zinc-400">0</span>
         </button>
       </div>
 
@@ -203,6 +203,8 @@
                   <th class="py-2.5 px-3">Code</th>
                   <th class="py-2.5 px-2.5">Univ</th>
                   <th class="py-2.5 px-3">Programme</th>
+                  <th class="py-2.5 px-2 text-right">Slots</th>
+                  <th class="py-2.5 px-2.5">Interview</th>
                   <th class="py-2.5 px-2.5 text-right">Score</th>
                   <th class="py-2.5 px-2.5 text-right">LQ</th>
                   <th class="py-2.5 px-2.5 text-right">Med</th>
@@ -225,6 +227,8 @@
             <p class="text-xs text-zinc-400 mt-0.5">Search in any empty slot to add. Drag the handle or use arrow keys to reorder.</p>
           </div>
           <div class="flex flex-wrap gap-2">
+            <input id="import-choices-input" type="file" accept=".csv,text/csv" class="hidden" />
+            <button id="import-choices-btn" class="px-3 py-1.5 rounded-md bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-semibold transition">Import CSV</button>
             <button id="export-choices-btn" class="px-3 py-1.5 rounded-md bg-raised hover:bg-hover border border-line text-xs font-medium text-zinc-200 transition">Export CSV</button>
             <button id="clear-choices-btn" class="px-3 py-1.5 rounded-md bg-raised hover:bg-hover border border-line text-xs font-medium text-red-400 hover:text-red-300 transition">Clear All</button>
           </div>
@@ -248,21 +252,23 @@
     <div class="bg-panel border border-line-strong rounded-lg max-w-lg w-full p-5 shadow-2xl space-y-4">
       <div class="flex justify-between items-start gap-4">
         <div>
-          <span id="modal-code" class="text-xs font-mono text-zinc-400"></span>
+          <span id="modal-code" class="text-xs text-zinc-400"></span>
           <h3 id="modal-title" class="text-base font-semibold text-zinc-100 mt-0.5"></h3>
         </div>
         <button id="modal-close" class="text-zinc-500 hover:text-zinc-200 text-xl leading-none px-1">&times;</button>
       </div>
       <div class="grid grid-cols-3 divide-x divide-line bg-raised border border-line rounded-md py-3 text-center">
-        <div><div class="text-[11px] text-zinc-500">Your Score</div><div id="modal-score" class="text-lg font-semibold font-mono tabular text-zinc-100 mt-0.5"></div></div>
-        <div><div class="text-[11px] text-zinc-500">2026 Median</div><div id="modal-med" class="text-lg font-semibold font-mono tabular text-zinc-100 mt-0.5"></div></div>
+        <div><div class="text-[11px] text-zinc-500">Your Score</div><div id="modal-score" class="text-lg font-semibold text-zinc-100 mt-0.5"></div></div>
+        <div><div class="text-[11px] text-zinc-500">2026 Median</div><div id="modal-med" class="text-lg font-semibold text-zinc-100 mt-0.5"></div></div>
         <div class="flex flex-col items-center justify-center"><div class="text-[11px] text-zinc-500">Status</div><div id="modal-fit" class="mt-1"></div></div>
       </div>
       <div class="text-xs space-y-2.5 text-zinc-300">
-        <div><span class="text-zinc-500 block mb-0.5">Subjects Counted</span><code id="modal-breakdown" class="inline-block bg-raised border border-line px-2 py-1 rounded font-mono text-[11px] text-zinc-200"></code></div>
+        <div><span class="text-zinc-500 block mb-0.5">Subjects Counted</span><code id="modal-breakdown" class="inline-block bg-raised border border-line px-2 py-1 rounded text-[11px] text-zinc-200"></code></div>
         <div class="grid grid-cols-2 gap-3">
-          <div><span class="text-zinc-500 block">Formula &amp; Scale</span><span id="modal-formula" class="font-mono text-zinc-200"></span></div>
+          <div><span class="text-zinc-500 block">Formula &amp; Scale</span><span id="modal-formula" class="text-zinc-200"></span></div>
           <div><span class="text-zinc-500 block">Eligibility</span><span id="modal-elig" class="text-zinc-200"></span></div>
+          <div><span class="text-zinc-500 block">Intake Quota (Slots)</span><span id="modal-quota" class="text-zinc-200"></span></div>
+          <div><span class="text-zinc-500 block">Interview</span><span id="modal-interview" class="text-zinc-200"></span></div>
         </div>
         <div><span class="text-zinc-500 block">Notes</span><span id="modal-notes" class="text-zinc-400"></span></div>
       </div>
@@ -364,7 +370,7 @@
         const cls = active
           ? "bg-zinc-100 text-zinc-950 border-zinc-100 font-semibold"
           : "bg-canvas text-zinc-400 border-line hover:bg-hover hover:text-zinc-200";
-        return `<button type="button" ${attrName}="${attrVal}" data-grade="${g}" class="grade-pill py-1 rounded border text-[11px] font-mono text-center transition ${cls}">${g}</button>`;
+        return `<button type="button" ${attrName}="${attrVal}" data-grade="${g}" class="grade-pill py-1 rounded border text-[11px] text-center transition ${cls}">${g}</button>`;
       }).join("") + `</div>`;
     }
 
@@ -375,7 +381,7 @@
         <div class="bg-raised border border-line rounded-md p-2.5">
           <div class="flex justify-between items-center">
             <span class="text-xs text-zinc-200">${coreLabels[code]}</span>
-            <span class="text-xs font-mono font-semibold text-zinc-100">${STATE.core[code]}</span>
+            <span class="text-xs font-semibold text-zinc-100">${STATE.core[code]}</span>
           </div>
           ${gradePillBarHTML(STATE.core[code], "data-core", code)}
         </div>
@@ -412,7 +418,7 @@
         mextWrap.innerHTML = `
           <div class="flex justify-between items-center">
             <span class="text-xs text-zinc-200">Math Extended (${STATE.mextMod})</span>
-            <span class="text-xs font-mono font-semibold text-zinc-100">${STATE.mextGrade}</span>
+            <span class="text-xs font-semibold text-zinc-100">${STATE.mextGrade}</span>
           </div>
           ${gradePillBarHTML(STATE.mextGrade, "data-mext-grade", STATE.mextMod)}
         `;
@@ -437,7 +443,7 @@
             <div class="bg-raised border border-line rounded-md p-2.5">
               <div class="flex justify-between items-center gap-2">
                 <div class="truncate">
-                  <span class="text-xs font-mono font-medium text-zinc-100">${el.code}</span>
+                  <span class="text-xs font-medium text-zinc-100">${el.code}</span>
                   <span class="text-xs text-zinc-400 ml-1">${sName}</span>
                 </div>
                 <button type="button" data-remove-elec="${idx}" class="text-zinc-500 hover:text-zinc-200 text-sm px-1 transition" title="Remove">&times;</button>
@@ -484,7 +490,7 @@
         } else {
           dropdown.innerHTML = matches.map(s => `
             <button type="button" data-add-elec="${s.subject_code}" class="w-full text-left px-3 py-2 text-xs hover:bg-hover flex items-center justify-between transition">
-              <span><strong class="font-mono text-zinc-100">${s.subject_code}</strong> <span class="text-zinc-400 ml-1">${s.subject_name}</span></span>
+              <span><strong class="text-zinc-100">${s.subject_code}</strong> <span class="text-zinc-400 ml-1">${s.subject_name}</span></span>
               <span class="text-[11px] text-zinc-400">+ Add</span>
             </button>
           `).join("");
@@ -771,7 +777,7 @@
         if (!r) {
           return `
             <div class="rounded-md bg-canvas/60 border border-dashed border-line p-2.5 flex items-center gap-2 text-zinc-500">
-              <span class="px-1.5 py-0.5 rounded bg-raised border border-line text-[11px] font-mono text-zinc-400">${slot}</span>
+              <span class="px-1.5 py-0.5 rounded bg-raised border border-line text-[11px] text-zinc-400">${slot}</span>
               <span class="text-xs">Empty</span>
             </div>
           `;
@@ -781,14 +787,14 @@
           <div data-top3-inspect="${r.jupas_code}" class="cursor-pointer rounded-md bg-raised hover:bg-hover border border-line hover:border-line-strong p-2.5 transition flex flex-col justify-between gap-2">
             <div class="min-w-0">
               <div class="flex items-center gap-1.5">
-                <span class="px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-950 text-[10px] font-mono font-semibold">${slot}</span>
-                <span class="font-mono text-xs font-medium text-zinc-200">${r.jupas_code}</span>
+                <span class="px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-950 text-[10px] font-semibold">${slot}</span>
+                <span class="text-xs font-medium text-zinc-200">${r.jupas_code}</span>
                 <span class="text-[11px] text-zinc-500">${r.institution}</span>
               </div>
               <div class="text-xs font-medium text-zinc-100 truncate mt-1" title="${r.programme_name}">${r.programme_name}</div>
             </div>
             <div class="flex items-center justify-between gap-2 pt-1.5 border-t border-line">
-              <span class="text-[11px] font-mono tabular text-zinc-400">${r.userScore.toFixed(1)} <span class="text-zinc-600">/</span> ${r.med !== null ? r.med.toFixed(1) : "—"}</span>
+              <span class="text-[11px] text-zinc-400">${r.userScore.toFixed(1)} <span class="text-zinc-600">/</span> ${r.med !== null ? r.med.toFixed(1) : "—"}</span>
               ${dangerBadge(adj.level)}
             </div>
           </div>
@@ -877,6 +883,8 @@
       document.getElementById("modal-breakdown").textContent = r.breakdown;
       document.getElementById("modal-formula").textContent = `${r.formula_type} (${r.scaleId})`;
       document.getElementById("modal-elig").textContent = r.eligNotes;
+      document.getElementById("modal-quota").textContent = r.intake_quota || "—";
+      document.getElementById("modal-interview").textContent = r.interview_req || "—";
       document.getElementById("modal-notes").textContent = r.scoringNotes || "—";
 
       const sel = document.getElementById("modal-slot-select");
@@ -914,13 +922,13 @@
           } else {
             dropdown.innerHTML = matches.map(r => {
               const existingSlot = getAssignedSlot(r.jupas_code);
-              const tag = existingSlot ? `<span class="text-[10px] font-mono px-1 py-0.5 rounded bg-raised text-zinc-300 border border-line ml-1">${existingSlot}</span>` : "";
+              const tag = existingSlot ? `<span class="text-[10px] px-1 py-0.5 rounded bg-raised text-zinc-300 border border-line ml-1">${existingSlot}</span>` : "";
               const adj = getBandAdjustedDanger(r.dangerLevel, slot);
               return `
                 <button type="button" data-pick-code="${r.jupas_code}" class="w-full text-left px-3 py-2 text-xs hover:bg-hover flex items-center justify-between gap-2 transition">
                   <div class="min-w-0 flex-1">
                     <div class="flex items-center gap-1.5">
-                      <span class="font-mono font-medium text-zinc-100">${r.jupas_code}</span>
+                      <span class="font-medium text-zinc-100">${r.jupas_code}</span>
                       <span class="text-zinc-500">${r.institution}</span>
                       ${tag}
                     </div>
@@ -1064,15 +1072,15 @@
                 <div class="slot-row px-3 py-2.5 flex flex-col md:flex-row md:items-center justify-between gap-2 hover:bg-hover/40 transition" data-slot="${slot}" draggable="${r ? "true" : "false"}">
                   <div class="flex items-center gap-2.5 flex-1 min-w-0">
                     ${r ? `<span class="drag-handle text-zinc-600 hover:text-zinc-300 px-0.5 text-sm select-none" title="Drag to reorder">⋮⋮</span>` : `<span class="w-4 shrink-0"></span>`}
-                    <span class="w-8 text-center py-0.5 rounded bg-raised border border-line text-[11px] font-mono font-medium text-zinc-300 shrink-0">${slot}</span>
+                    <span class="w-8 text-center py-0.5 rounded bg-raised border border-line text-[11px] font-medium text-zinc-300 shrink-0">${slot}</span>
                     ${r ? `
                       <div class="min-w-0 flex-1 cursor-pointer" data-inspect="${r.jupas_code}">
                         <div class="flex items-center gap-2">
-                          <span class="font-mono text-xs font-medium text-zinc-100">${r.jupas_code}</span>
+                          <span class="text-xs font-medium text-zinc-100">${r.jupas_code}</span>
                           <span class="text-xs text-zinc-500">${r.institution}</span>
                           <span class="text-sm text-zinc-200 truncate">${r.programme_name}</span>
                         </div>
-                        <div class="text-[11px] text-zinc-500 mt-0.5 font-mono tabular">
+                        <div class="text-[11px] text-zinc-500 mt-0.5">
                           Score <span class="text-zinc-300">${r.userScore.toFixed(2)}</span> · LQ ${r.lq !== null ? r.lq.toFixed(1) : "—"} · Med ${r.med !== null ? r.med.toFixed(1) : "—"} · UQ ${r.uq !== null ? r.uq.toFixed(1) : "—"}
                         </div>
                       </div>
@@ -1165,7 +1173,7 @@
           <tr class="hover:bg-hover/50 transition" data-row-code="${r.jupas_code}">
             <td class="py-2.5 px-3" onclick="event.stopPropagation()">
               <button type="button" data-toggle-choice="${r.jupas_code}" title="${curSlot ? `Remove from ${curSlot}` : 'Append to end of choices'}"
-                class="inline-flex items-center justify-center min-w-[52px] px-2 py-0.5 rounded border text-xs font-mono font-medium transition ${
+                class="inline-flex items-center justify-center min-w-[52px] px-2 py-0.5 rounded border text-xs font-medium transition ${
                   curSlot
                     ? "bg-zinc-100 border-zinc-100 text-zinc-950 hover:bg-zinc-300"
                     : "bg-raised border-line text-zinc-400 hover:border-line-strong hover:text-zinc-200"
@@ -1173,14 +1181,19 @@
                 ${curSlot ? curSlot : "+ Add"}
               </button>
             </td>
-            <td class="py-2.5 px-3 font-mono text-xs font-medium text-zinc-100 cursor-pointer">${r.jupas_code}</td>
+            <td class="py-2.5 px-3 text-xs font-medium text-zinc-100 cursor-pointer">${r.jupas_code}</td>
             <td class="py-2.5 px-2.5 text-xs text-zinc-400 cursor-pointer">${r.institution}</td>
             <td class="py-2.5 px-3 text-zinc-200 cursor-pointer">${r.programme_name}</td>
-            <td class="py-2.5 px-2.5 text-right font-mono tabular font-semibold text-zinc-100 cursor-pointer">${r.userScore.toFixed(2)}</td>
-            <td class="py-2.5 px-2.5 text-right font-mono tabular text-xs text-zinc-500 cursor-pointer">${r.lq !== null ? r.lq.toFixed(1) : "—"}</td>
-            <td class="py-2.5 px-2.5 text-right font-mono tabular text-xs text-zinc-300 cursor-pointer">${r.med !== null ? r.med.toFixed(1) : "—"}</td>
-            <td class="py-2.5 px-2.5 text-right font-mono tabular text-xs text-zinc-500 cursor-pointer">${r.uq !== null ? r.uq.toFixed(1) : "—"}</td>
-            <td class="py-2.5 px-2.5 text-right font-mono tabular text-xs font-medium cursor-pointer ${r.deltaMed === null ? "text-zinc-600" : r.deltaMed >= 0 ? "text-emerald-400" : "text-red-400"}">
+            <td class="py-2.5 px-2 text-right text-xs text-zinc-400 cursor-pointer">${r.intake_quota || "—"}</td>
+            <td class="py-2.5 px-2.5 text-[11px] cursor-pointer whitespace-nowrap ${
+              (r.interview_req || "").startsWith("Compulsory") ? "text-amber-300 font-medium" :
+              (r.interview_req || "").startsWith("Not Required") ? "text-zinc-500" : "text-zinc-400"
+            }">${r.interview_req || "—"}</td>
+            <td class="py-2.5 px-2.5 text-right font-semibold text-zinc-100 cursor-pointer">${r.userScore.toFixed(2)}</td>
+            <td class="py-2.5 px-2.5 text-right text-xs text-zinc-500 cursor-pointer">${r.lq !== null ? r.lq.toFixed(1) : "—"}</td>
+            <td class="py-2.5 px-2.5 text-right text-xs text-zinc-300 cursor-pointer">${r.med !== null ? r.med.toFixed(1) : "—"}</td>
+            <td class="py-2.5 px-2.5 text-right text-xs text-zinc-500 cursor-pointer">${r.uq !== null ? r.uq.toFixed(1) : "—"}</td>
+            <td class="py-2.5 px-2.5 text-right text-xs font-medium cursor-pointer ${r.deltaMed === null ? "text-zinc-600" : r.deltaMed >= 0 ? "text-emerald-400" : "text-red-400"}">
               ${r.deltaMed !== null ? (r.deltaMed >= 0 ? "+" : "") + r.deltaMed.toFixed(2) : "—"}
             </td>
             <td class="py-2.5 px-3 cursor-pointer">${(() => {
@@ -1261,6 +1274,43 @@
         viewExp.classList.add("hidden");
         tabCho.className = "pb-2.5 text-sm font-medium border-b-2 border-zinc-100 text-zinc-100 transition inline-flex items-center gap-1.5";
         tabExp.className = "pb-2.5 text-sm font-medium border-b-2 border-transparent text-zinc-500 hover:text-zinc-200 transition";
+      });
+
+      const importBtn = document.getElementById("import-choices-btn");
+      const importInput = document.getElementById("import-choices-input");
+      importBtn.addEventListener("click", () => importInput.click());
+      importInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          try {
+            const parsed = Papa.parse(ev.target.result.trim(), { header: true, skipEmptyLines: true });
+            const imported = {};
+            let count = 0;
+            parsed.data.forEach(row => {
+              const slot = (row["Slot"] || row["slot"] || "").trim().toUpperCase();
+              const code = (row["JUPAS Code"] || row["jupas_code"] || row["Code"] || "").trim().toUpperCase();
+              if (ALL_SLOTS.includes(slot) && LAST_EVAL_MAP[code]) {
+                imported[slot] = code;
+                count++;
+              }
+            });
+            if (count === 0) {
+              alert("No valid Slot / JUPAS Code rows found in the uploaded CSV.");
+            } else {
+              STATE.choices = imported;
+              persistState();
+              renderAll();
+              alert(`Imported ${count} choice(s) into A1–E20.`);
+            }
+          } catch (err) {
+            alert("Failed to parse CSV file.");
+            console.error(err);
+          }
+          importInput.value = "";
+        };
+        reader.readAsText(file);
       });
 
       document.getElementById("clear-choices-btn").addEventListener("click", () => {
