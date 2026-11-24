@@ -174,6 +174,18 @@
         </div>
       </div>
 
+      <!-- Always-Visible Top 3 Choices (Band A) -->
+      <div class="glass-card p-3.5 rounded-2xl border border-surface-700/70 shadow-lg shadow-black/20">
+        <div class="flex items-center justify-between mb-2.5">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+            <span class="text-xs font-bold uppercase tracking-wider text-zinc-200">Top 3 Choices (Band A)</span>
+          </div>
+          <span class="text-[11px] text-zinc-400">Always visible • Click a card to inspect</span>
+        </div>
+        <div id="top3-bar" class="grid grid-cols-1 md:grid-cols-3 gap-2.5"></div>
+      </div>
+
       <!-- Segmented View Tabs -->
       <div class="inline-flex p-1 rounded-2xl bg-surface-900 border border-surface-700/70 gap-1">
         <button id="tab-explorer" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-indigo-600 text-white shadow-md shadow-indigo-600/20">
@@ -186,21 +198,22 @@
 
       <!-- TAB 1: Programme Explorer -->
       <div id="view-explorer" class="space-y-4">
-        <!-- Filters -->
-        <div class="glass-card p-4 rounded-2xl border border-surface-700/70 grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <input id="filter-search" type="text" placeholder="🔍 Search JUPAS code, programme, faculty..." class="rounded-xl bg-surface-850 border border-surface-700 text-zinc-100 placeholder-zinc-500 px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40" />
-          <select id="filter-inst" class="rounded-xl bg-surface-850 border border-surface-700 text-zinc-100 px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
-            <option value="ALL">All Institutions</option>
-          </select>
-          <select id="filter-fit" class="rounded-xl bg-surface-850 border border-surface-700 text-zinc-100 px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
-            <option value="ALL">All Danger / Fit Levels</option>
-            <option value="Safe">🟢 Safe (>= UQ)</option>
-            <option value="Low Risk">🔵 Low Risk (>= Med)</option>
-            <option value="Moderate Danger">🟡 Moderate Danger (>= LQ)</option>
-            <option value="High Danger">🔴 High Danger (< LQ)</option>
-            <option value="No Data">⚪ No Available Data</option>
-            <option value="Critical (Ineligible)">⛔ Critical (Ineligible)</option>
-          </select>
+        <!-- Filters (Multi-Select) -->
+        <div class="glass-card p-4 rounded-2xl border border-surface-700/70 space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center gap-2.5">
+            <input id="filter-search" type="text" placeholder="🔍 Search JUPAS code, programme, faculty..." class="flex-1 rounded-xl bg-surface-850 border border-surface-700 text-zinc-100 placeholder-zinc-500 px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40" />
+            <button id="clear-filters-btn" type="button" class="px-3 py-2 rounded-xl bg-surface-850 hover:bg-surface-800 border border-surface-700 text-xs font-medium text-zinc-400 hover:text-zinc-200 transition shrink-0">Reset Filters</button>
+          </div>
+          <div class="space-y-2">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 w-16 shrink-0">Univs</span>
+              <div id="filter-inst-chips" class="flex flex-wrap gap-1.5"></div>
+            </div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 w-16 shrink-0">Danger</span>
+              <div id="filter-fit-chips" class="flex flex-wrap gap-1.5"></div>
+            </div>
+          </div>
         </div>
 
         <!-- Results Table -->
@@ -321,6 +334,10 @@
     let LAST_EVAL_MAP = {};
     let ACTIVE_MODAL_CODE = null;
     let DRAGGED_SLOT = null;
+    let SELECTED_INSTS = new Set(); // empty = All
+    let SELECTED_FITS = new Set();  // empty = All
+    const DANGER_TIERS = ["Safe", "Low Risk", "Moderate Danger", "High Danger"];
+    const ALL_FILTER_FITS = ["Safe", "Low Risk", "Moderate Danger", "High Danger", "No Data", "Critical (Ineligible)"];
 
     function loadSavedState() {
       try {
@@ -651,6 +668,141 @@
       return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border whitespace-nowrap ${map[level] || ""}">${icons[level] || ""} ${level}</span>`;
     }
 
+    function getBandAdjustedDanger(baseLevel, slot) {
+      if (!slot || baseLevel === "Critical (Ineligible)" || baseLevel === "No Data") {
+        return { level: baseLevel, note: "" };
+      }
+      const idx = DANGER_TIERS.indexOf(baseLevel);
+      if (idx === -1) return { level: baseLevel, note: "" };
+
+      const band = slot[0]; // 'A', 'B', 'C', 'D', 'E'
+      let shift = 0;
+      let note = "";
+
+      if (band === "A") {
+        shift = 0;
+        note = slot === "A1" ? "Band A1 priority" : "Band A priority";
+      } else if (band === "B") {
+        // Band B: slightly higher risk (many programmes prioritize Band A for interviews)
+        shift = 1;
+        note = "Band B (+1 risk tier)";
+      } else if (band === "C") {
+        shift = 2;
+        note = "Band C (+2 risk tiers)";
+      } else {
+        // Band D & E: very low admission priority unless score is overwhelmingly safe
+        shift = 3;
+        note = `Band ${band} (low priority)`;
+      }
+
+      const newIdx = Math.min(DANGER_TIERS.length - 1, idx + shift);
+      return { level: DANGER_TIERS[newIdx], note: shift > 0 ? note : "" };
+    }
+
+    function renderFilterChips() {
+      const instContainer = document.getElementById("filter-inst-chips");
+      const allInsts = Object.values(DB.institutions);
+      const instAllActive = SELECTED_INSTS.size === 0;
+      instContainer.innerHTML = `
+        <button type="button" data-inst-chip="ALL" class="px-2.5 py-1 rounded-lg text-xs font-medium border transition ${
+          instAllActive ? "bg-indigo-600 text-white border-indigo-500" : "bg-surface-850 text-zinc-400 border-surface-700 hover:text-zinc-200"
+        }">All</button>
+      ` + allInsts.map(inst => {
+        const active = SELECTED_INSTS.has(inst.short_name);
+        return `
+          <button type="button" data-inst-chip="${inst.short_name}" class="px-2.5 py-1 rounded-lg text-xs font-medium border transition ${
+            active ? "bg-indigo-600 text-white border-indigo-500" : "bg-surface-850 text-zinc-400 border-surface-700 hover:text-zinc-200"
+          }">${inst.short_name}</button>
+        `;
+      }).join("");
+
+      instContainer.querySelectorAll("[data-inst-chip]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const val = btn.dataset.instChip;
+          if (val === "ALL") {
+            SELECTED_INSTS.clear();
+          } else {
+            if (SELECTED_INSTS.has(val)) SELECTED_INSTS.delete(val);
+            else SELECTED_INSTS.add(val);
+          }
+          renderFilterChips();
+          renderAll();
+        });
+      });
+
+      const fitContainer = document.getElementById("filter-fit-chips");
+      const fitAllActive = SELECTED_FITS.size === 0;
+      const fitIcons = {
+        "Safe": "🟢", "Low Risk": "🔵", "Moderate Danger": "🟡",
+        "High Danger": "🔴", "No Data": "⚪", "Critical (Ineligible)": "⛔"
+      };
+      fitContainer.innerHTML = `
+        <button type="button" data-fit-chip="ALL" class="px-2.5 py-1 rounded-lg text-xs font-medium border transition ${
+          fitAllActive ? "bg-indigo-600 text-white border-indigo-500" : "bg-surface-850 text-zinc-400 border-surface-700 hover:text-zinc-200"
+        }">All</button>
+      ` + ALL_FILTER_FITS.map(fit => {
+        const active = SELECTED_FITS.has(fit);
+        return `
+          <button type="button" data-fit-chip="${fit}" class="px-2.5 py-1 rounded-lg text-xs font-medium border transition ${
+            active ? "bg-indigo-600 text-white border-indigo-500" : "bg-surface-850 text-zinc-400 border-surface-700 hover:text-zinc-200"
+          }">${fitIcons[fit]} ${fit}</button>
+        `;
+      }).join("");
+
+      fitContainer.querySelectorAll("[data-fit-chip]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const val = btn.dataset.fitChip;
+          if (val === "ALL") {
+            SELECTED_FITS.clear();
+          } else {
+            if (SELECTED_FITS.has(val)) SELECTED_FITS.delete(val);
+            else SELECTED_FITS.add(val);
+          }
+          renderFilterChips();
+          renderAll();
+        });
+      });
+    }
+
+    function renderTop3Bar() {
+      const bar = document.getElementById("top3-bar");
+      bar.innerHTML = ["A1", "A2", "A3"].map(slot => {
+        const code = STATE.choices[slot];
+        const r = code ? LAST_EVAL_MAP[code] : null;
+        if (!r) {
+          return `
+            <div class="rounded-xl bg-surface-850/60 border border-dashed border-surface-700/80 p-3 flex items-center gap-2.5 text-zinc-500">
+              <span class="px-2 py-0.5 rounded-md bg-surface-800 border border-surface-700 text-[11px] font-mono font-bold text-zinc-400">${slot}</span>
+              <span class="text-xs">Empty Band A slot</span>
+            </div>
+          `;
+        }
+        const adj = getBandAdjustedDanger(r.dangerLevel, slot);
+        return `
+          <div data-top3-inspect="${r.jupas_code}" class="cursor-pointer rounded-xl bg-surface-850/95 hover:bg-surface-800 border border-surface-700/80 hover:border-indigo-500/60 p-3 transition flex flex-col justify-between gap-2">
+            <div class="flex items-start justify-between gap-2">
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5">
+                  <span class="px-1.5 py-0.5 rounded-md bg-indigo-600/25 border border-indigo-500/60 text-[11px] font-mono font-bold text-indigo-300">${slot}</span>
+                  <span class="font-mono text-xs font-bold text-indigo-400">${r.jupas_code}</span>
+                  <span class="text-[11px] text-zinc-400">${r.institution}</span>
+                </div>
+                <div class="text-xs font-semibold text-zinc-100 truncate mt-1" title="${r.programme_name}">${r.programme_name}</div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between gap-2 pt-1 border-t border-surface-700/50">
+              <span class="text-[11px] font-mono text-zinc-400">Score <strong class="text-zinc-100">${r.userScore.toFixed(1)}</strong> / Med ${r.med !== null ? r.med.toFixed(1) : "—"}</span>
+              ${dangerBadge(adj.level)}
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      bar.querySelectorAll("[data-top3-inspect]").forEach(card => {
+        card.addEventListener("click", () => openDetailModal(card.dataset.top3Inspect));
+      });
+    }
+
     function getAssignedSlot(jupasCode) {
       for (const slot of ALL_SLOTS) {
         if (STATE.choices[slot] === jupasCode) return slot;
@@ -945,16 +1097,21 @@
                       </div>
                     `}
                   </div>
-                  ${r ? `
+                  ${r ? (() => {
+                    const adj = getBandAdjustedDanger(r.dangerLevel, slot);
+                    return `
                     <div class="flex items-center gap-1.5 shrink-0 pl-12 md:pl-0">
-                      ${dangerBadge(r.dangerLevel)}
+                      <div class="flex flex-col items-end">
+                        ${dangerBadge(adj.level)}
+                        ${adj.note ? `<span class="text-[10px] text-zinc-500 mt-0.5">${adj.note}</span>` : ""}
+                      </div>
                       <div class="flex items-center bg-surface-850 border border-surface-700/70 rounded-lg overflow-hidden ml-1">
                         <button type="button" data-move-up="${slot}" ${slotIdx === 0 ? "disabled" : ""} class="px-1.5 py-1 text-[11px] text-zinc-400 hover:text-zinc-100 hover:bg-surface-700 disabled:opacity-30 transition" title="Move Up">↑</button>
                         <button type="button" data-move-down="${slot}" ${slotIdx === ALL_SLOTS.length - 1 ? "disabled" : ""} class="px-1.5 py-1 text-[11px] text-zinc-400 hover:text-zinc-100 hover:bg-surface-700 disabled:opacity-30 border-l border-surface-700/70 transition" title="Move Down">↓</button>
                       </div>
                       <button type="button" data-clear-slot="${slot}" class="text-xs text-zinc-500 hover:text-rose-400 px-1.5 py-1 rounded-lg hover:bg-surface-800 transition" title="Remove from ${slot}">✕</button>
-                    </div>
-                  ` : ""}
+                    </div>`;
+                  })() : ""}
                 </div>
               `;
             }).join("")}
@@ -999,14 +1156,15 @@
       document.getElementById("kpi-eligible").textContent = `${evaluated.filter(e => e.eligible).length} / ${evaluated.length}`;
 
       const q = document.getElementById("filter-search").value.trim().toLowerCase();
-      const instF = document.getElementById("filter-inst").value;
-      const fitF = document.getElementById("filter-fit").value;
 
-      const filtered = evaluated.filter(r =>
-        (instF === "ALL" || r.institution === instF) &&
-        (fitF === "ALL" || r.dangerLevel === fitF) &&
-        (!q || r.jupas_code.toLowerCase().includes(q) || r.programme_name.toLowerCase().includes(q) || r.faculty.toLowerCase().includes(q))
-      );
+      const filtered = evaluated.filter(r => {
+        const curSlot = getAssignedSlot(r.jupas_code);
+        const effDanger = getBandAdjustedDanger(r.dangerLevel, curSlot).level;
+        const instMatch = SELECTED_INSTS.size === 0 || SELECTED_INSTS.has(r.institution);
+        const fitMatch = SELECTED_FITS.size === 0 || SELECTED_FITS.has(effDanger);
+        const qMatch = !q || r.jupas_code.toLowerCase().includes(q) || r.programme_name.toLowerCase().includes(q) || r.faculty.toLowerCase().includes(q);
+        return instMatch && fitMatch && qMatch;
+      });
 
       const tbody = document.getElementById("results-tbody");
       tbody.innerHTML = filtered.map(r => {
@@ -1034,7 +1192,10 @@
             <td class="py-2.5 px-2.5 text-right font-mono font-semibold cursor-pointer ${r.deltaMed === null ? "text-zinc-500" : r.deltaMed >= 0 ? "text-emerald-400" : "text-rose-400"}">
               ${r.deltaMed !== null ? (r.deltaMed >= 0 ? "+" : "") + r.deltaMed.toFixed(2) : "—"}
             </td>
-            <td class="py-2.5 px-3 cursor-pointer">${dangerBadge(r.dangerLevel)}</td>
+            <td class="py-2.5 px-3 cursor-pointer">${(() => {
+              const adj = getBandAdjustedDanger(r.dangerLevel, curSlot);
+              return dangerBadge(adj.level) + (adj.note ? `<div class="text-[10px] text-zinc-500 mt-0.5">${adj.note}</div>` : "");
+            })()}</td>
           </tr>
         `;
       }).join("");
@@ -1046,6 +1207,7 @@
         tr.addEventListener("click", () => openDetailModal(tr.dataset.rowCode));
       });
 
+      renderTop3Bar();
       renderChoicesTab();
     }
 
@@ -1083,10 +1245,13 @@
         renderAll();
       });
 
-      ["filter-search", "filter-inst", "filter-fit"].forEach(id => {
-        const el = document.getElementById(id);
-        el.addEventListener("input", renderAll);
-        el.addEventListener("change", renderAll);
+      document.getElementById("filter-search").addEventListener("input", renderAll);
+      document.getElementById("clear-filters-btn").addEventListener("click", () => {
+        document.getElementById("filter-search").value = "";
+        SELECTED_INSTS.clear();
+        SELECTED_FITS.clear();
+        renderFilterChips();
+        renderAll();
       });
 
       const tabExp = document.getElementById("tab-explorer");
@@ -1121,7 +1286,8 @@
           const code = STATE.choices[slot];
           if (code && LAST_EVAL_MAP[code]) {
             const r = LAST_EVAL_MAP[code];
-            rows.push([slot, r.jupas_code, r.institution, `"${r.programme_name.replace(/"/g, '""')}"`, r.userScore.toFixed(2), r.lq ?? "", r.med ?? "", r.uq ?? "", r.dangerLevel]);
+            const adj = getBandAdjustedDanger(r.dangerLevel, slot);
+            rows.push([slot, r.jupas_code, r.institution, `"${r.programme_name.replace(/"/g, '""')}"`, r.userScore.toFixed(2), r.lq ?? "", r.med ?? "", r.uq ?? "", adj.level]);
           }
         });
         const csv = rows.map(r => r.join(",")).join("\n");
@@ -1172,13 +1338,7 @@
           if (String(h.admission_year) === "2026") DB.historyByCode[h.jupas_code] = h;
         });
 
-        const instSel = document.getElementById("filter-inst");
-        Object.values(DB.institutions).forEach(inst => {
-          const opt = document.createElement("option");
-          opt.value = inst.short_name;
-          opt.textContent = `${inst.short_name} — ${inst.institution_name}`;
-          instSel.appendChild(opt);
-        });
+        renderFilterChips();
 
         document.getElementById("db-status").innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span><span>${progs.length} programmes loaded</span>`;
         wireGlobalEvents();
