@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JUPAS 2027 Score Calculator (CSV-Backed)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen">
+  <header class="bg-slate-900 text-white py-5 px-6 shadow">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+      <div>
+        <h1 class="text-2xl font-bold tracking-tight">🎓 JUPAS 2027 Score Calculator</h1>
+        <p class="text-slate-300 text-sm">Dynamically powered by normalized 3NF CSV files in <code class="bg-slate-800 px-1.5 py-0.5 rounded">./data/</code></p>
+      </div>
+      <div id="db-status" class="text-xs bg-slate-800 px-3 py-1.5 rounded-full text-emerald-300 font-medium">
+        Loading CSV tables...
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <!-- Sidebar: Grade Inputs -->
+    <aside class="lg:col-span-3 bg-white rounded-xl shadow-sm border border-slate-200 p-5 h-fit">
+      <h2 class="text-lg font-semibold mb-4">📝 Your HKDSE Grades</h2>
+
+      <div class="space-y-3 mb-5">
+        <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Core Subjects</div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-xs font-medium text-slate-600 mb-1">English (ENG)</label>
+            <select id="grade-ENG" class="grade-select w-full rounded-lg border-slate-300 border px-2 py-1.5 text-sm"></select>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-600 mb-1">Chinese (CHI)</label>
+            <select id="grade-CHI" class="grade-select w-full rounded-lg border-slate-300 border px-2 py-1.5 text-sm"></select>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-600 mb-1">Math (MATH)</label>
+            <select id="grade-MATH" class="grade-select w-full rounded-lg border-slate-300 border px-2 py-1.5 text-sm"></select>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-600 mb-1">CSD</label>
+            <select id="csd-status" class="w-full rounded-lg border-slate-300 border px-2 py-1.5 text-sm">
+              <option value="Attained" selected>Attained</option>
+              <option value="Unattained">Unattained</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-3 mb-5">
+        <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Math Extended (Optional)</div>
+        <div class="grid grid-cols-2 gap-2">
+          <select id="math-ext-mod" class="w-full rounded-lg border-slate-300 border px-2 py-1.5 text-sm">
+            <option value="None">None</option>
+            <option value="M1">M1</option>
+            <option value="M2" selected>M2</option>
+          </select>
+          <select id="math-ext-grade" class="grade-select w-full rounded-lg border-slate-300 border px-2 py-1.5 text-sm"></select>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Electives (Up to 4)</div>
+        <div id="electives-container" class="space-y-2"></div>
+      </div>
+    </aside>
+
+    <!-- Main Panel -->
+    <section class="lg:col-span-9 space-y-5">
+      <!-- KPI Cards -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <div class="text-xs text-slate-500">Raw Best 5 (7.0 Scale)</div>
+          <div id="kpi-best5-70" class="text-2xl font-bold text-slate-800 mt-1">—</div>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <div class="text-xs text-slate-500">Raw Best 5 (8.5 Scale)</div>
+          <div id="kpi-best5-85" class="text-2xl font-bold text-indigo-600 mt-1">—</div>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <div class="text-xs text-slate-500">Eligible Programmes</div>
+          <div id="kpi-eligible" class="text-2xl font-bold text-slate-800 mt-1">—</div>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <div class="text-xs text-slate-500">Safe / Competitive</div>
+          <div id="kpi-matches" class="text-2xl font-bold text-emerald-600 mt-1">—</div>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <input id="filter-search" type="text" placeholder="Search JUPAS code or programme..." class="rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+        <select id="filter-inst" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
+          <option value="ALL">All Institutions</option>
+        </select>
+        <select id="filter-fit" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
+          <option value="ALL">All Band Fits</option>
+          <option value="Safe (>= UQ)">Safe (>= UQ)</option>
+          <option value="Competitive (>= Med)">Competitive (>= Med)</option>
+          <option value="Borderline (>= LQ)">Borderline (>= LQ)</option>
+          <option value="Reach (< LQ)">Reach (< LQ)</option>
+          <option value="No Available Data">No Available Data</option>
+          <option value="Ineligible">Ineligible</option>
+        </select>
+      </div>
+
+      <!-- Results Table -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-sm">
+            <thead class="bg-slate-100 text-slate-600 text-xs uppercase">
+              <tr>
+                <th class="py-3 px-4">Code</th>
+                <th class="py-3 px-3">Univ</th>
+                <th class="py-3 px-4">Programme</th>
+                <th class="py-3 px-3 text-right">Your Score</th>
+                <th class="py-3 px-3 text-right">2026 LQ</th>
+                <th class="py-3 px-3 text-right">2026 Med</th>
+                <th class="py-3 px-3 text-right">2026 UQ</th>
+                <th class="py-3 px-3 text-right">Δ Med</th>
+                <th class="py-3 px-4">Band Fit</th>
+              </tr>
+            </thead>
+            <tbody id="results-tbody" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Breakdown Modal -->
+  <div id="detail-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-xl space-y-4">
+      <div class="flex justify-between items-start">
+        <div>
+          <span id="modal-code" class="text-xs font-bold uppercase tracking-wider text-indigo-600"></span>
+          <h3 id="modal-title" class="text-lg font-bold text-slate-900"></h3>
+        </div>
+        <button id="modal-close" class="text-slate-400 hover:text-slate-700 text-xl font-bold">&times;</button>
+      </div>
+      <div class="grid grid-cols-3 gap-3 bg-slate-50 p-3 rounded-xl text-center">
+        <div><div class="text-xs text-slate-500">Your Score</div><div id="modal-score" class="text-xl font-bold text-indigo-600"></div></div>
+        <div><div class="text-xs text-slate-500">2026 Median</div><div id="modal-med" class="text-xl font-bold text-slate-800"></div></div>
+        <div><div class="text-xs text-slate-500">Status</div><div id="modal-fit" class="text-sm font-semibold mt-1"></div></div>
+      </div>
+      <div class="text-sm space-y-2">
+        <div><span class="font-semibold">Subjects Counted:</span> <code id="modal-breakdown" class="bg-slate-100 px-2 py-0.5 rounded text-xs"></code></div>
+        <div><span class="font-semibold">Formula & Scale:</span> <span id="modal-formula"></span></div>
+        <div><span class="font-semibold">Eligibility:</span> <span id="modal-elig"></span></div>
+        <div><span class="font-semibold">Official Notes:</span> <span id="modal-notes" class="text-slate-600"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const GRADES = ["5**", "5*", "5", "4", "3", "2", "1", "U"];
+    const GRADE_RANK = { "U": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "5*": 6, "5**": 7 };
+
+    let DB = {
+      institutions: {},
+      scales: {},
+      subjects: {},
+      programmes: [],
+      weightsByCode: {},
+      historyByCode: {}
+    };
+
+    async function fetchCSV(path) {
+      const res = await fetch(path);
+      if (!res.ok) throw new Error(`Failed to fetch ${path} (HTTP ${res.status})`);
+      const text = await res.text();
+      return Papa.parse(text.trim(), { header: true, skipEmptyLines: true }).data;
+    }
+
+    function populateGradeSelect(el, defaultGrade) {
+      el.innerHTML = GRADES.map(g => `<option value="${g}" ${g === defaultGrade ? "selected" : ""}>${g}</option>`).join("");
+    }
+
+    function initInputs() {
+      populateGradeSelect(document.getElementById("grade-ENG"), "5");
+      populateGradeSelect(document.getElementById("grade-CHI"), "4");
+      populateGradeSelect(document.getElementById("grade-MATH"), "5*");
+      populateGradeSelect(document.getElementById("math-ext-grade"), "5");
+
+      const electives = Object.values(DB.subjects).filter(s => s.category === "ELECTIVE");
+      const defaults = [
+        { code: "PHY", grade: "5*" },
+        { code: "CHEM", grade: "5" },
+        { code: "ECON", grade: "5" },
+        { code: "NONE", grade: "4" }
+      ];
+      const container = document.getElementById("electives-container");
+      container.innerHTML = "";
+
+      defaults.forEach((def, idx) => {
+        const row = document.createElement("div");
+        row.className = "grid grid-cols-3 gap-2";
+        const subjSel = document.createElement("select");
+        subjSel.id = `elec-code-${idx}`;
+        subjSel.className = "col-span-2 rounded-lg border border-slate-300 px-2 py-1.5 text-xs";
+        subjSel.innerHTML = `<option value="NONE">-- None --</option>` +
+          electives.map(e => `<option value="${e.subject_code}" ${e.subject_code === def.code ? "selected" : ""}>${e.subject_code} - ${e.subject_name}</option>`).join("");
+
+        const gradeSel = document.createElement("select");
+        gradeSel.id = `elec-grade-${idx}`;
+        gradeSel.className = "rounded-lg border border-slate-300 px-2 py-1.5 text-xs";
+        populateGradeSelect(gradeSel, def.grade);
+
+        row.appendChild(subjSel);
+        row.appendChild(gradeSel);
+        container.appendChild(row);
+      });
+
+      const instSel = document.getElementById("filter-inst");
+      Object.values(DB.institutions).forEach(inst => {
+        const opt = document.createElement("option");
+        opt.value = inst.short_name;
+        opt.textContent = `${inst.short_name} — ${inst.institution_name}`;
+        instSel.appendChild(opt);
+      });
+
+      document.querySelectorAll("select, input").forEach(el => {
+        el.addEventListener("change", render);
+        el.addEventListener("input", render);
+      });
+    }
+
+    function getUserGrades() {
+      const grades = {
+        ENG: document.getElementById("grade-ENG").value,
+        CHI: document.getElementById("grade-CHI").value,
+        MATH: document.getElementById("grade-MATH").value
+      };
+      const mMod = document.getElementById("math-ext-mod").value;
+      if (mMod !== "None") grades[mMod] = document.getElementById("math-ext-grade").value;
+
+      for (let i = 0; i < 4; i++) {
+        const code = document.getElementById(`elec-code-${i}`).value;
+        if (code !== "NONE") grades[code] = document.getElementById(`elec-grade-${i}`).value;
+      }
+      return grades;
+    }
+
+    function evaluateProgramme(prog, userGrades, csdAttained) {
+      const inst = DB.institutions[prog.institution_id];
+      const scaleId = prog.scale_override_id || inst.default_scale_id;
+      const scaleMap = DB.scales[scaleId];
+      const weights = DB.weightsByCode[prog.jupas_code] || [];
+      const hist = DB.historyByCode[prog.jupas_code] || {};
+
+      const weightMap = {};
+      const mandatory = [];
+      const minRules = {};
+      weights.forEach(w => {
+        weightMap[w.subject_code] = parseFloat(w.weight) || 1.0;
+        if (String(w.is_mandatory).toUpperCase() === "TRUE") mandatory.push(w.subject_code);
+        if (w.min_grade && w.min_grade.trim()) minRules[w.subject_code] = w.min_grade.trim();
+      });
+
+      const issues = [];
+      if (String(inst.requires_csd_attained).toUpperCase() === "TRUE" && !csdAttained) issues.push("CSD Not Attained");
+      const reqEng = prog.min_eng_override || inst.min_eng;
+      const reqChi = prog.min_chi_override || inst.min_chi;
+      const reqMath = prog.min_math_override || inst.min_math;
+
+      if (GRADE_RANK[userGrades.ENG] < GRADE_RANK[reqEng]) issues.push(`ENG < ${reqEng}`);
+      if (GRADE_RANK[userGrades.CHI] < GRADE_RANK[reqChi]) issues.push(`CHI < ${reqChi}`);
+      if (GRADE_RANK[userGrades.MATH] < GRADE_RANK[reqMath]) issues.push(`MATH < ${reqMath}`);
+
+      mandatory.forEach(code => { if (!userGrades[code]) issues.push(`Missing ${code}`); });
+      Object.entries(minRules).forEach(([code, req]) => {
+        if (userGrades[code] && GRADE_RANK[userGrades[code]] < GRADE_RANK[req]) {
+          const msg = `${code} < ${req}`;
+          if (!issues.includes(msg)) issues.push(msg);
+        }
+      });
+
+      const candidates = {};
+      Object.entries(userGrades).forEach(([code, grade]) => {
+        const raw = scaleMap[grade] ?? 0;
+        const defaultW = parseFloat(inst.default_subject_weight) || 1.0;
+        const mult = weightMap[code] ?? defaultW;
+        candidates[code] = { code, grade, raw, mult, weighted: raw * mult };
+      });
+
+      const selected = [];
+      const selectedSet = new Set();
+      const addSubj = code => {
+        if (candidates[code] && !selectedSet.has(code)) {
+          selected.push(candidates[code]);
+          selectedSet.add(code);
+        }
+      };
+
+      if (prog.formula_type === "3C2X" || prog.formula_type === "4C2X") {
+        ["ENG", "CHI", "MATH"].forEach(addSubj);
+        mandatory.forEach(addSubj);
+        const need = Math.max(0, 5 - selected.length);
+        const pool = Object.values(candidates)
+          .filter(c => !selectedSet.has(c.code) && (DB.subjects[c.code]?.category === "ELECTIVE" || DB.subjects[c.code]?.category === "MATH_EXT"))
+          .sort((a, b) => b.weighted - a.weighted || b.raw - a.raw);
+        pool.slice(0, need).forEach(c => { selected.push(c); selectedSet.add(c.code); });
+        if (selected.length < 5) issues.push("Fewer than 2 Electives");
+      } else {
+        const target = prog.formula_type === "BEST_6" ? 6 : 5;
+        mandatory.forEach(addSubj);
+        const need = Math.max(0, target - selected.length);
+        const pool = Object.values(candidates)
+          .filter(c => !selectedSet.has(c.code))
+          .sort((a, b) => b.weighted - a.weighted || b.raw - a.raw);
+        pool.slice(0, need).forEach(c => { selected.push(c); selectedSet.add(c.code); });
+        if (selected.length < target) issues.push(`Fewer than ${target} Subjects`);
+      }
+
+      let total = selected.reduce((acc, s) => acc + s.weighted, 0);
+      const parts = selected.map(s => s.mult !== 1 ? `${s.code}(${s.grade}×${s.mult})` : `${s.code}(${s.grade})`);
+
+      const bonusW = parseFloat(prog.bonus_extra_elective_weight) || 0;
+      if (bonusW > 0) {
+        const leftover = Object.values(candidates).filter(c => !selectedSet.has(c.code)).sort((a, b) => b.raw - a.raw);
+        if (leftover.length > 0) {
+          total += leftover[0].raw * bonusW;
+          parts.push(`+${bonusW}×${leftover[0].code}(${leftover[0].grade})`);
+        }
+      }
+
+      total = Math.round(total * 100) / 100;
+      const eligible = issues.length === 0;
+      const uq = hist.score_uq ? parseFloat(hist.score_uq) : null;
+      const med = hist.score_median ? parseFloat(hist.score_median) : null;
+      const lq = hist.score_lq ? parseFloat(hist.score_lq) : null;
+      const deltaMed = med !== null ? Math.round((total - med) * 100) / 100 : null;
+
+      let bandFit = "No Available Data";
+      if (!eligible) bandFit = "Ineligible";
+      else if (med !== null && lq !== null) {
+        if (uq !== null && total >= uq) bandFit = "Safe (>= UQ)";
+        else if (total >= med) bandFit = "Competitive (>= Med)";
+        else if (total >= lq) bandFit = "Borderline (>= LQ)";
+        else bandFit = "Reach (< LQ)";
+      }
+
+      return {
+        ...prog,
+        institution: inst.short_name,
+        scaleId,
+        userScore: total,
+        uq, med, lq, deltaMed,
+        bandFit,
+        eligible,
+        eligNotes: eligible ? "Eligible" : issues.join("; "),
+        breakdown: parts.join(" + "),
+        scoringNotes: hist.scoring_notes || ""
+      };
+    }
+
+    function fitBadge(fit) {
+      const map = {
+        "Safe (>= UQ)": "bg-emerald-100 text-emerald-800",
+        "Competitive (>= Med)": "bg-sky-100 text-sky-800",
+        "Borderline (>= LQ)": "bg-amber-100 text-amber-800",
+        "Reach (< LQ)": "bg-rose-100 text-rose-800",
+        "No Available Data": "bg-slate-100 text-slate-600",
+        "Ineligible": "bg-slate-200 text-slate-600"
+      };
+      return `<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold ${map[fit] || ""}">${fit}</span>`;
+    }
+
+    function render() {
+      const userGrades = getUserGrades();
+      const csdAttained = document.getElementById("csd-status").value === "Attained";
+
+      const pts70 = Object.values(userGrades).map(g => DB.scales["SCALE_70"][g] || 0).sort((a, b) => b - a);
+      const pts85 = Object.values(userGrades).map(g => DB.scales["SCALE_85"][g] || 0).sort((a, b) => b - a);
+      document.getElementById("kpi-best5-70").textContent = pts70.slice(0, 5).reduce((a, b) => a + b, 0).toFixed(1);
+      document.getElementById("kpi-best5-85").textContent = pts85.slice(0, 5).reduce((a, b) => a + b, 0).toFixed(1);
+
+      const evaluated = DB.programmes.map(p => evaluateProgramme(p, userGrades, csdAttained));
+      evaluated.sort((a, b) => (b.eligible - a.eligible) || ((b.deltaMed ?? -999) - (a.deltaMed ?? -999)));
+
+      document.getElementById("kpi-eligible").textContent = `${evaluated.filter(e => e.eligible).length} / ${evaluated.length}`;
+      document.getElementById("kpi-matches").textContent = evaluated.filter(e => e.bandFit === "Safe (>= UQ)" || e.bandFit === "Competitive (>= Med)").length;
+
+      const q = document.getElementById("filter-search").value.trim().toLowerCase();
+      const instF = document.getElementById("filter-inst").value;
+      const fitF = document.getElementById("filter-fit").value;
+
+      const filtered = evaluated.filter(r =>
+        (instF === "ALL" || r.institution === instF) &&
+        (fitF === "ALL" || r.bandFit === fitF) &&
+        (!q || r.jupas_code.toLowerCase().includes(q) || r.programme_name.toLowerCase().includes(q))
+      );
+
+      const tbody = document.getElementById("results-tbody");
+      tbody.innerHTML = filtered.map(r => `
+        <tr class="hover:bg-indigo-50/50 cursor-pointer transition" data-code="${r.jupas_code}">
+          <td class="py-3 px-4 font-mono font-semibold text-indigo-700">${r.jupas_code}</td>
+          <td class="py-3 px-3 font-medium">${r.institution}</td>
+          <td class="py-3 px-4">${r.programme_name}</td>
+          <td class="py-3 px-3 text-right font-bold">${r.userScore.toFixed(2)}</td>
+          <td class="py-3 px-3 text-right text-slate-600">${r.lq !== null ? r.lq.toFixed(1) : "—"}</td>
+          <td class="py-3 px-3 text-right text-slate-600">${r.med !== null ? r.med.toFixed(1) : "—"}</td>
+          <td class="py-3 px-3 text-right text-slate-600">${r.uq !== null ? r.uq.toFixed(1) : "—"}</td>
+          <td class="py-3 px-3 text-right font-semibold ${r.deltaMed === null ? "text-slate-400" : r.deltaMed >= 0 ? "text-emerald-600" : "text-rose-600"}">
+            ${r.deltaMed !== null ? (r.deltaMed >= 0 ? "+" : "") + r.deltaMed.toFixed(2) : "—"}
+          </td>
+          <td class="py-3 px-4">${fitBadge(r.bandFit)}</td>
+        </tr>
+      `).join("");
+
+      const byCode = Object.fromEntries(filtered.map(r => [r.jupas_code, r]));
+      tbody.querySelectorAll("tr").forEach(tr => {
+        tr.addEventListener("click", () => {
+          const r = byCode[tr.dataset.code];
+          document.getElementById("modal-code").textContent = `${r.jupas_code} • ${r.institution} (${r.faculty})`;
+          document.getElementById("modal-title").textContent = r.programme_name;
+          document.getElementById("modal-score").textContent = r.userScore.toFixed(2);
+          document.getElementById("modal-med").textContent = r.med !== null ? r.med.toFixed(1) : "N/A";
+          document.getElementById("modal-fit").innerHTML = fitBadge(r.bandFit);
+          document.getElementById("modal-breakdown").textContent = r.breakdown;
+          document.getElementById("modal-formula").textContent = `${r.formula_type} (${r.scaleId})`;
+          document.getElementById("modal-elig").textContent = r.eligNotes;
+          document.getElementById("modal-notes").textContent = r.scoringNotes || "—";
+          const modal = document.getElementById("detail-modal");
+          modal.classList.remove("hidden");
+          modal.classList.add("flex");
+        });
+      });
+    }
+
+    document.getElementById("modal-close").addEventListener("click", () => {
+      document.getElementById("detail-modal").classList.add("hidden");
+      document.getElementById("detail-modal").classList.remove("flex");
+    });
+
+    async function boot() {
+      try {
+        const [insts, scales, subjs, progs, weights, hist] = await Promise.all([
+          fetchCSV("./data/institutions.csv"),
+          fetchCSV("./data/grade_scales.csv"),
+          fetchCSV("./data/subjects.csv"),
+          fetchCSV("./data/programmes.csv"),
+          fetchCSV("./data/programme_weights.csv"),
+          fetchCSV("./data/admissions_history.csv")
+        ]);
+
+        insts.forEach(i => DB.institutions[i.institution_id] = i);
+        scales.forEach(s => {
+          DB.scales[s.scale_id] = DB.scales[s.scale_id] || {};
+          DB.scales[s.scale_id][s.dse_grade] = parseFloat(s.points);
+        });
+        subjs.forEach(s => DB.subjects[s.subject_code] = s);
+        DB.programmes = progs;
+        weights.forEach(w => {
+          DB.weightsByCode[w.jupas_code] = DB.weightsByCode[w.jupas_code] || [];
+          DB.weightsByCode[w.jupas_code].push(w);
+        });
+        hist.forEach(h => {
+          if (String(h.admission_year) === "2026") DB.historyByCode[h.jupas_code] = h;
+        });
+
+        document.getElementById("db-status").textContent = `Loaded ${progs.length} programmes from ./data/*.csv`;
+        initInputs();
+        render();
+      } catch (err) {
+        document.getElementById("db-status").textContent = "Error loading CSVs (use GitHub Pages or local HTTP server)";
+        document.getElementById("db-status").className = "text-xs bg-rose-900 px-3 py-1.5 rounded-full text-rose-200 font-medium";
+        console.error(err);
+      }
+    }
+
+    boot();
+  </script>
+</body>
+</html>
