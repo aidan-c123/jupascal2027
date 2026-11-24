@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Campus · JUPAS 2027 Calculator</title>
+  <title>JUPAS 2027 Calculator</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e4e4e7' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2v3'/%3E%3Cpath d='M7 9l5-4 5 4'/%3E%3Cpath d='M7 9v11h10V9'/%3E%3Cpath d='M3 13h4v7H3z'/%3E%3Cpath d='M17 13h4v7h-4z'/%3E%3Cpath d='M10.5 20v-4a1.5 1.5 0 0 1 3 0v4'/%3E%3Ccircle cx='12' cy='10.5' r='1'/%3E%3Cpath d='M2 20h20'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -416,6 +416,15 @@
           </div>
           <div class="flex items-center gap-2">
             <span id="key-points-count" class="text-xs text-zinc-400 bg-raised border border-line px-2.5 py-1 rounded">0 notes</span>
+            <a
+              href="https://github.com/aidan-c123/jupascal2027/issues"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-raised hover:bg-hover border border-line-strong text-xs font-medium text-zinc-200 transition"
+            >
+              <span>Report Data Error</span>
+              <span aria-hidden="true">↗</span>
+            </a>
           </div>
         </div>
 
@@ -452,12 +461,14 @@
           <span class="text-[11px] text-zinc-500">· Last Updated: <strong class="text-zinc-300">24 Nov 2026</strong></span>
         </div>
         <a
-          href="https://github.com/aidan-c123/aidan-c123.github.io/issues/new?title=JUPAS%202027%20Data%20Error%20Report&amp;body=JUPAS%20Code%3A%20%0AField%20with%20error%20(Score%20%2F%20Weighting%20%2F%20Quota%20%2F%20Eligibility)%3A%20%0ACorrect%20value%20%26%20official%20source%20link%3A%20"
+          id="report-data-error-btn"
+          href="https://github.com/aidan-c123/jupascal2027/issues"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center justify-center px-3 py-1.5 rounded bg-raised hover:bg-hover border border-line text-xs font-medium text-zinc-200 transition shrink-0"
+          class="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-md bg-zinc-100 hover:bg-white text-zinc-950 border border-zinc-100 text-xs font-semibold shadow-sm transition shrink-0"
         >
-          Report Data Error
+          <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+          <span>Report Data Error</span>
         </a>
       </div>
       <p class="text-[11px] text-zinc-500 leading-relaxed">

@@ -1,18 +1,28 @@
-# JUPAS 2027 Score Calculator (GitHub Pages)
+# JUPAS 2027 Calculator
 
-A zero-backend static web app powered directly by normalized 3NF CSV files in `data/`.
+An interactive client-side JUPAS 2027 admissions score calculator, A1–E20 band choice planner, and risk diagnostic dashboard hosted on GitHub Pages, backed by normalized 3NF CSV data tables.
 
-## How to Deploy on GitHub Pages
-1. Create a new public repository on GitHub (e.g. `jupas-2027-calculator`).
-2. Upload `index.html`, `README.md`, and the entire `data/` folder to the repository root.
-3. Go to **Settings → Pages**, set Source to **Deploy from a branch**, select `main` and `/ (root)`, and click **Save**.
+## Key Features
 
-## How to Test Locally
-Browsers block `fetch()` on `file://` URLs. Run a one-line local server inside this folder:
-```bash
-python -m http.server 8000
-```
-Then open `http://localhost:8000`.
+* **HKDSE Score & Eligibility Engine:** Calculates programme-specific scores (`BEST_5`, `BEST_6`, `3C2X`, `4C2X`, subject weightings, and extra elective bonuses), checks core/elective/language/CSD/compulsory-elective eligibility rules, and provides an interactive formula breakdown (`Base + Weightings + Extra Bonus = Total`).
+* **A1–E20 Choice Planner & Risk Diagnostics:** Supports adding, dragging/reordering, moving up/down, and importing/exporting choices across Bands A–E, with band-adjusted risk tiers (`Safe`, `Low Risk`, `Moderate Danger`, `High Danger`, `Ineligible`, `No Data`), an **Analysis** tab for diagnostics and safer same-direction backups, a sticky **Quick Tweak** bar, and one-click sample demo loading.
+* **Persistence, Sharing & Theme Controls:** Automatically saves grades and choices to `localStorage`, encodes state into shareable `#s=...` URL hashes, includes a responsive mobile card view (`< 768px`) alongside the desktop table, supports Dark and Light mode toggling, and provides CSV integrity validation via `validate_csv.py`.
 
-## Updating Scores Next Year
-Simply edit or append rows in `data/programmes.csv`, `data/programme_weights.csv`, or `data/admissions_history.csv` and commit to GitHub. The live site updates automatically.
+## Repository Structure
+
+* `index.html` — Single-file frontend application (HTML, Tailwind CSS, and vanilla JavaScript with PapaParse).
+* `validate_csv.py` — Python validation script checking foreign keys, formula types, weights, grades, and `compulsory_electives` syntax across the data tables.
+* `.github/workflows/validate-csv.yml` — GitHub Actions workflow that runs CSV integrity checks on pushes and pull requests touching `data/*.csv` or `validate_csv.py`.
+* `data/programmes.csv` — 312 UGC programmes with formula types, subject/language overrides, compulsory elective rules, `intake_2026`, and `interview_req`.
+* `data/programme_weights.csv` — 1,034 programme–subject weighting, mandatory-subject, and minimum-grade rules.
+* `data/admissions_history.csv` — Historical admission score benchmarks (`score_uq`, `score_median`, `score_lq`, and notes), including 2026 reference figures.
+* `data/institutions.csv` — 8 UGC institutions (`HKU`, `CUHK`, `HKUST`, `PolyU`, `CityUHK`, `HKBU`, `Lingnan University`, and `EdUHK`) and default baseline requirements.
+* `data/grade_scales.csv` — Point mappings across grade scales (including 7.0 and 8.5 scales).
+* `data/subjects.csv` — Core, Math Extended (`M1`/`M2`), and elective subject metadata.
+
+## Data Provenance & Disclaimer
+
+* **Data Source:** 2026 JUPAS admission figures and 2027 UGC programme weightings (data as of 24 Nov 2026).
+* **Estimates Only:** All calculated scores, cut-off comparisons, and band risk indicators are unofficial estimates for reference only. Always verify official JUPAS and university brochures before locking in choices by **December 2, 2026** (a **HK$100** amendment fee applies afterward).
+* **Report Data Errors:** Submit issues or corrections via [https://github.com/aidan-c123/jupascal2027/issues](https://github.com/aidan-c123/jupascal2027/issues).
+* **Author:** Created by [@aidan.choi_](https://www.instagram.com/aidan.choi_/).
